@@ -1,5 +1,7 @@
 package com.example.client;
 
+import android.util.Log;
+
 import java.net.*;
 import java.io.*;
 
@@ -17,6 +19,8 @@ public class Client {
 			out.write(cmdStr);
 			out.close();
 
+			Log.d("ANL", "EEEE");
+
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(connection.getInputStream()));
 
@@ -26,9 +30,12 @@ public class Client {
 				result.append("\n" + inputLine);
 			in.close();
 
+			Log.d("ANL", "FFFF");
+
 			String resultString = result.toString();
-			if (resultString.length() > 0)
+			if (resultString.length() > 0) {
 				return resultString.substring(1); //removing "\n"
+			}
 			return resultString;
 
 		} catch (IOException e) {

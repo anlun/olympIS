@@ -5,6 +5,14 @@ import java.util.logging.Handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class Server {
 	public static void main(String[] args) {
@@ -49,13 +57,45 @@ public class Server {
 
 			System.out.println(command);
 
-			//String result = executor.execute(command);
-			String result = "PPSPPAPSPAPSPA";
+			String result = "";
+			try {
+				result = (new XmlHandler()).handle(command);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			System.out.println("Result: " + result);
 
 			PrintWriter out = new PrintWriter(exc.getResponseBody());
 			out.println(result);
 			out.close();
 			exc.close();
+		}
+	}
+
+	private class XmlHandler {
+		public String handle(String xmlString) throws UnknownXmlDocumentException {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				Document dom  = builder.parse(new InputSource(new StringReader(xmlString)));
+				Element  root = dom.getDocumentElement();
+				String tagName = root.getTagName();
+				if (tagName.equalsIgnoreCase("login-request")) {
+					return (new LoginHandler(dom)).exec();
+				}
+
+			} catch (ParserConfigurationException e){
+				System.out.println(e.toString());
+			} catch (SAXException e) {
+				System.out.println(e.toString());
+			} catch (IOException e) {
+				System.out.println(e.toString());
+			}
+
+			throw new UnknownXmlDocumentException();
+		}
+
+		public class UnknownXmlDocumentException extends Exception {
 		}
 	}
 

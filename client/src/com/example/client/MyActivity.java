@@ -3,6 +3,8 @@ package com.example.client;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.net.URL;
 
@@ -15,13 +17,27 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Create the text view
-        TextView textView = new TextView(this);
+        /*
+		TextView textView = new TextView(this);
         textView.setTextSize(40);
         textView.setText("Hello world!");
 
         setContentView(textView);
+        */
 
-		new ConnectTask(textView).execute("10");
+		Button btn = new Button(getBaseContext());
+		btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				try {
+					new LoginTask("RUSSIA", "12345", new URL("http://10.0.2.2:8888")).execute();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+		setContentView(btn);
+
+		//new ConnectTask(textView).execute("10");
     }
 
 	class ConnectTask extends AsyncTask<String, Integer, String> {
