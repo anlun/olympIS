@@ -12,12 +12,14 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 
+import com.example.client.exceptions.XmlGenerationException;
+
 public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 	public LoginTask(String login, String password, URL serverURL) {
 		this.login       = login;
 		this.password    = password;
 		this.serverURL   = serverURL;
-		this.countryName = null;
+		this.country     = null;
 	}
 
 	@Override
@@ -29,21 +31,21 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 
 			Log.d("ANL", answerXML);
 
-			countryName = getCountryName(answerXML);
+			country = getCountryName(answerXML);
 
 		} catch (XmlGenerationException e) {
 			Log.d("ANL", "XML generation error!");
-			countryName = null;
+			country = null;
 		}
 
-		return countryName != null;
+		return country != null;
 	}
 
 	@Override
 	protected void onPostExecute(Boolean result) {
 		//TODO
 		if (result) {
-			Log.d("ANL", "Login by " + countryName + " was successfully done.");
+			Log.d("ANL", "Login by " + country + " was successfully done.");
 		} else {
 			Log.d("ANL", "Login fail!");
 		}
@@ -98,11 +100,8 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 		return null;
 	}
 
-	protected class XmlGenerationException extends Exception {
-	}
-
 	private String login;
 	private String password;
 	private URL serverURL;
-	private String countryName;
+	private String country;
 }

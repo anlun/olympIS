@@ -35,22 +35,13 @@ public class LoginHandler {
 			outRoot.setAttributeNode(outAttr);
 			outDoc.appendChild(outRoot);
 
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer        transformer        = transformerFactory.newTransformer();
-			DOMSource          source             = new DOMSource(outDoc);
-			StringWriter       writer             = new StringWriter();
-			StreamResult       resultDOMstring    = new StreamResult(writer);
-			transformer.transform(source, resultDOMstring);
-
-			String result = writer.toString();
+			String result = XmlUtils.domToXmlString(outDoc);
 			System.out.println("response: " + result);
 			return result;
 
 		} catch (ParserConfigurationException e) {
 			System.err.println(e.toString());
-		} catch (TransformerConfigurationException e) {
-			System.err.println(e.toString());
-		} catch (TransformerException e) {
+		} catch (XmlUtils.DomToStringTranslationException e) {
 			System.err.println(e.toString());
 		}
 
