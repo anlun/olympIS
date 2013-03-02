@@ -3,12 +3,17 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import beans.ApplicationConstrain;
 import com.example.client.exceptions.XmlGenerationException;
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+
+import com.googlecode.openbeans.XMLDecoder;
 
 //TODO: завести отдельный класс для результата
 //Что-то типа Application constrains
@@ -27,15 +32,13 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 
-			//ApplicationConstrain app;
-
-			Log.d("ANL", answerXML);
-
-			//country = getCountryName(answerXML);
+			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
+			ApplicationConstrain app = (ApplicationConstrain) decoder.readObject();
 
 		} catch (XmlGenerationException e) {
 			Log.d("ANL", "XML generation error!");
-			country = null;
+		} catch (UnsupportedEncodingException e) {
+			Log.d("ANL", "Unsupported encoding error!");
 		}
 
 		return "";

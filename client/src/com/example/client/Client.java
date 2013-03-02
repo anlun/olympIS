@@ -19,8 +19,6 @@ public class Client {
 			out.write(cmdStr);
 			out.close();
 
-			Log.d("ANL", "EEEE");
-
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(connection.getInputStream()));
 
@@ -29,8 +27,6 @@ public class Client {
 			while ((inputLine = in.readLine()) != null)
 				result.append("\n" + inputLine);
 			in.close();
-
-			Log.d("ANL", "FFFF");
 
 			String resultString = result.toString();
 			if (resultString.length() > 0) {
