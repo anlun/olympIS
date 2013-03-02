@@ -1,5 +1,9 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Vector;
 
 public class ApplicationConstrainHandler {
@@ -13,7 +17,7 @@ public class ApplicationConstrainHandler {
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
 
-		return getCountryApplicationConstrain(country, login, password).toXML();
+		return applicationConstrainToXML(getCountryApplicationConstrain(country, login, password));
 	}
 
 	private ApplicationConstrain getCountryApplicationConstrain(String country, String login, String password) {
@@ -24,6 +28,14 @@ public class ApplicationConstrainHandler {
 		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, ApplicationConstrain.Sex.Undefined));
 
 		return new ApplicationConstrain(vec);
+	}
+
+	public String applicationConstrainToXML(ApplicationConstrain applicationConstrain) {
+		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
+		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
+		e.writeObject(applicationConstrain);
+		e.close();
+		return byteArr.toString();
 	}
 
 	private Document dom;

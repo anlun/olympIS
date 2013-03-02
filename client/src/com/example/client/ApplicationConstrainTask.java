@@ -27,6 +27,8 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 
+			//ApplicationConstrain app;
+
 			Log.d("ANL", answerXML);
 
 			//country = getCountryName(answerXML);

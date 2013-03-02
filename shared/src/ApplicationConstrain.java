@@ -1,6 +1,3 @@
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -10,14 +7,6 @@ public class ApplicationConstrain implements Serializable {
 
 	public ApplicationConstrain(Vector<SportConstrain> sportConstrains) {
 		this.sportConstrains = sportConstrains;
-	}
-
-	public String toXML() {
-		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
-		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
-		e.writeObject(this);
-		e.close();
-		return byteArr.toString();
 	}
 
 	public Vector<SportConstrain> getSportConstrains() {
