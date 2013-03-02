@@ -5,25 +5,18 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
 
 public class LoginHandler {
-	public LoginHandler(Document doc) {
-		this.doc = doc;
+	public LoginHandler(Document dom) {
+		this.dom = dom;
 	}
 
 	public String exec() {
-		Element root     = doc.getDocumentElement();
+		Element root     = dom.getDocumentElement();
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
 
-		String countryName = getCountryName(login, password);
+		String country = getCountryName(login, password);
 
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -31,7 +24,7 @@ public class LoginHandler {
 			Document outDoc  = builder.newDocument();
 			Element  outRoot = outDoc.createElement("login-response");
 			Attr     outAttr = outDoc.createAttribute("country");
-			outAttr.setValue(countryName);
+			outAttr.setValue(country);
 			outRoot.setAttributeNode(outAttr);
 			outDoc.appendChild(outRoot);
 
@@ -53,5 +46,5 @@ public class LoginHandler {
 		return "RUSLAND";
 	}
 
-	private Document doc;
+	private Document dom;
 }

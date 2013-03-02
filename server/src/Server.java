@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.logging.Handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -82,6 +81,9 @@ public class Server {
 				String tagName = root.getTagName();
 				if (tagName.equalsIgnoreCase("login-request")) {
 					return (new LoginHandler(dom)).exec();
+
+				} else if (tagName.equalsIgnoreCase("application-constrain-request")) {
+					return (new ApplicationConstrainHandler(dom)).exec();
 				}
 
 			} catch (ParserConfigurationException e){
