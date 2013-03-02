@@ -47,11 +47,11 @@ public class LoginHandler {
 			return result;
 
 		} catch (ParserConfigurationException e) {
-			System.out.println(e.toString());
+			System.err.println(e.toString());
 		} catch (TransformerConfigurationException e) {
-			System.out.println(e.toString());
+			System.err.println(e.toString());
 		} catch (TransformerException e) {
-			System.out.println(e.toString());
+			System.err.println(e.toString());
 		}
 
 		return "";

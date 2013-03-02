@@ -28,7 +28,7 @@ public class Server {
 		try {
 			server = HttpServer.create(socketAddress, backlog);
 		} catch (IOException e) {
-			System.out.println("Oops!");
+			System.err.println("Oops!");
 			e.printStackTrace();
 		}
 		server.createContext("/", new Handler());
@@ -40,7 +40,7 @@ public class Server {
 		try {
 			System.in.read();
 		} catch (IOException e) {
-			System.out.println("Oops!");
+			System.err.println("Oops!");
 		} finally {
 			server.stop(0);
 			System.out.println("Server stopped");
@@ -85,11 +85,11 @@ public class Server {
 				}
 
 			} catch (ParserConfigurationException e){
-				System.out.println(e.toString());
+				System.err.println(e.toString());
 			} catch (SAXException e) {
-				System.out.println(e.toString());
+				System.err.println(e.toString());
 			} catch (IOException e) {
-				System.out.println(e.toString());
+				System.err.println(e.toString());
 			}
 
 			throw new UnknownXmlDocumentException();
