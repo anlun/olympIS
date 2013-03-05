@@ -1,0 +1,78 @@
+create database olimpis;
+
+use olimpis;
+
+create table country(
+	id integer not null Auto_increment primary key,
+	country_name varchar(30) not null,
+	login varchar (30) not null,
+	hash_password varchar(50) not null
+);
+
+create table athlete(
+	id integer primary key not null Auto_increment,
+    athlete_name varchar(50) not null,
+	sex bool not null,
+	weight float,
+	growth float,
+    country_id integer not null,
+	Foreign key (country_id) references country(id)
+);
+
+create table sportobject_type(
+	id integer primary key not null Auto_increment,
+	object_type varchar(100) not null
+);
+
+create table sport_object(
+	id integer primary key not null Auto_increment,
+	object_type_id integer not null,
+    capacity integer not null,
+    city varchar(100) not null,
+	Foreign key (object_type_id) 
+		references sportobject_type(id)
+
+);
+
+create table competition(
+	id integer primary key not null Auto_increment,
+	competition_name varchar(100) not null,
+	object_type integer not null,
+	sex_participant integer,
+    duration integer not null,
+	foreign key (object_type) references
+		sportobject_type(id)
+);
+
+create table country_quote(
+	competition_id integer not null,
+	country_id integer not null,
+	number_participants integer not null,
+    constraint pk_cq PRIMARY KEY (competition_id, country_id),
+	foreign key (competition_id) references
+		competition(id),
+	foreign key (country_id) references
+		country(id)
+);
+
+create table schedule_olymp(
+	competition_id integer not null,
+	object_id integer not null,
+	start_time datetime not null,
+	finish_time datetime not null,
+	constraint pk_so PRIMARY KEY (competition_id, object_id),
+	foreign key (competition_id) references
+		competition(id),
+	foreign key (object_id) references
+		sport_object(id)
+);
+
+create table participation_athletes(
+	competition_id integer not null,
+	athlete_id integer not null,
+	constraint pk_pa PRIMARY KEY (competition_id, athlete_id),
+	foreign key (competition_id) references
+		competition(id),
+	foreign key (athlete_id) references
+		athlete(id)
+);
