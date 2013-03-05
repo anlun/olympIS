@@ -15,5 +15,23 @@ import java.util.ArrayList;
 
 public class Database
 {
+    private Connection conn;
 
+    public static Connection getConnection() throws Exception {
+        Class.forName("org.gjt.mm.mysql.Driver").newInstance();
+
+        // String url = "jdbc:mysql://localhost/commining";
+        String url = "jdbc:mysql://localhost/youtube";
+        String username = "root";
+        String password = "pass";
+        return DriverManager.getConnection(url, username, password);
+
+    }
+
+    public Database() throws Exception{
+        conn = getConnection();
+    }
+    public void closeConnection() throws SQLException {
+        conn.close();
+    }
 }
