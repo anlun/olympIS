@@ -86,7 +86,7 @@ public class Server {
 					return (new ApplicationConstrainHandler(dom)).exec();
 				}
 
-			} catch (ParserConfigurationException e){
+			} catch (ParserConfigurationException e) {
 				System.err.println(e.toString());
 			} catch (SAXException e) {
 				System.err.println(e.toString());

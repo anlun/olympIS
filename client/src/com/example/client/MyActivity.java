@@ -9,21 +9,9 @@ import android.widget.TextView;
 import java.net.URL;
 
 public class MyActivity extends Activity {
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Create the text view
-        /*
-		TextView textView = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText("Hello world!");
-
-        setContentView(textView);
-        */
 
 		Button btn = new Button(getBaseContext());
 		btn.setOnClickListener(new View.OnClickListener() {
@@ -37,8 +25,6 @@ public class MyActivity extends Activity {
 			}
 		});
 		setContentView(btn);
-
-		//new ConnectTask(textView).execute("10");
     }
 
 	class ConnectTask extends AsyncTask<String, Integer, String> {

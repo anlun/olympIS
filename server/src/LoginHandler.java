@@ -41,6 +41,7 @@ public class LoginHandler {
 		return "";
 	}
 
+	//If login-password incorrect this method must return ""
 	private static String getCountryName(String login, String password) {
 		//TODO: checking in base
 		return "RUSLAND";

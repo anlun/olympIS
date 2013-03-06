@@ -15,9 +15,7 @@ import java.net.URL;
 
 import com.googlecode.openbeans.XMLDecoder;
 
-//TODO: завести отдельный класс для результата
-//Что-то типа Application constrains
-public class ApplicationConstrainTask extends AsyncTask<String, Integer, String> {
+public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean> {
 	public ApplicationConstrainTask(String country, String login, String password, URL serverURL) {
 		this.country     = country;
 		this.login       = login;
@@ -26,14 +24,15 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 	}
 
 	@Override
-	public String doInBackground(String... data) {
+	public Boolean doInBackground(String... data) {
 		try {
 			Client cl = new Client(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
-			ApplicationConstrain app = (ApplicationConstrain) decoder.readObject();
+			applicationConstrain = (ApplicationConstrain) decoder.readObject();
+			return true;
 
 		} catch (XmlGenerationException e) {
 			Log.d("ANL", "XML generation error!");
@@ -41,7 +40,17 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 			Log.d("ANL", "Unsupported encoding error!");
 		}
 
-		return "";
+		return false;
+	}
+
+	@Override
+	protected void onPostExecute(Boolean result) {
+		//TODO: some activity with ApplicationConstrain
+		if (result) {
+			Log.d("ANL", "Application constrain request succeeded.");
+		} else {
+			Log.d("ANL", "Application constrain request failed!");
+		}
 	}
 
 	protected String generateXML() throws XmlGenerationException {
@@ -52,7 +61,7 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 			serializer.setOutput(writer);
 			serializer.startDocument("UTF-8", true);
 			serializer.startTag("", "application-constrain-request");
-			serializer.attribute("", "country", country);
+			serializer.attribute("", "country" , country);
 			serializer.attribute("", "login"   , login);
 			serializer.attribute("", "password", password);
 			serializer.endTag("", "application-constrain-request");
@@ -69,4 +78,6 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, String>
 	private String login;
 	private String password;
 	private URL    serverURL;
+
+	private ApplicationConstrain applicationConstrain;
 }
