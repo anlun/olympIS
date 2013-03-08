@@ -6,12 +6,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class LoginHandler {
-	public LoginHandler(Document dom) {
-		this.dom = dom;
+/**
+ * Extends the {@link ResponseCreator} for login task.
+ */
+public class LoginResponseCreator extends ResponseCreator {
+	public LoginResponseCreator(Document dom) {
+		super(dom);
 	}
 
-	public String exec() {
+	public String createResponse() {
 		Element root     = dom.getDocumentElement();
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
@@ -28,24 +31,22 @@ public class LoginHandler {
 			outRoot.setAttributeNode(outAttr);
 			outDoc.appendChild(outRoot);
 
-			String result = XmlUtils.domToXmlString(outDoc);
+			String result = XMLutils.domToXmlString(outDoc);
 			System.out.println("response: " + result);
 			return result;
 
 		} catch (ParserConfigurationException e) {
 			System.err.println(e.toString());
-		} catch (XmlUtils.DomToStringTranslationException e) {
+		} catch (XMLutils.DomToStringTranslationException e) {
 			System.err.println(e.toString());
 		}
 
 		return "";
 	}
 
+	//TODO: Need to be implemented with data from database.
 	//If login-password incorrect this method must return ""
 	private static String getCountryName(String login, String password) {
-		//TODO: checking in base
 		return "RUSLAND";
 	}
-
-	private Document dom;
 }

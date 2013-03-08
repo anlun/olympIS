@@ -18,7 +18,9 @@ public class MyActivity extends Activity {
 			public void onClick(View v) {
 				try {
 					//new LoginTask("RUSSIA", "12345", new URL("http://10.0.2.2:8888")).execute();
-					new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888")).execute();
+					ApplicationConstrainTask app
+							= new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888"));
+					app.execute();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}

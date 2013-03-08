@@ -7,12 +7,15 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Vector;
 
-public class ApplicationConstrainHandler {
-	public ApplicationConstrainHandler(Document dom) {
-		this.dom = dom;
+/**
+ * Extends the {@linl ResponseCreator} for application request task task.
+ */
+public class ApplicationConstrainResponseCreator extends ResponseCreator {
+	public ApplicationConstrainResponseCreator(Document dom) {
+		super(dom);
 	}
 
-	public String exec() {
+	public String createResponse() {
 		Element root     = dom.getDocumentElement();
 		String  country  = root.getAttribute("country");
 		String  login    = root.getAttribute("login");
@@ -21,8 +24,8 @@ public class ApplicationConstrainHandler {
 		return applicationConstrainToXML(getCountryApplicationConstrain(country, login, password));
 	}
 
+	//TODO: Need to be implemented with data from database.
 	private ApplicationConstrain getCountryApplicationConstrain(String country, String login, String password) {
-		//TODO: сделать чтение из БД
 		Vector<ApplicationConstrain.SportConstrain> vec = new Vector<ApplicationConstrain.SportConstrain>();
 		vec.add(new ApplicationConstrain.SportConstrain("Baseball",   10, ApplicationConstrain.Sex.Male));
 		vec.add(new ApplicationConstrain.SportConstrain("Basketball", 15, ApplicationConstrain.Sex.Female));
@@ -31,13 +34,11 @@ public class ApplicationConstrainHandler {
 		return new ApplicationConstrain(vec);
 	}
 
-	public String applicationConstrainToXML(ApplicationConstrain applicationConstrain) {
+	private String applicationConstrainToXML(ApplicationConstrain applicationConstrain) {
 		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
 		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
 		e.writeObject(applicationConstrain);
 		e.close();
 		return byteArr.toString();
 	}
-
-	private Document dom;
 }
