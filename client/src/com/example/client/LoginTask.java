@@ -14,6 +14,10 @@ import java.net.URL;
 
 import com.example.client.exceptions.XmlGenerationException;
 
+/**
+ * Class for country login through Internet.
+ * @author Podkopaev Anton
+ */
 public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 	public LoginTask(String login, String password, URL serverURL) {
 		this.login       = login;

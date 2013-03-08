@@ -3,6 +3,11 @@ package beans;
 import java.io.Serializable;
 import java.util.Vector;
 
+/**
+ * Class represents country application constrain.
+ * It's JavaBean that transfers from server to client.
+ * @author Podkopaev Anton
+ */
 public class ApplicationConstrain implements Serializable {
 	public ApplicationConstrain() {
 	}

@@ -15,6 +15,10 @@ import java.net.URL;
 
 import com.googlecode.openbeans.XMLDecoder;
 
+/**
+ * Class for getting country {@link ApplicationConstrain}.
+ * @author Podkopaev Anton
+ */
 public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean> {
 	public ApplicationConstrainTask(String country, String login, String password, URL serverURL) {
 		this.country     = country;

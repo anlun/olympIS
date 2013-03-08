@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.net.URL;
 
+/**
+ * Just test activity.
+ * @author Podkopaev Anton
+ */
 public class MyActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,9 @@ public class MyActivity extends Activity {
 		setContentView(btn);
     }
 
+	/**
+	 * Just test of connecting to server task.
+	 */
 	class ConnectTask extends AsyncTask<String, Integer, String> {
 		public ConnectTask(TextView textView) {
 			this.textView = textView;
