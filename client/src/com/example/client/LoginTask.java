@@ -13,13 +13,19 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 
+import com.example.client.exceptions.XmlGenerationException;
+
+/**
+ * Class for country login through Internet.
+ * @author Podkopaev Anton
+ */
 public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 	public LoginTask(String login, String password, URL serverURL, AuthorizationActivity authorizationActivityObject) {
 		this.login       = login;
 		this.password    = password;
 		this.serverURL   = serverURL;
-		this.countryName = null;
-        this.authorizationActivityObject = authorizationActivityObject;
+		this.authorizationActivityObject = authorizationActivityObject;
+		this.country     = null;
 	}
 
 	@Override
@@ -31,26 +37,26 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 
 			Log.d("ANL", answerXML);
 
-			countryName = getCountryName(answerXML);
+			country = getCountryName(answerXML);
 
 		} catch (XmlGenerationException e) {
 			Log.d("ANL", "XML generation error!");
-			countryName = null;
+			country = null;
 		}
 
-		return countryName != null;
+		return country != null;
 	}
 
 	@Override
 	protected void onPostExecute(Boolean result) {
 		//TODO
 		if (result) {
-			Log.d("ANL", "Login by " + countryName + " was successfully done.");
+			Log.d("ANL", "Login by " + country + " was successfully done.");
 		} else {
 			Log.d("ANL", "Login fail!");
 		}
 
-        authorizationActivityObject.onLogin(result);
+		authorizationActivityObject.onLogin(result);
 	}
 
 	protected String generateXML() throws XmlGenerationException {
@@ -102,12 +108,9 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 		return null;
 	}
 
-	protected class XmlGenerationException extends Exception {
-	}
-
 	private String login;
 	private String password;
 	private URL serverURL;
-	private String countryName;
-    AuthorizationActivity authorizationActivityObject;
+	AuthorizationActivity authorizationActivityObject;
+	private String country;
 }
