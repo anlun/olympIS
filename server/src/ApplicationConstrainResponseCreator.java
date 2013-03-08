@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Vector;
 
 /**
- * Extends the {@linl ResponseCreator} for application request task task.
+ * Extends the {@link ResponseCreator} for application request task task.
  */
 public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	public ApplicationConstrainResponseCreator(Document dom) {
