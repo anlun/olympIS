@@ -9,6 +9,7 @@ import java.util.Vector;
 
 /**
  * Extends the {@link ResponseCreator} for application request task task.
+ * @author Podkopaev Anton
  */
 public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	public ApplicationConstrainResponseCreator(Document dom) {

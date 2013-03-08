@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
  * Abstract class that declarates the interface for response creator classes.
  * Has as input the DOM of XML that was sent by client.
  * As output has the XML string that needs to be sent to client.
+ * @author Podkopaev Anton
  */
 public abstract class ResponseCreator {
 	/**

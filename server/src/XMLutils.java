@@ -8,6 +8,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
+/**
+ * Class with useful functions for work with XML.
+ * @author Podkopaev Anton
+ */
 public class XMLutils {
 	public static String domToXmlString(Document dom) throws DomToStringTranslationException {
 		try {

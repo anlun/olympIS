@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Extends the {@link ResponseCreator} for login task.
+ * @author Podkopaev Anton
  */
 public class LoginResponseCreator extends ResponseCreator {
 	public LoginResponseCreator(Document dom) {

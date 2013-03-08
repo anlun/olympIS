@@ -5,6 +5,9 @@ import android.util.Log;
 import java.net.*;
 import java.io.*;
 
+/**
+ * Main class for work with server.
+ */
 public class Client {
 	public Client(URL serverUrl) {
 		this.serverUrl = serverUrl;
