@@ -3,6 +3,7 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
@@ -13,11 +14,12 @@ import java.io.StringWriter;
 import java.net.URL;
 
 public class LoginTask extends AsyncTask<String, Integer, Boolean> {
-	public LoginTask(String login, String password, URL serverURL) {
+	public LoginTask(String login, String password, URL serverURL, AuthorizationActivity authorizationActivityObject) {
 		this.login       = login;
 		this.password    = password;
 		this.serverURL   = serverURL;
 		this.countryName = null;
+        this.authorizationActivityObject = authorizationActivityObject;
 	}
 
 	@Override
@@ -47,6 +49,8 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 		} else {
 			Log.d("ANL", "Login fail!");
 		}
+
+        authorizationActivityObject.onLogin(result);
 	}
 
 	protected String generateXML() throws XmlGenerationException {
@@ -105,4 +109,5 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 	private String password;
 	private URL serverURL;
 	private String countryName;
+    AuthorizationActivity authorizationActivityObject;
 }
