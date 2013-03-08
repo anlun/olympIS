@@ -12,6 +12,31 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".AuthorizationActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Dialog"
+                >
+            <intent-filter>
+            </intent-filter>
+        </activity>
+        <activity android:name=".DayActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.Dialog"
+                >
+            <intent-filter>
+            </intent-filter>
+        </activity>
+        <activity android:name=".CalendarActivity"
+                  android:label="@string/app_name"
+                >
+            <intent-filter>
+            </intent-filter>
+        </activity>
+        <activity android:name=".CountryGUI"
+                  android:label="@string/app_name">
+            <intent-filter>
+            </intent-filter>
+        </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

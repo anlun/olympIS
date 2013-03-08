@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <LinearLayout android:id="@+id/mainLayout" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Spinner android:id="@+id/countrySpinner" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="fill_parent" android:entries="@array/country_array" android:prompt="@string/country_filter"></Spinner>
+            <Spinner android:id="@+id/sportsSpinner" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="fill_parent" android:entries="@array/sport_array" android:prompt="@string/sport_event"></Spinner>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:id="@+id/week1" android:layout_width="match_parent" android:layout_height="50sp">
+            <TextView android:id="@+id/day11" android:hint="1" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day12" android:hint="2" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day13" android:hint="3" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day14" android:hint="4" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day15" android:hint="5" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day16" android:hint="6" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day17" android:hint="7" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:id="@+id/week2" android:layout_width="match_parent" android:layout_height="50sp">
+            <TextView android:id="@+id/day21" android:hint="1" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day22" android:hint="2" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day23" android:hint="3" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day24" android:hint="4" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day25" android:hint="5" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day26" android:hint="6" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day27" android:hint="7" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:id="@+id/week3" android:layout_width="match_parent" android:layout_height="50sp">
+            <TextView android:id="@+id/day31" android:hint="1" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day32" android:hint="2" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day33" android:hint="3" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day34" android:hint="4" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day35" android:hint="5" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day36" android:hint="6" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+            <TextView android:id="@+id/day37" android:hint="7" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
