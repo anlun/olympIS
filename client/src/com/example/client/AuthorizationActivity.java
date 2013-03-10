@@ -24,7 +24,7 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
     }
 
     public void onLogin(boolean result) {
-        if (result){
+	    if (result){
             Toast.makeText(this, "successful", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "incorrect login or password", Toast.LENGTH_LONG).show();

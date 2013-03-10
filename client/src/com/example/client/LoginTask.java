@@ -3,7 +3,7 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
-import android.widget.Toast;
+import com.example.client.exceptions.XmlGenerationException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
-
-import com.example.client.exceptions.XmlGenerationException;
 
 /**
  * Class for country login through Internet.
