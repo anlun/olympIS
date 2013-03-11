@@ -3,17 +3,15 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.*;
 import android.widget.*;
 import android.view.View.OnClickListener;
 
+/**
+ * Class realized completing an application GUI for authorized county.
+ *  @author danya
+ */
 public class CountryGUI extends Activity implements OnClickListener {
-
-    private Button addButton;
-    private EditText text1;
-    private EditText text2;
-    private Spinner sp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,22 +26,7 @@ public class CountryGUI extends Activity implements OnClickListener {
         addButton = (Button)findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
-
-
-
-
-        sp = (Spinner) findViewById(R.id.competitionSpinner);
-       /* sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
-
-                String[] choose = getResources().getStringArray(R.array.sport_array);
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ваш выбор: " + choose[selectedItemPosition], Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });  */
+		sp = (Spinner) findViewById(R.id.competitionSpinner);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,6 +50,11 @@ public class CountryGUI extends Activity implements OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+	/**
+	 * method for dynamically add a row in a table
+	 * @param str1 is a String, which will be set in first column
+	 * @param str2 is a String, which will be set in second column
+	 */
     public void addRow(String str1, String str2) {
         TableLayout tableLayout = (TableLayout) findViewById(R.id.table1);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -96,4 +84,8 @@ public class CountryGUI extends Activity implements OnClickListener {
         }
     }
 
+	private Button addButton;
+	private EditText text1;
+	private EditText text2;
+	private Spinner sp;
 }

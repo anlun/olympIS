@@ -3,19 +3,15 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import java.util.ArrayList;
 
-/*
-Класс-activity. Содержит общее рассписание
-*/
-
+/**
+ * Class - activity realized the full timetable GUI
+ */
 public class CalendarActivity extends Activity implements OnClickListener {
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +33,10 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * To do on click
+	 * @param view If it is a click on a day open an a day timetable in a day activity.(look at default)
+	 */
 	@Override
 	public void onClick(View view){
 		switch (view.getId()){
@@ -50,7 +50,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tableSportsFilterIntent.putExtra("filterNumber", "sportsFilter");
 				startActivityForResult(tableSportsFilterIntent, 1);
 				break;
-			default:   //отрываем день
+			default:
 				Intent dayActivityIntent = new Intent(this, DayActivity.class);
 				dayActivityIntent.putExtra("dayNumber", ((TextView) view).getHint());
 				startActivity(dayActivityIntent);
@@ -65,7 +65,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			if (resultCode == RESULT_OK) {
 				ArrayList<String> result = data.getStringArrayListExtra("resultOfChoice");
 				//сей result есть результат выбора в ListView пользователем.
-				//первый элемент - название фильтра
+				//первый элемент массива - название фильтра
 				Toast.makeText(this, result.toString(), Toast.LENGTH_LONG).show();
 			}
 			else if (resultCode == RESULT_CANCELED) {

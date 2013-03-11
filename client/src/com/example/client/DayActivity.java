@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-/* Класс показывающий рассписание конкретного дня */
+/**
+ * Class is a view of a day is selected in a calendar. It have a dialog theme.
+ * @author danya
+ */
 public class DayActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {

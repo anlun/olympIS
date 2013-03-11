@@ -1,7 +1,6 @@
 package com.example.client;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 // GUI авторизации
+/**
+ * Class realized the authorization GUI
+ * @author danya
+ */
 public class AuthorizationActivity extends Activity implements View.OnClickListener {
 
     @Override
@@ -23,6 +26,10 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
         sing_in_button.setOnClickListener(this);
     }
 
+	/**
+	 * To do after that the answer come from server
+	 * @param result boolean. Is authorization successful on not.
+	 */
     public void onLogin(boolean result) {
 	    if (result){
             Toast.makeText(this, "successful", Toast.LENGTH_LONG).show();
@@ -43,13 +50,6 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
                 } catch (MalformedURLException e) {
                     Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
                 }
-
-                /*
-                //передаём данные авторизации
-                Intent intent = new Intent();
-                intent.putExtra("authorizationData", "ok");
-                setResult(RESULT_OK, intent);
-                */
 
                 //выходим из этого активити
                 this.finish();

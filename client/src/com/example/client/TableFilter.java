@@ -9,15 +9,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 import java.util.ArrayList;
 
+/**
+ * Class realized a filter listView for timetable with multiple choice
+ * @author danya
+ */
 public class TableFilter extends Activity implements OnClickListener {
-
-
-	private ListView lvMain;
-	private String[] resourceArray;
-	private ArrayList<String> resultOfChoice;// в 0-ом лежит имя фильтра
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -65,8 +63,6 @@ public class TableFilter extends Activity implements OnClickListener {
 						resultOfChoice.add(resourceArray[key]);
 					}
 				}
-				//Toast.makeText(this, resultOfChoice, Toast.LENGTH_LONG).show();
-
 				//передаём массив результата
 				Intent intent = new Intent();
 				intent.putExtra("resultOfChoice", resultOfChoice);
@@ -79,4 +75,8 @@ public class TableFilter extends Activity implements OnClickListener {
 				break;
 		}
 	}
+
+	private ListView lvMain; // сам listView
+	private String[] resourceArray; // массив,эл-ты которого будут эл-тами lvMain. Этот массив получается из ресурсов.
+	private ArrayList<String> resultOfChoice;// в 0-ом лежит имя фильтра
 }
