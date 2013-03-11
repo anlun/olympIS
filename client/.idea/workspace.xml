@@ -38,13 +38,13 @@
     <file path="/a.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362819533154" ignored="false" />
     <file path="/Server.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362739994891" ignored="false" />
     <file path="/a.groovy" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362131812672" ignored="false" />
-    <file path="/Client.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362757814145" ignored="false" />
-    <file path="/LoginTask.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362992489653" ignored="false" />
+    <file path="/Client.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1363017278832" ignored="false" />
+    <file path="/LoginTask.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1363017339447" ignored="false" />
     <file path="/LoginHandler.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362740447271" ignored="false" />
     <file path="/XmlUtils.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362740044862" ignored="false" />
     <file path="/GetApplicationConstrainsTask.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362209894408" ignored="false" />
-    <file path="/fragment.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362900582755" ignored="false" />
-    <file path="/XmlGenerationException.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362209764498" ignored="false" />
+    <file path="/fragment.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1363015508514" ignored="false" />
+    <file path="/XmlGenerationException.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1363016722249" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/ApplicationConstrainsHandler.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362212060743" ignored="false" />
     <file path="/ApplicationConstrainsHandler.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362216159671" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/ApplicationConstrains.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362212055191" ignored="false" />
@@ -55,7 +55,7 @@
     <file path="$PROJECT_DIR$/../server/.idea/modules.xml" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362219142533" ignored="false" />
     <file path="$PROJECT_DIR$/../server/.idea/workspace.xml" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362230507601" ignored="false" />
     <file path="$PROJECT_DIR$/../server/.idea/compiler.xml" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362218084203" ignored="false" />
-    <file path="/ApplicationConstrainTask.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362755740752" ignored="false" />
+    <file path="/ApplicationConstrainTask.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1363017413853" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/LoginHandler.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362739653849" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/Server.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362737560515" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/ServerConsoleWrapper.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362739995593" ignored="false" />
@@ -67,9 +67,6 @@
     <file path="$PROJECT_DIR$/../server/src/ResponseCreator.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362740420487" ignored="false" />
     <file path="/ResponseCreator.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362740414983" ignored="false" />
     <file path="$PROJECT_DIR$/../server/src/XMLutils.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362740046270" ignored="false" />
-    <file path="$PROJECT_DIR$/gen/com/example/client/R.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362826099548" ignored="false" />
-    <file path="$PROJECT_DIR$/gen/com/example/client/BuildConfig.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362761346883" ignored="false" />
-    <file path="$PROJECT_DIR$/gen/com/example/client/Manifest.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362826099548" ignored="false" />
     <file path="/day_view.xml" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362907873456" ignored="false" />
     <file path="/DayActivity.java" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362907713828" ignored="false" />
     <file path="/a.xml" changelist="a410216d-cfad-4cdb-baf2-8e6bc6e8e36f" time="1362819594130" ignored="false" />
@@ -94,23 +91,8 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java" line="2" class="ApplicationConstrainTask.java" package="">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -166,25 +148,16 @@
       <file leaf-file-name="ApplicationConstrainTask.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="24" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0">
+            <state line="40" column="41" selection-start="1258" selection-end="1258" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AuthorizationActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/example/client/AuthorizationActivity.java">
+      <file leaf-file-name="XMLgenerationException.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/example/client/exceptions/XMLgenerationException.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="13" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CalendarActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/example/client/CalendarActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="13" selection-start="424" selection-end="424" vertical-scroll-proportion="0.0">
+            <state line="4" column="27" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -193,25 +166,16 @@
       <file leaf-file-name="Client.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="46" column="0" selection-start="1240" selection-end="1240" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CountryGUI.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CountryGUI.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/client/CountryGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="13" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DayActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/example/client/DayActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+            <state line="10" column="13" selection-start="272" selection-end="272" vertical-scroll-proportion="0.026845638">
               <folding />
             </state>
           </provider>
@@ -220,16 +184,16 @@
       <file leaf-file-name="LoginTask.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/client/LoginTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="63" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.0">
+            <state line="39" column="61" selection-start="1161" selection-end="1196" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TableFilter.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TableFilter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/client/TableFilter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="63" selection-start="1025" selection-end="1025" vertical-scroll-proportion="0.5412371">
+            <state line="33" column="40" selection-start="1131" selection-end="1131" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -245,22 +209,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/example/client/MyActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/example/client/Client.java" />
         <option value="$PROJECT_DIR$/src/com/example/client/AuthorizationActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/tableFilter.xml" />
         <option value="$PROJECT_DIR$/src/com/example/client/exceptions/TableFilter.java" />
-        <option value="$PROJECT_DIR$/src/com/example/client/exceptions/XmlGenerationException.java" />
-        <option value="$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java" />
         <option value="$PROJECT_DIR$/res/layout/calendar.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/example/client/TableFilter.java" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/src/com/example/client/CalendarActivity.java" />
         <option value="$PROJECT_DIR$/src/com/example/client/DayActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/day_view.xml" />
         <option value="$PROJECT_DIR$/res/layout/tablefilter.xml" />
+        <option value="$PROJECT_DIR$/src/com/example/client/TableFilter.java" />
+        <option value="$PROJECT_DIR$/src/com/example/client/exceptions/XmlGenerationException.java" />
+        <option value="$PROJECT_DIR$/src/com/example/client/exceptions/XMLgenerationException.java" />
+        <option value="$PROJECT_DIR$/src/com/example/client/Client.java" />
         <option value="$PROJECT_DIR$/src/com/example/client/LoginTask.java" />
+        <option value="$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java" />
       </list>
     </option>
   </component>
@@ -268,10 +232,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
-    <option name="y" value="-3" />
-    <option name="width" value="1370" />
-    <option name="height" value="775" />
+    <option name="width" value="1358" />
+    <option name="height" value="768" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -337,6 +299,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="exceptions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -349,7 +351,7 @@
     <property name="options.lastSelected" value="preferences.sourceCode.General" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../server" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../trash/olympIS/client" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
@@ -357,9 +359,9 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -372,8 +374,8 @@
       <option name="ACTIVITY_CLASS" value="com.example.client.MyActivity" />
       <option name="MODE" value="specific_activity" />
       <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
-      <option name="PREFERRED_AVD" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="AVD_for_Galaxy_Nexus_by_Google" />
       <option name="COMMAND_LINE" value="" />
       <option name="WIPE_USER_DATA" value="false" />
       <option name="DISABLE_BOOT_ANIMATION" value="false" />
@@ -415,19 +417,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -453,6 +442,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -583,8 +585,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="-3" width="1370" height="775" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1358" height="768" extended-state="4" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -595,21 +597,21 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Kotlin" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32419354" sideWeight="0.4969697" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31993568" sideWeight="0.4969697" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32903227" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24318182" sideWeight="0.32580644" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25530303" sideWeight="0.67096776" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32903227" sideWeight="0.4878788" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25382262" sideWeight="0.67202574" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3279743" sideWeight="0.4878788" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290938" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -673,6 +675,20 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/LoginTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="63" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/TableFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="40" selection-start="1131" selection-end="1131" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.26288658" />
@@ -683,16 +699,9 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/exceptions/XmlGenerationException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="1" selection-start="98" selection-end="98" vertical-scroll-proportion="0.10471204" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="63" selection-start="657" selection-end="657" vertical-scroll-proportion="0.49438202">
-          <folding />
-        </state>
+        <state line="16" column="63" selection-start="657" selection-end="657" vertical-scroll-proportion="0.49438202" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
@@ -709,58 +718,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java">
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/DayActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="24" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/AuthorizationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="13" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0">
+        <state line="9" column="13" selection-start="251" selection-end="251" vertical-scroll-proportion="0.13043478">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/client/CalendarActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="13" selection-start="424" selection-end="424" vertical-scroll-proportion="0.0">
+        <state line="18" column="13" selection-start="424" selection-end="424" vertical-scroll-proportion="0.025167786">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/Client.java">
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/AuthorizationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="14" column="13" selection-start="326" selection-end="326" vertical-scroll-proportion="0.025167786">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/CountryGUI.java">
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/exceptions/XMLgenerationException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="13" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/DayActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/client/LoginTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="63" selection-start="1155" selection-end="1155" vertical-scroll-proportion="0.0">
+        <state line="4" column="27" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/client/TableFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="63" selection-start="1025" selection-end="1025" vertical-scroll-proportion="0.5412371">
+        <state line="33" column="40" selection-start="1131" selection-end="1131" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/LoginTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="61" selection-start="1161" selection-end="1196" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/ApplicationConstrainTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="41" selection-start="1258" selection-end="1258" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="0" selection-start="1240" selection-end="1240" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/client/CountryGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="272" selection-end="272" vertical-scroll-proportion="0.026845638">
           <folding />
         </state>
       </provider>

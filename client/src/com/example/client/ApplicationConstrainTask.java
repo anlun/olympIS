@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
 import beans.ApplicationConstrain;
-import com.example.client.exceptions.XmlGenerationException;
+import com.example.client.exceptions.XMLgenerationException;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -38,10 +38,12 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 			applicationConstrain = (ApplicationConstrain) decoder.readObject();
 			return true;
 
-		} catch (XmlGenerationException e) {
+		} catch (XMLgenerationException e) {
 			Log.d("ANL", "XML generation error!");
 		} catch (UnsupportedEncodingException e) {
 			Log.d("ANL", "Unsupported encoding error!");
+		} catch (IOException e) {
+			Log.d("ANL", "Server ApplicationConstrainTask IOException error!");
 		}
 
 		return false;
@@ -57,7 +59,7 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 		}
 	}
 
-	protected String generateXML() throws XmlGenerationException {
+	protected String generateXML() throws XMLgenerationException {
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer     = new StringWriter();
 
@@ -74,7 +76,7 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 			return writer.toString();
 
 		} catch (IOException e) {
-			throw new XmlGenerationException();
+			throw new XMLgenerationException();
 		}
 	}
 

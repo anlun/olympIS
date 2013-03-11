@@ -3,7 +3,7 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
-import com.example.client.exceptions.XmlGenerationException;
+import com.example.client.exceptions.XMLgenerationException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
@@ -36,8 +36,10 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 			Log.d("ANL", answerXML);
 
 			country = getCountryName(answerXML);
-
-		} catch (XmlGenerationException e) {
+		} catch (IOException e) {
+			Log.d("ANL", "Server LoginTask IOException error!");
+			country = null;
+		} catch (XMLgenerationException e) {
 			Log.d("ANL", "XML generation error!");
 			country = null;
 		}
@@ -57,7 +59,7 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 		authorizationActivityObject.onLogin(result);
 	}
 
-	protected String generateXML() throws XmlGenerationException {
+	protected String generateXML() throws XMLgenerationException {
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter  writer     = new StringWriter();
 
@@ -73,7 +75,7 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 			return writer.toString();
 
 		} catch (IOException e) {
-			throw new XmlGenerationException();
+			throw new XMLgenerationException();
 		}
 	}
 
