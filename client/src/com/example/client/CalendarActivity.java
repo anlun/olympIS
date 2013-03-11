@@ -10,7 +10,7 @@ import android.widget.*;
 import java.util.ArrayList;
 
 /**
- * Class - activity realized the full timetable GUI
+ * Class - activity realize the full timetable GUI.
  */
 public class CalendarActivity extends Activity implements OnClickListener {
 
@@ -34,11 +34,11 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * To do on click
-	 * @param view If it is a click on a day open an a day timetable in a day activity.(look at default)
+	 * To do on click. If it is a click on a day open an a day timetable in a day activity.(look at default)
+	 * @param view Is a view licked on.s
 	 */
 	@Override
-	public void onClick(View view){
+	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.countryFilter:
 				Intent tableCountryFilterIntent = new Intent(this, TableFilter.class);

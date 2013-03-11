@@ -13,7 +13,7 @@ import java.net.URL;
 
 // GUI авторизации
 /**
- * Class realized the authorization GUI
+ * Class realized the authorization GUI.
  * @author danya
  */
 public class AuthorizationActivity extends Activity implements View.OnClickListener {

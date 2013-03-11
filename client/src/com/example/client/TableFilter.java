@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import java.util.ArrayList;
 
 /**
- * Class realized a filter listView for timetable with multiple choice
+ * Class realize a filter listView for timetable with multiple choice.
  * @author danya
  */
 public class TableFilter extends Activity implements OnClickListener {

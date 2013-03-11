@@ -8,7 +8,7 @@ import android.widget.*;
 import android.view.View.OnClickListener;
 
 /**
- * Class realized completing an application GUI for authorized county.
+ * Class realize completing an application GUI for authorized country.
  *  @author danya
  */
 public class CountryGUI extends Activity implements OnClickListener {
@@ -51,7 +51,7 @@ public class CountryGUI extends Activity implements OnClickListener {
     }
 
 	/**
-	 * method for dynamically add a row in a table
+	 * Adds dynamically a row in a table.
 	 * @param str1 is a String, which will be set in first column
 	 * @param str2 is a String, which will be set in second column
 	 */
