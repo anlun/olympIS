@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <EditText android:id="@+id/day" android:hint="some text" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip" android:layout_width="match_parent" android:layout_height="fill_parent" android:layout_weight="1"/>
-</LinearLayout>
