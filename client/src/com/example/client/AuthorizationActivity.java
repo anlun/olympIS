@@ -1,6 +1,7 @@
 package com.example.client;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +33,16 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 	 */
     public void onLogin(boolean result) {
 	    if (result){
-            Toast.makeText(this, "successful", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "successful", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "incorrect login or password", Toast.LENGTH_LONG).show();
         }
+
+		//передаём данные авторизации и выходим
+		Intent intent = new Intent();
+		intent.putExtra("isAuthorized", result);
+		this.setResult(RESULT_OK, intent);
+		this.finish();
     }
 
     public void onClick(View v) {
@@ -50,10 +57,6 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
                 } catch (MalformedURLException e) {
                     Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
                 }
-
-                //выходим из этого активити
-                this.finish();
-
                 break;
         }
     }

@@ -24,6 +24,8 @@ public class MyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		isAuthorized = false;
+
 		Button btn = new Button(getBaseContext());
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -95,13 +97,16 @@ public class MyActivity extends Activity {
 		switch (item.getItemId()){
 			case 1://"log in" item
 				Intent intent = new Intent(this, AuthorizationActivity.class);
-				startActivityForResult(intent, 1);
+				startActivityForResult(intent, 11);
 				break;
 			case 2://CountryGUI item.
-//тут должна быть проверка на авторизованность
-
-				Intent intent1 = new Intent(this, CountryGUI.class);
-				startActivity(intent1);
+				//проверка на авторизованность
+				if (isAuthorized) {
+					Intent intent1 = new Intent(this, CountryGUI.class);
+					startActivity(intent1);
+				} else {
+					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
+				}
 				break;
 			case 3://exit
 				System.exit(0);
@@ -116,9 +121,17 @@ public class MyActivity extends Activity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data == null) {return;}
-		String name = data.getStringExtra("authorizationData");
-		Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+	protected void onActivityResult(int requestCode, int resultCode, Intent intentData) {
+		if (intentData == null) {return;}
+		if (requestCode == 11 && resultCode == RESULT_OK) {
+			isAuthorized = intentData.getBooleanExtra("isAuthorized", false);
+			if (isAuthorized){
+				Toast.makeText(this, "you are singed in", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(this, "authorization failed", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
+
+	private boolean isAuthorized;
 }
