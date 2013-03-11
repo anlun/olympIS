@@ -87,7 +87,7 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 					String name = parser.getName();
 					if (name.equalsIgnoreCase("login-response")) {
 						String countryName = parser.getAttributeValue("", "country");
-						if (countryName != "") {
+						if (!countryName.equals("")) {
 							return countryName;
 						} else {
 							return null;
