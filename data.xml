@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<root>
+<object title ="olo">
+	<type>stadion</type>
+	<capacity>10000</capacity>
+	<city>sochi</city>
+</object>
+
+<competition title ="olo">
+	<type_object>stadion</type_object>
+	<sex_participants>1</sex_participants>
+	<duration>2</duration>
+</competition>
+<country name="ololo">
+		<login>stadion</login>
+		<password>sochi</password>
+</country>
+</root>
