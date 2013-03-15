@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.net.MalformedURLException;
+import com.example.client.exceptions.XMLgenerationException;
 import java.net.URL;
 
 // GUI авторизации
 /**
- * Class realized the authorization GUI.
+ * Class realizes the authorization GUI.
  * @author danya
  */
 public class AuthorizationActivity extends Activity implements View.OnClickListener {
@@ -54,7 +53,7 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
                 try {
                     LoginTask loginTask = new LoginTask(login, password, new URL("http://10.0.2.2:8888"), this);
                     loginTask.execute();
-                } catch (MalformedURLException e) {
+                } catch (Exception e) {
                     Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
                 }
                 break;

@@ -10,7 +10,7 @@ import android.widget.*;
 import java.util.ArrayList;
 
 /**
- * Class - activity realize the full timetable GUI.
+ * Class - activity realizes the full timetable GUI.
  */
 public class CalendarActivity extends Activity implements OnClickListener {
 
