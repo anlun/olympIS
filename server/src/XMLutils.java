@@ -16,29 +16,39 @@ import java.io.StringWriter;
 
 /**
  * Class with useful functions for work with XML.
+ *
  * @author Podkopaev Anton
  */
 public class XMLutils {
-	public static String domToXmlString(Document dom) throws DomToStringTranslationException {
-		try {
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer               = transformerFactory.newTransformer();
-			DOMSource source                      = new DOMSource(dom);
-			StringWriter writer                   = new StringWriter();
-			StreamResult resultDOMstring          = new StreamResult(writer);
-			transformer.transform(source, resultDOMstring);
-			return writer.toString();
+    public static String domToXmlString(Document dom) throws DomToStringTranslationException {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(dom);
+            StringWriter writer = new StringWriter();
+            StreamResult resultDOMstring = new StreamResult(writer);
+            transformer.transform(source, resultDOMstring);
+            return writer.toString();
 
-		} catch (TransformerConfigurationException e) {
-			System.err.println(e.toString());
-		} catch (TransformerException e) {
-			System.err.println(e.toString());
-		}
+        } catch (TransformerConfigurationException e) {
+            System.err.println(e.toString());
+        } catch (TransformerException e) {
+            System.err.println(e.toString());
+        }
 
-		throw new DomToStringTranslationException();
-	}
+        throw new DomToStringTranslationException();
+    }
 
-    public static void parserSportObjects(String filePath){
+    /**
+     * <object title ="olo">
+     * <type>stadion</type>
+     * <capacity>10000</capacity>
+     * <city>sochi</city>
+     * </object>
+     *
+     * @param filePath
+     */
+    public static void parserSportObjects(String filePath) {
         try {
             Database db = new Database();
             File fXmlFile = new File(filePath);
@@ -51,11 +61,11 @@ public class XMLutils {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    String title =eElement.getAttribute("title");
+                    String title = eElement.getAttribute("title");
                     String type = eElement.getElementsByTagName("type").item(0).getTextContent();
                     String city = eElement.getElementsByTagName("city").item(0).getTextContent();
                     Integer capacity = Integer.parseInt(eElement.getElementsByTagName("capacity").item(0).getTextContent());
-                    db.insertInSportObject(title,type,city,capacity);
+                    db.insertInSportObject(title, type, city, capacity);
                 }
             }
         } catch (Exception e) {
@@ -63,7 +73,15 @@ public class XMLutils {
         }
     }
 
-    public static void parserContries(String filePath){
+    /**
+     * <country name="ololo">
+     * <login>stadion</login>
+     * <password>sochi</password>
+     * </country>
+     *
+     * @param filePath
+     */
+    public static void parserCountries(String filePath) {
         try {
             Database db = new Database();
             File fXmlFile = new File(filePath);
@@ -76,10 +94,10 @@ public class XMLutils {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    String name =eElement.getAttribute("name");
+                    String name = eElement.getAttribute("name");
                     String login = eElement.getElementsByTagName("login").item(0).getTextContent();
                     String password = eElement.getElementsByTagName("password").item(0).getTextContent();
-                    db.insertInCountries(name,login, password);
+                    db.insertInCountries(name, login, password);
                 }
             }
             db.closeConnection();
@@ -88,8 +106,62 @@ public class XMLutils {
         }
     }
 
+    /**
+     * <quote>
+     * <countryQuote name="ololo">
+     * <competitionQuote name="olo" count="12"/>
+     * <competitionQuote name="ololo" count="13"/>
+     * </countryQuote>
+     * </quote>
+     *
+     * @param filePath
+     */
+    public static void parserQotes(String filePath) {
+        try {
+            Database db = new Database();
+            File fXmlFile = new File(filePath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("quote");
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node quotesNode = nList.item(temp);
+                NodeList countryQuotesNodes = quotesNode.getChildNodes();
+                for (int temp2 = 0; temp2 < countryQuotesNodes.getLength(); ++temp2) {
+                    Node countryQuoteNode = countryQuotesNodes.item(temp2);
+                    if (countryQuoteNode.getNodeType() == Node.ELEMENT_NODE) {
+                        String country = ((Element) (countryQuoteNode)).getAttribute("name");
+                        NodeList competitionQotesNodes = countryQuoteNode.getChildNodes();
+                        for (int temp3 = 0; temp3 < competitionQotesNodes.getLength(); ++temp3) {
 
-    public static void parserCompetitions(String filePath){
+                            Node competitionQuoteNode = competitionQotesNodes.item(temp3);
+                            if (competitionQuoteNode.getNodeType() == Node.ELEMENT_NODE) {
+                                String competition = ((Element) (competitionQuoteNode)).getAttribute("name");
+                                int count = Integer.parseInt(((Element) (competitionQuoteNode)).getAttribute("count"));
+                                db.insertInQuotes(country, competition, count);
+                            }
+                        }
+                    }
+                }
+
+            }
+            db.closeConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * <competition title ="olimp_open">
+     * <type_object>stadion</type_object>
+     * <sex_participants>2</sex_participants>
+     * <duration>2</duration>
+     * </competition>
+     *
+     * @param filePath
+     */
+    public static void parserCompetitions(String filePath) {
         try {
             Database db = new Database();
             File fXmlFile = new File(filePath);
@@ -99,14 +171,14 @@ public class XMLutils {
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("competition");
             for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    String title =eElement.getAttribute("title");
+                Node quotesNode = nList.item(temp);
+                if (quotesNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) quotesNode;
+                    String title = eElement.getAttribute("title");
                     String type = eElement.getElementsByTagName("type_object").item(0).getTextContent();
                     int sex_participants = Integer.parseInt(eElement.getElementsByTagName("sex_participants").item(0).getTextContent());
                     Integer duration = Integer.parseInt(eElement.getElementsByTagName("duration").item(0).getTextContent());
-                    db.insertInCompetition(title,type,sex_participants,duration);
+                    db.insertInCompetition(title, type, sex_participants, duration);
                 }
             }
             db.closeConnection();
@@ -116,10 +188,10 @@ public class XMLutils {
     }
 
 
-	public static class DomToStringTranslationException extends Exception {
-	}
+    public static class DomToStringTranslationException extends Exception {
+    }
 
-	// Just for masking construhttps://github.com/MOHAX239/olympISctor
-	private XMLutils() {
-	}
+    // Just for masking constructor
+    private XMLutils() {
+    }
 }

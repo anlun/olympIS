@@ -5,6 +5,11 @@
 	<capacity>10000</capacity>
 	<city>sochi</city>
 </object>
+<competition title ="olimp_open">
+	<type_object>stadion</type_object>
+	<sex_participants>2</sex_participants>
+	<duration>2</duration>
+</competition>
 
 <competition title ="olo">
 	<type_object>stadion</type_object>
@@ -15,4 +20,16 @@
 		<login>stadion</login>
 		<password>sochi</password>
 </country>
+
+<quote>
+	<countryQuote name="ololo">
+		 <competitionQuote name="olo" count="12"/>
+	       <competitionQuote name="ololo" count="13"/>
+	</countryQuote>
+</quote>
+
+	
+		
+
+	
 </root>
