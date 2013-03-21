@@ -37,7 +37,7 @@
                 android:id="@+id/sing_in_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/login"
+                android:text="enter"
                 />
     </LinearLayout>
 </ScrollView>

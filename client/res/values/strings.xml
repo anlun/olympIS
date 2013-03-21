@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">OlympIS</string>
     <string name="explanation">This simple Android application illustrates the mainstream Android development workflow in IntelliJ IDEA.</string>
-    <string name="login">sing in</string>
+    <string name="login">login</string>
     <string name="password">password</string>
 
     <string name="sport_event">Choose an event</string>

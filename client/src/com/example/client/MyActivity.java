@@ -101,12 +101,12 @@ public class MyActivity extends Activity {
 				break;
 			case 2://CountryGUI item.
 				//проверка на авторизованность
-				if (isAuthorized) {
+				//if (isAuthorized) {
 					Intent intent1 = new Intent(this, CountryGUI.class);
 					startActivity(intent1);
-				} else {
-					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
-				}
+				//} else {
+				//	Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
+				//}
 				break;
 			case 3://exit
 				System.exit(0);

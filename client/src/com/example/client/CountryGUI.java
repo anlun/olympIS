@@ -3,9 +3,13 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 import android.view.View.OnClickListener;
+import beans.CountryApplication;
+
+import java.util.ArrayList;
 
 /**
  * Class realize completing an application GUI for authorized country.
@@ -19,6 +23,7 @@ public class CountryGUI extends Activity implements OnClickListener {
         setContentView(R.layout.postrequest);
         //а тут надо в табличку добавить уже имеющихся спортсменов
 
+		athleteList = new ArrayList<Pair<String, String>>();
         text1 = (EditText)findViewById(R.id.text1);
 
         text2 = (EditText)findViewById(R.id.text2);
@@ -31,8 +36,8 @@ public class CountryGUI extends Activity implements OnClickListener {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // TODO Auto-generated method stub
-        //пункт меню для прикола =)
-        menu.add(0, 1, 0, "trololo");
+        // пункт для отправки заявки на сервер
+        menu.add(0, 1, 0, "post application");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -47,7 +52,14 @@ public class CountryGUI extends Activity implements OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO Auto-generated method stub
-        return super.onOptionsItemSelected(item);
+		switch (item.getItemId()){
+			case 1:// post application
+				AuthorizationData data = AuthorizationData.getInstance();
+				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), athleteList);
+				//TODO: дописать передачу countryApplication через Тошин класс
+				break;
+		}
+		return super.onOptionsItemSelected(item);
     }
 
 	/**
@@ -73,9 +85,12 @@ public class CountryGUI extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_button:
-                // получение данных из формы и занесение в таблицу
+				// получение данных из формы и занесение в таблицу
                 String[] choose = getResources().getStringArray(R.array.sport_array);
                 addRow(text1.getText() + "", choose[sp.getSelectedItemPosition()]);
+
+				// добавляем данные в список, который будем передавать
+				athleteList.add(new Pair<String, String>(text1.getText() + "", choose[sp.getSelectedItemPosition()]));
 
                 text1.setText("");
                 text2.setText("не важно =)");
@@ -88,4 +103,7 @@ public class CountryGUI extends Activity implements OnClickListener {
 	private EditText text1;
 	private EditText text2;
 	private Spinner sp;
+
+	private CountryApplication countryApplication;
+	private ArrayList<Pair<String, String>> athleteList;
 }
