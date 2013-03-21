@@ -59,9 +59,5 @@ public class ApplicationConstrain implements Serializable {
 		private Sex     athleteSex;
 	}
 
-	public enum Sex {
-		Male, Female, Undefined
-	}
-
 	private Vector<SportConstrain> sportConstrains;
 }
