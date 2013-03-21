@@ -1,4 +1,5 @@
 import beans.ApplicationConstrain;
+import beans.Sex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -28,9 +29,9 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	//TODO: Need to be implemented with data from database.
 	private ApplicationConstrain getCountryApplicationConstrain(String country, String login, String password) {
 		Vector<ApplicationConstrain.SportConstrain> vec = new Vector<ApplicationConstrain.SportConstrain>();
-		vec.add(new ApplicationConstrain.SportConstrain("Baseball",   10, ApplicationConstrain.Sex.Male));
-		vec.add(new ApplicationConstrain.SportConstrain("Basketball", 15, ApplicationConstrain.Sex.Female));
-		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, ApplicationConstrain.Sex.Undefined));
+		vec.add(new ApplicationConstrain.SportConstrain("Baseball",   10, Sex.Male));
+		vec.add(new ApplicationConstrain.SportConstrain("Basketball", 15, Sex.Female));
+		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, Sex.Undefined));
 
 		return new ApplicationConstrain(vec);
 	}
