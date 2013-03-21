@@ -12,21 +12,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
-import org.gjt.mm.mysql.Driver;
-
 public class Database {
-	public Database() throws Exception {
-		connection = getConnection();
+	public static Database createDatabase() {
+		Connection connection = getConnection();
+		if (connection == null) {
+			return null;
+			//TODO: throw exception
+		}
+
+		return new Database(connection);
 	}
 
-	/**
-	 * @return connection MySQL
-	 */
+	private Database(Connection connection) {
+		this.connection = connection;
+	}
 
-
-	private Connection getConnection() {
+	private static Connection getConnection() {
 		try {
-			Driver driver   = new Driver();
 			String url      = "jdbc:mysql://localhost/olimpis";
 			String username = "root";
 			String password = "pass";
@@ -38,19 +40,11 @@ public class Database {
 		}
 	}
 
-	public void closeConnection() {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void closeConnection() throws SQLException {
+		connection.close();
 	}
 
-	/**
-	 * @param object - name sportObject
-	 * @return id type object
-	 */
-	public int getIdTypeObject(String object) {
+	public int sportObjectTypeId(String object) {
 		PreparedStatement stmt = null;
 		int id = 0;
 		try {
@@ -78,39 +72,35 @@ public class Database {
 	}
 
 	/**
-	 * @param login    country
-	 * @param password country
+	 * @param login    countryByLoginPassword
+	 * @param password countryByLoginPassword
 	 * @return name Country
 	 */
-	public String getCountry(String login, String password) {
+	public String countryByLoginPassword(String login, String password) {
 		PreparedStatement stmt = null;
-		String res = "";
+		String result = "";
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SELECT country_name  FROM country WHERE login=? and hash_password=?;");
+					"SELECT country_name  FROM countryByLoginPassword WHERE login=? and hash_password=?;");
 			stmt.setString(1, login);
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				res = rs.getString("country_name");
+				result = rs.getString("country_name");
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return res;
+		return result;
 	}
 
-	/**
-	 * @param country
-	 * @return Country Id
-	 */
-	public int getCountryId(String country) {
+	public int countryId(String country) {
 		PreparedStatement stmt = null;
 		int countryId = 0;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SELECT id  FROM country WHERE country_name=?;");
+					"SELECT id  FROM countryByLoginPassword WHERE country_name=?;");
 			stmt.setString(1, country);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -123,10 +113,6 @@ public class Database {
 		return countryId;
 	}
 
-	/**
-	 * @param competitionId - id Competition
-	 * @return Competition date
-	 */
 	public Date getCompetitionDate(int competitionId) {
 		PreparedStatement stmt = null;
 		java.util.Date dateCompetition = new java.util.Date();
@@ -146,11 +132,7 @@ public class Database {
 		return dateCompetition;
 	}
 
-	/**
-	 * @param competitionId
-	 * @return Ordinal day of competition
-	 */
-	public long getCompetitionDay(int competitionId) {
+	public long competitionDay(int competitionId) {
 		Date dateCompetition = getCompetitionDate(competitionId);
 		Date dateOpenOlymp = getCompetitionDate(1);
 		long a = (dateCompetition.getTime() - dateOpenOlymp.getTime()) / (1000L * 60L * 60L * 24L);
@@ -161,7 +143,7 @@ public class Database {
 	 * @param competition name
 	 * @return Id Competition
 	 */
-	public int getCompetitionId(String competition) {
+	public int competitionId(String competition) {
 		PreparedStatement stmt = null;
 		int competitionId = 0;
 		try {
@@ -191,8 +173,8 @@ public class Database {
 		int countryId = 0;
 		int competitionId = 0;
 		try {
-			countryId = getCountryId(country);
-			competitionId = getCompetitionId(competition);
+			countryId = countryId(country);
+			competitionId = competitionId(competition);
 			if (competitionId == 0 || countryId == 0) {
 				return;
 			}
@@ -205,7 +187,7 @@ public class Database {
 			stmt.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			e.printStackTrace();
 		}
 
 	}
@@ -230,7 +212,7 @@ public class Database {
 				stmt.close();
 				return;
 			}
-			int typeObject = getIdTypeObject(type);
+			int typeObject = sportObjectTypeId(type);
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"INSERT INTO sport_object  Values (NULL,?,?,?,?)");
 			stmt.setString(1, title);
@@ -241,7 +223,7 @@ public class Database {
 			stmt.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			e.printStackTrace();
 		}
 	}
 
@@ -257,11 +239,11 @@ public class Database {
 		PreparedStatement stmt = null;
 		int id = 0;
 		try {
-			id = getCompetitionId(title);
+			id = competitionId(title);
 			if (id != 0) {
 				return;
 			}
-			int idObject = getIdTypeObject(typeObject);
+			int idObject = sportObjectTypeId(typeObject);
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"INSERT INTO competition  Values (NULL,?,?,?,?)");
 			stmt.setString(1, title);
@@ -287,12 +269,12 @@ public class Database {
 		PreparedStatement stmt = null;
 		int id = 0;
 		try {
-			id = getCountryId(name);
+			id = countryId(name);
 			if (id != 0) {
 				return;
 			}
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"INSERT INTO country  Values (NULL,?,?,?)");
+					"INSERT INTO countryByLoginPassword  Values (NULL,?,?,?)");
 			stmt.setString(1, name);
 			stmt.setString(2, login);
 			stmt.setString(3, pass);
@@ -305,10 +287,14 @@ public class Database {
 	}
 
 	/**
-	 * @param number 0 - female, 1 - male, other - undefined
-	 * @return class Sex
+	 * Encodes the database sex value to {@link beans.Sex}.
+	 * 0 -> Sex.Female
+	 * 1 -> Sex.Male
+	 * otherwise -> Sex.Undefined
+	 * @param number value to encode.
+	 * @return encoded {@link beans.Sex}.
 	 */
-	private Sex getAthleteSex(int number) {
+	private Sex encodeAthleteSex(int number) {
 		switch (number) {
 			case 1:
 				return Sex.Male;
@@ -319,15 +305,18 @@ public class Database {
 	}
 
 	/**
-	 * @param country
-	 * @return ApplicationConstrain By country name
+	 * Returns {@link ApplicationConstrain} for the country by its name.
+	 * @param country name of the country.
+	 * @return {@link ApplicationConstrain} for the country.
 	 */
-	public ApplicationConstrain getConstrain(String country) {
-		Vector<SportConstrain> res = new Vector<SportConstrain>();
-		int countryId = getCountryId(country);
+	public ApplicationConstrain countryConstrain(String country) {
+		int countryId = countryId(country);
 		if (countryId == 0) {
+			//TODO: throw exception
 			return null;
 		}
+
+		Vector<SportConstrain> result = new Vector<SportConstrain>();
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
@@ -339,20 +328,21 @@ public class Database {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				String competition = rs.getString("competition_name");
-				Sex sex_participant = getAthleteSex(rs.getInt("sex_participant"));
+				Sex sex_participant = encodeAthleteSex(rs.getInt("sex_participant"));
 				int number_participant = rs.getInt("number_participants");
-				res.add(new SportConstrain(competition, number_participant, sex_participant));
+				result.add(new SportConstrain(competition, number_participant, sex_participant));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			e.printStackTrace();
 		}
-		return new ApplicationConstrain(res);
+		return new ApplicationConstrain(result);
 	}
 
 	/**
-	 * @return number of sport objects in DB
+	 * Returns number of sport objects in DB.
+	 * @return number of sport objects in DB.
 	 */
-	public int getSportObjectNumber() {
+	public int sportObjectNumber() {
 		PreparedStatement stmt = null;
 		int res = 0;
 		try {
@@ -372,9 +362,9 @@ public class Database {
 	/**
 	 * @return all competitions in database
 	 */
-	public ArrayList<Competition> getCompetitions() {
+	public ArrayList<Competition> competitions() {
 		PreparedStatement stmt = null;
-		ArrayList<Competition> res = new ArrayList<Competition>();
+		ArrayList<Competition> result = new ArrayList<Competition>();
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"SELECT id,object_type,duration,sex_participant   FROM competition;");
@@ -383,7 +373,7 @@ public class Database {
 				int id = rs.getInt("id");
 				int objectTypeId = rs.getInt("object_type");
 				int duration = rs.getInt("duration");
-				Sex sexParticipant = getAthleteSex(rs.getInt("sex_participant"));
+				Sex sexParticipant = encodeAthleteSex(rs.getInt("sex_participant"));
 				ArrayList<Integer> temp = new ArrayList<Integer>();
 				stmt = (PreparedStatement) connection.prepareStatement(
 						"select sport_object.id from sport_object join sportobject_type on " +
@@ -393,14 +383,14 @@ public class Database {
 				while (rs2.next()) {
 					temp.add(rs2.getInt("id"));
 				}
-				res.add(new Competition(id, duration, sexParticipant, temp));
+				result.add(new Competition(id, duration, sexParticipant, temp));
 
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return res;
+		return result;
 	}
 
 	private Connection connection;

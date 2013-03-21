@@ -27,7 +27,7 @@ public class LoginResponseCreator extends ResponseCreator {
 			DocumentBuilder        builder = factory.newDocumentBuilder();
 			Document outDoc  = builder.newDocument();
 			Element  outRoot = outDoc.createElement("login-response");
-			Attr     outAttr = outDoc.createAttribute("country");
+			Attr     outAttr = outDoc.createAttribute("countryByLoginPassword");
 			outAttr.setValue(country);
 			outRoot.setAttributeNode(outAttr);
 			outDoc.appendChild(outRoot);

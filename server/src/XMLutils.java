@@ -16,7 +16,6 @@ import java.io.StringWriter;
 
 /**
  * Class with useful functions for work with XML.
- *
  * @author Podkopaev Anton
  */
 public class XMLutils {
@@ -50,7 +49,7 @@ public class XMLutils {
 	 */
 	public static void parserSportObjects(String filePath) {
 		try {
-			Database db = new Database();
+			Database db = Database.createDatabase();
 			File fXmlFile = new File(filePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -74,22 +73,22 @@ public class XMLutils {
 	}
 
 	/**
-	 * <country name="ololo">
+	 * <countryByLoginPassword name="ololo">
 	 * <login>stadion</login>
 	 * <password>sochi</password>
-	 * </country>
+	 * </countryByLoginPassword>
 	 *
 	 * @param filePath
 	 */
 	public static void parserCountries(String filePath) {
 		try {
-			Database db = new Database();
+			Database db = Database.createDatabase();
 			File fXmlFile = new File(filePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName("country");
+			NodeList nList = doc.getElementsByTagName("countryByLoginPassword");
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -118,7 +117,7 @@ public class XMLutils {
 	 */
 	public static void parserQotes(String filePath) {
 		try {
-			Database db = new Database();
+			Database db = Database.createDatabase();
 			File fXmlFile = new File(filePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -163,7 +162,7 @@ public class XMLutils {
 	 */
 	public static void parserCompetitions(String filePath) {
 		try {
-			Database db = new Database();
+			Database db = Database.createDatabase();
 			File fXmlFile = new File(filePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
