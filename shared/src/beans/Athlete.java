@@ -3,7 +3,7 @@ package beans;
 import java.io.Serializable;
 
 public class Athlete implements Serializable {
-	public Athlete(String name, String sex, String weight, String height, String competition){
+	public Athlete(String name, String sex, int weight, int height, String competition){
 		this.name = name;
 		this.sex = sex;
 		this.weight = weight;
@@ -27,19 +27,19 @@ public class Athlete implements Serializable {
 		return this.sex;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 
-	public String getWeight() {
+	public int getWeight() {
 		return this.weight;
 	}
 
-	public void setHeight(String height) {
+	public void setHeight(int height) {
 		this.height = height;
 	}
 
-	public String getHeight() {
+	public int getHeight() {
 		return this.height;
 	}
 
@@ -53,8 +53,8 @@ public class Athlete implements Serializable {
 
 	private String name;
 	private String sex;
-	private String weight;
-	private String height;
+	private int weight;
+	private int height;
 	private String competition;
 }
 

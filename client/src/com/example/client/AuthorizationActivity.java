@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.client.exceptions.XMLgenerationException;
 import java.net.URL;
 
 // GUI авторизации
@@ -22,12 +21,11 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.autorizathion);
 
-		Button sing_in_button = (Button) findViewById(R.id.sing_in_button);
-		sing_in_button.setOnClickListener(this);
+		((Button) findViewById(R.id.sing_in_button)).setOnClickListener(this);
 	}
 
 	/**
-	 * To do after that the answer come from server
+	 * To do after that the answer come from server.
 	 * @param result boolean. Is authorization successful on not.
 	 */
 	public void onLogin(boolean result) {
