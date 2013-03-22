@@ -11,7 +11,8 @@ import android.widget.TextView;
  * @author danya
  */
 public class DayActivity extends Activity implements OnClickListener {
-    @Override
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_view);
