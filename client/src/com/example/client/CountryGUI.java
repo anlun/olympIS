@@ -8,6 +8,7 @@ import android.view.*;
 import android.widget.*;
 import android.view.View.OnClickListener;
 import beans.CountryApplication;
+import beans.Athlete;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class CountryGUI extends Activity implements OnClickListener {
         setContentView(R.layout.postrequest);
         //а тут надо в табличку добавить уже имеющихся спортсменов
 
-		athleteList = new ArrayList<Pair<String, String>>();
+		athleteList = new ArrayList<Athlete>();
         text1 = (EditText)findViewById(R.id.text1);
 
         text2 = (EditText)findViewById(R.id.text2);
@@ -90,7 +91,7 @@ public class CountryGUI extends Activity implements OnClickListener {
                 addRow(text1.getText() + "", choose[sp.getSelectedItemPosition()]);
 
 				// добавляем данные в список, который будем передавать
-				athleteList.add(new Pair<String, String>(text1.getText() + "", choose[sp.getSelectedItemPosition()]));
+				athleteList.add(new Athlete(text1.getText() + "", choose[sp.getSelectedItemPosition()]));
 
                 text1.setText("");
                 text2.setText("не важно =)");
@@ -105,5 +106,5 @@ public class CountryGUI extends Activity implements OnClickListener {
 	private Spinner sp;
 
 	private CountryApplication countryApplication;
-	private ArrayList<Pair<String, String>> athleteList;
+	private ArrayList<Athlete> athleteList;
 }

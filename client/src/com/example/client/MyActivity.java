@@ -74,10 +74,10 @@ public class MyActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		//1-ый пункт - ID группы
-		menu.add(0, 1, 0, "lig in");
-		menu.add(0, 2, 0, "CountryGUI");
-		menu.add(0, 3, 0, "exit");
-		menu.add(0, 4, 0, "calendar");
+		menu.add(0, 1, 0, "log in");
+		menu.add(0, 2, 0, "Country Application");
+		menu.add(0, 3, 0, "calendar");
+		menu.add(0, 4, 0, "exit");
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -101,19 +101,19 @@ public class MyActivity extends Activity {
 				break;
 			case 2://CountryGUI item.
 				//проверка на авторизованность
-				//if (isAuthorized) {
+				if (isAuthorized) {
 					Intent intent1 = new Intent(this, CountryGUI.class);
 					startActivity(intent1);
-				//} else {
-				//	Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
-				//}
+				} else {
+					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
+				}
 				break;
-			case 3://exit
-				System.exit(0);
-				break;
-			case 4://запускаем календарь
+			case 3://запускаем календарь
 				Intent intent2 = new Intent(this, CalendarActivity.class);
 				startActivity(intent2);
+				break;
+			case 4://exit
+				System.exit(0);
 				break;
 		}
 
