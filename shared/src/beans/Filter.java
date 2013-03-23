@@ -3,6 +3,10 @@ package beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Class represents users filter.
+ *  @author danya
+ */
 public class Filter implements Serializable {
 
 	public Filter(String filterName, ArrayList<String> filter) {
@@ -26,6 +30,8 @@ public class Filter implements Serializable {
 		return this.filter;
 	}
 
-	private ArrayList<String> filter;
-	private String filterName;
+	private ArrayList<String> filter; // Список выбранных элдементов фильтра.
+				// Этот список содержит имея соответствующих элементов. (Например: Франция, Англия, Испания).
+	private String filterName; // Тип фильтра. По этому типу определяем какой фильтр выбран.
+				// Например: Страна.
 }
