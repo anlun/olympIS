@@ -136,8 +136,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 						break;
 					}
 					// Т.е. если не нашли атлета в списке, то вставлять его будем в начало.
-					addAthlete(name, 0);
-					Toast.makeText(this, "Новый спортсмен добавлен", Toast.LENGTH_SHORT).show();
+					if (addAthlete(name, 0)) {
+						Toast.makeText(this, "Новый спортсмен добавлен", Toast.LENGTH_SHORT).show();
+					}
 				} else {
 					// Имя спортсмена.
 					String name = oldAthleteName;
@@ -147,11 +148,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					// Удаляем старые данные о спортсмене в athleteList.
 					athleteList.remove(athleteIndex);
 
-					addAthlete(name, athleteIndex);
-					Toast.makeText(this, "Информация изменена", Toast.LENGTH_SHORT).show();
-
-					forceEdit = false;
-					oldAthleteName = "";
+					if (addAthlete(name, athleteIndex)) {
+						Toast.makeText(this, "Информация изменена", Toast.LENGTH_SHORT).show();
+						forceEdit = false;
+						oldAthleteName = "";
+					}
 				}
 				break;
 		}
@@ -171,8 +172,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					// Удаляем старые данные о спортсмене в athleteList.
 					athleteList.remove(athleteIndex);
 
-					addAthlete(name, athleteIndex);
-					Toast.makeText(this, "Информация о спортсмене " + name + " изменёна", Toast.LENGTH_SHORT).show();
+					if (addAthlete(name, athleteIndex)) {
+						Toast.makeText(this, "Информация о спортсмене " + name + " изменёна", Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 			else if (resultCode == RESULT_CANCELED) {
@@ -180,7 +182,13 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
-	private void addAthlete(String name, int athleteIndex) {
+	/**
+	 * Adds athlete in a athleteList and adds an row in the user table.
+	 * If athlete is successfully added, returns true, returns false otherwise.
+	 * @param name Is an athlete name.
+	 * @param athleteIndex Is an index in witch new athlete will be added in the list and user table.
+	 */
+	private boolean addAthlete(String name, int athleteIndex) {
 		// Получение данных из spinner-а(соревнование).
 		String[] choose = getResources().getStringArray(R.array.sport_array);
 		// Добавляем данные в список, который будем передавать.
@@ -191,7 +199,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					height, choose[sp.getSelectedItemPosition()]));
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
 		// Добавляем информацию в таблицу пользователя.
 		addRow(text1.getText() + "", text2.getText() + "", text3.getText() + "",
@@ -199,6 +207,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 		text1.setText(""); text2.setText("");
 		text3.setText(""); text4.setText("");
+		return true;
 	}
 
 	/**
@@ -217,7 +226,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
 								// становится истиной. Если она true, то диалога изменения не будет.
-	private String oldAthleteName; //при изменении имени, надо запомнить старое
+	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
 	private Button addButton;
 	private EditText text1;
 	private EditText text2;
