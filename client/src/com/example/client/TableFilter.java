@@ -3,6 +3,7 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,6 +48,25 @@ public class TableFilter extends Activity implements OnClickListener {
 			resourceArray = getResources().getStringArray(R.array.country_array);
 		}
 		lvMain.setAdapter(adapter);
+
+		// Получаем уже выбранные эл-ты.
+		ArrayList<String> filter = this.getIntent().getStringArrayListExtra("filterIsAlreadySelectedItems");
+		Log.d("DAN", "получили фильтр! " + filter.toString());
+		// Если не пуст, то надо заполнить уже выбранными эл-тами.
+		if (!filter.isEmpty()) {
+			int j = 0;
+			Log.d("DAN", "зашли в if!");
+			for (int i = 0; i < resourceArray.length; i++) {
+				if (j >= filter.size()) {
+					break;
+				}
+				if (filter.get(j).equals(resourceArray[i])) {
+					lvMain.setItemChecked(i, true);
+					j++;
+				}
+			}
+		}
+		Log.d("DAN", "вышли!");
 
 		Button buttonTableFilterOk = (Button) findViewById(R.id.buttonTableFilterOk);
 		buttonTableFilterOk.setOnClickListener(this);
