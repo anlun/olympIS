@@ -9,6 +9,7 @@ import android.widget.*;
 import android.view.View.OnClickListener;
 import beans.CountryApplication;
 import beans.Athlete;
+import beans.Sex;
 
 import java.util.ArrayList;
 
@@ -182,6 +183,16 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
+	private Sex toSex(String str) {
+		if (str.equals("Male")) {
+			return Sex.Male;
+		} else if (str.equals("Female")) {
+			return Sex.Female;
+		} else {
+			return Sex.Undefined;
+		}
+	}
+
 	/**
 	 * Adds athlete in a athleteList and adds an row in the user table.
 	 * If athlete is successfully added, returns true, returns false otherwise.
@@ -193,17 +204,19 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		String[] choose = getResources().getStringArray(R.array.sport_array);
 		// Добавляем данные в список, который будем передавать.
 		try {
+			Sex sex = toSex(text2.getText() + "");
+			// TODO пока что weight и height обязательны для заполнения. Если надо - можно исправить.
 			int weight = Integer.parseInt((text3.getText() + ""));
 			int height = Integer.parseInt((text4.getText() + ""));
-			athleteList.add(athleteIndex, new Athlete(name, text2.getText() + "", weight,
+			athleteList.add(athleteIndex, new Athlete(name, sex, weight,
 					height, choose[sp.getSelectedItemPosition()]));
+			// Добавляем информацию в таблицу пользователя.
+			addRow(text1.getText() + "", sex + "", height + "",
+					height + "", choose[sp.getSelectedItemPosition()], athleteIndex + 1);
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
 			return false;
 		}
-		// Добавляем информацию в таблицу пользователя.
-		addRow(text1.getText() + "", text2.getText() + "", text3.getText() + "",
-				text4.getText() + "", choose[sp.getSelectedItemPosition()], athleteIndex + 1);
 
 		text1.setText(""); text2.setText("");
 		text3.setText(""); text4.setText("");

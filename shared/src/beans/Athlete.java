@@ -3,7 +3,8 @@ package beans;
 import java.io.Serializable;
 
 public class Athlete implements Serializable {
-	public Athlete(String name, String sex, int weight, int height, String competition){
+
+	public Athlete(String name, Sex sex, int weight, int height, String competition){
 		this.name = name;
 		this.sex = sex;
 		this.weight = weight;
@@ -19,11 +20,11 @@ public class Athlete implements Serializable {
 		return this.name;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(Sex sex) {
 		this.sex = sex;
 	}
 
-	public String getSex() {
+	public Sex getSex() {
 		return this.sex;
 	}
 
@@ -52,7 +53,7 @@ public class Athlete implements Serializable {
 	}
 
 	private String name;
-	private String sex;
+	private Sex sex;
 	private int weight;
 	private int height;
 	private String competition;
