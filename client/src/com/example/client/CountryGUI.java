@@ -185,7 +185,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	/**
 	 * Adds athlete in a athleteList and adds an row in the user table.
 	 * If athlete is successfully added, returns true, returns false otherwise.
-	 * @param name Is an athlete name.
+	 * @param name Is an athlete t be added name.
 	 * @param athleteIndex Is an index in witch new athlete will be added in the list and user table.
 	 */
 	private boolean addAthlete(String name, int athleteIndex) {
