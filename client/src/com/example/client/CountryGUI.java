@@ -130,8 +130,8 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 						Intent tableCountryFilterIntent = new Intent(this, DialogActivity.class);
 						// Далее вторым параметром стоит 2. Это requestCode, он может быть любым числом.
 						// Выбрана 2, т.к. 1 уже использовалось в другом классе. requestCode может совпадать
-						// в разных местах программы и даже в одном классе, но рекомендуется ставить разные
-						// значения, во избежания неожиданных ошибок.
+						// в разных местах программы и даже в одном классе,
+						// но рекомендуется ставить разные значения, во избежания неожиданных ошибок.
 						startActivityForResult(tableCountryFilterIntent, 2);
 						break;
 					}
