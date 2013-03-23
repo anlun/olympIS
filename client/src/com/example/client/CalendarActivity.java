@@ -2,12 +2,14 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import beans.Filter;
+import beans.DayList;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,11 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tv.setOnClickListener(this);
 			}
 		}
+
+		// TODO убрать эти 3 строчки. Они сейчас для наглядности работы.
+		ArrayList<Integer> ar = new ArrayList<Integer>();
+		for (int i = 0; i <= 30; i++) ar.add(i);
+		setSelectedDaysGreen(ar);
 	}
 
 	/**
@@ -100,6 +107,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					}
 					addFilter(filterName, result);
 
+					// TODO передать собственно filterList и получить ответ в виде DayList
+					// setSelectedDaysGreen(dayList);
+
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
 	                Toast.makeText(this, "Неизвестная ошибка при работе с фильтрами.", Toast.LENGTH_LONG).show();
@@ -107,6 +117,44 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			}
 			else if (resultCode == RESULT_CANCELED) {
 			}
+		}
+	}
+
+	// Выделяет зелёным дни из dayList.
+	private void setSelectedDaysGreen(ArrayList<Integer> dayList) {
+		for(Integer i: dayList) {
+			if (i >=1 && i <= 21) {
+				// За грядущеё 5 строчек стыдно, но ниче умнее в голову не пришло.
+				// j - номер строки. k - номер стобца.(Это про то место, где расположен днь на экране)
+				int j = i / 7;
+				int k = i - j * 7 - 1;
+				j++;
+				if (k == -1) {
+					k = 6; j--;
+				}
+				LinearLayout ll = (LinearLayout) findViewById(R.id.mainLayout);
+				LinearLayout ll1 = (LinearLayout) ll.getChildAt(j);
+				TextView tv = (TextView) ll1.getChildAt(k);
+				tv.setBackgroundColor(Color.GREEN);
+			} else {
+				Log.d("DAN", "Incorrect day in dayList: " + i + "Look at CalendarActivity setSelectedDaysGreen.");
+			}
+		}
+	}
+
+	// Убирает выделение со всех дней.
+	private void clearSelectedDays() {
+		for(int i = 1; i <= 21; i++) {
+			int j = i / 7;
+			int k = i - j * 7 - 1;
+			j++;
+			if (k == -1) {
+				k = 6; j--;
+			}
+			LinearLayout ll = (LinearLayout) findViewById(R.id.mainLayout);
+			LinearLayout ll1 = (LinearLayout) ll.getChildAt(j);
+			TextView tv = (TextView) ll1.getChildAt(k);
+			tv.setBackgroundColor(Color.WHITE);
 		}
 	}
 
