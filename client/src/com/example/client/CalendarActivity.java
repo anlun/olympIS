@@ -38,10 +38,15 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			}
 		}
 
-		// TODO убрать эти 3 строчки. Они сейчас для наглядности работы.
+		// TODO убрать эти 8 строчек. Они сейчас для наглядности работы метода setColor.
 		ArrayList<Integer> ar = new ArrayList<Integer>();
-		for (int i = 0; i <= 30; i++) ar.add(i);
-		setSelectedDaysGreen(ar);
+		ArrayList<Integer> ar1 = new ArrayList<Integer>();
+		for (int i = 0; i <= 30; i++) {
+			ar.add(i);
+			if (i % 2 == 0) ar1.add(i);
+		}
+		setColor(ar, Color.GREEN);
+		setColor(ar1, Color.WHITE);
 	}
 
 	/**
@@ -120,8 +125,13 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	// Выделяет зелёным дни из dayList.
-	private void setSelectedDaysGreen(ArrayList<Integer> dayList) {
+	/**
+	 * Set background color to the days from dayList, if day >= 1 and day <=21.
+	 * @param dayList Is a list of days to set background color.
+	 * @param color Is a color set to.(Example: Color.GREEN) If you want to set default color
+	 *              set Color.WHITE.
+	 */
+	private void setColor(ArrayList<Integer> dayList, int color) {
 		for(Integer i: dayList) {
 			if (i >=1 && i <= 21) {
 				// За грядущеё 5 строчек стыдно, но ниче умнее в голову не пришло.
@@ -135,26 +145,11 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.mainLayout);
 				LinearLayout ll1 = (LinearLayout) ll.getChildAt(j);
 				TextView tv = (TextView) ll1.getChildAt(k);
-				tv.setBackgroundColor(Color.GREEN);
+				tv.setBackgroundColor(color);
 			} else {
-				Log.d("DAN", "Incorrect day in dayList: " + i + "Look at CalendarActivity setSelectedDaysGreen.");
+				Log.d("DAN", "Incorrect day in dayList: " + i + "Look at CalendarActivity setSelectedDaysGreen." +
+						" Or incorrect color.");
 			}
-		}
-	}
-
-	// Убирает выделение со всех дней.
-	private void clearSelectedDays() {
-		for(int i = 1; i <= 21; i++) {
-			int j = i / 7;
-			int k = i - j * 7 - 1;
-			j++;
-			if (k == -1) {
-				k = 6; j--;
-			}
-			LinearLayout ll = (LinearLayout) findViewById(R.id.mainLayout);
-			LinearLayout ll1 = (LinearLayout) ll.getChildAt(j);
-			TextView tv = (TextView) ll1.getChildAt(k);
-			tv.setBackgroundColor(Color.WHITE);
 		}
 	}
 
