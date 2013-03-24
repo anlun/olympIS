@@ -30,7 +30,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 		//устанавливаем onClickListener для всех дней
 		LinearLayout ll = (LinearLayout) findViewById(R.id.mainLayout);
-		for(Integer j = 1; j < 4 ; j++)  {
+		for(Integer j = 1; j < numberOfWeeks ; j++)  {
 			LinearLayout ll1 = (LinearLayout) ll.getChildAt(j);
 			for(Integer i = 0; i < 7 ; i++ ){
 				TextView tv = (TextView) ll1.getChildAt(i);
@@ -126,14 +126,14 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Set background color to the days from dayList, if day >= 1 and day <=21.
+	 * Set background color to the days from dayList, if day >= firstDay and day <= lastDay.
 	 * @param dayList Is a list of days to set background color.
 	 * @param color Is a color set to.(Example: Color.GREEN) If you want to set default color
 	 *              set Color.WHITE.
 	 */
 	private void setColor(ArrayList<Integer> dayList, int color) {
 		for(Integer i: dayList) {
-			if (i >=1 && i <= 21) {
+			if (i >= firstDay && i <= lastDay) {
 				// За грядущеё 5 строчек стыдно, но ниче умнее в голову не пришло.
 				// j - номер строки. k - номер стобца.(Это про то место, где расположен днь на экране)
 				int j = i / 7;
@@ -181,5 +181,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		filterList.add(new Filter(filterName, resultOfChoice));
 	}
 
+	private final static int firstDay = 1; // First day of competitions.
+	private final static int lastDay = 21; // Last day of competitions.
+	private final static int numberOfWeeks = 4; // Nu,ber of weeks.
 	private ArrayList<Filter> filterList;
 }
