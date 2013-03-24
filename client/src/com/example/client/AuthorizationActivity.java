@@ -26,7 +26,7 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 
 	/**
 	 * To do after that the answer come from server.
-	 * @param result boolean. Is authorization successful on not.
+	 * @param result boolean. Is authorization successful or not.
 	 */
 	public void onLogin(boolean result) {
 		if (result){
