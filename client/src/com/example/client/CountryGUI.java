@@ -12,6 +12,8 @@ import beans.Athlete;
 import beans.Sex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class realize completing an application GUI for authorized country.
@@ -76,16 +78,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		// Тут надо столько TextView обработать, сколько в таблице столбцов,
 		// а так же добавить спортсмена в базу.
 
-		TextView tv = (TextView) ll.getChildAt(0);
-		tv.setText(name);
-		tv = (TextView) ll.getChildAt(1);
-		tv.setText(sex);
-		tv = (TextView) ll.getChildAt(2);
-		tv.setText(weight);
-		tv = (TextView) ll.getChildAt(3);
-		tv.setText(height);
-		tv = (TextView) ll.getChildAt(4);
-		tv.setText(competition);
+		List<String> l = Arrays.asList(name, sex, weight, height, competition);
+		for (int i = 0; i <= 4; i++) {
+			((TextView) ll.getChildAt(i)).setText(l.get(i));
+		}
 
 		// Листенер долгого нажатия, для правки иформации о спортсмене.
 		ll.setOnLongClickListener(this);
