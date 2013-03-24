@@ -120,7 +120,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				// TODO проверить корректность и соответствие ограничениям введенных данных
 
 				if (!forceEdit) {
-					// Умя спортсмена.
+					// Имя спортсмена.
 					String name = text1.getText() + "";
 					int athleteIndex = getAthleteListIndex(name);
 					if (athleteIndex != -1) { // Т.е. спортсмен уже есть в таблице
