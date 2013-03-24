@@ -174,8 +174,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					}
 				}
 			}
-			else if (resultCode == RESULT_CANCELED) {
-			}
 		}
 	}
 
