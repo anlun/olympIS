@@ -1,11 +1,13 @@
 package beans;
 
+import java.io.Serializable;
+
 /**
  * Class represents the sex of sportsmen in competitions.
  * @author Podkopaev Anton
  */
 
-public class Sex {
+public class Sex implements Serializable {
 	public Sex() {
 	}
 
