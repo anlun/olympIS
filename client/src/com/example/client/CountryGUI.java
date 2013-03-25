@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import android.view.View.OnClickListener;
 import beans.CountryApplication;
+import beans.CompetitionList;
 import beans.Athlete;
 import beans.Sex;
 
@@ -26,8 +28,13 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.postrequest);
 
-		// TODO вместо след.строчки должно быть получение уже имеющейся заявки от базы
-		athleteList = new ArrayList<Athlete>();
+		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
+		competitionNamesList = getResources().getStringArray(R.array.sport_array);
+		athleteNumberList = new int[competitionNamesList.length];
+		for (int i = 0 ; i < athleteNumberList.length; i++) {
+			athleteNumberList[i] = 2;
+		}
+		competitionList = new CompetitionList(competitionNamesList, athleteNumberList);
 
 		forceEdit = false;
 		oldAthleteName = "";
@@ -35,12 +42,38 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		text2 = (EditText)findViewById(R.id.text2);
 		text3 = (EditText)findViewById(R.id.text3);
 		text4 = (EditText)findViewById(R.id.text4);
-		tableLayout = (TableLayout) findViewById(R.id.table1);
+		horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		tableLayoutArrayList = new ArrayList<TableLayout>();
+		for (int i = 0; i < competitionNamesList.length; i++) {
+			TableLayout tl = (TableLayout) inflater.inflate(R.layout.tablelayout, null);
+			tableLayoutArrayList.add(tl);
+		}
+		horizontalScrollView.addView(tableLayoutArrayList.get(0));
+		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 
 		addButton = (Button)findViewById(R.id.add_button);
 		addButton.setOnClickListener(this);
 
 		sp = (Spinner) findViewById(R.id.competitionSpinner);
+		sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+									   int position, long id) {
+				horizontalScrollView.removeViewAt(0);
+				horizontalScrollView.addView(tableLayoutArrayList.get(position));
+				String competition = competitionNamesList[sp.getSelectedItemPosition()];
+				int athleteNumber = competitionList.getAthleteNumber(competition);
+				int athleteMaxNumber = competitionList.getMaxAthleteNumber(competition);
+				athleteCompetitionNumber.setText("Осталось: " + (athleteMaxNumber - athleteNumber) +
+						"/" + athleteMaxNumber);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,7 +94,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		switch (item.getItemId()){
 			case 1:// post application
 				AuthorizationData data = AuthorizationData.getInstance();
-				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), athleteList);
+				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
 				//TODO: дописать передачу countryApplication через Тошин класс
 				break;
 		}
@@ -75,9 +108,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public void addRow(String name, String sex, String weight, String height, String competition, int index) {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		TableRow ll = (TableRow) inflater.inflate(R.layout.tablerow, null);
-		// Тут надо столько TextView обработать, сколько в таблице столбцов,
-		// а так же добавить спортсмена в базу.
-
 		List<String> l = Arrays.asList(name, sex, weight, height, competition);
 		for (int i = 0; i <= 4; i++) {
 			((TextView) ll.getChildAt(i)).setText(l.get(i));
@@ -86,7 +116,8 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		// Листенер долгого нажатия, для правки иформации о спортсмене.
 		ll.setOnLongClickListener(this);
 
-		tableLayout.addView(ll, index);
+		// tableLayout.addView(ll, index);
+		((TableLayout) horizontalScrollView.getChildAt(0)).addView(ll, index);
 	}
 
 	// Считаю, что long click есть только у tableRow.
@@ -120,9 +151,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				// TODO проверить корректность и соответствие ограничениям введенных данных
 
 				if (!forceEdit) {
+					String competition = competitionNamesList[sp.getSelectedItemPosition()];
+					if (competitionList.getAthleteNumber(competition) >= competitionList.getMaxAthleteNumber(competition)) {
+						Toast.makeText(this, "Вы исчерпали количество заявок.", Toast.LENGTH_LONG).show();
+						return;
+					}
+
 					// Имя спортсмена.
 					String name = text1.getText() + "";
-					int athleteIndex = getAthleteListIndex(name);
+					int athleteIndex = this.competitionList.getAthleteListIndex(name, competitionNamesList[sp.getSelectedItemPosition()]);
 					if (athleteIndex != -1) { // Т.е. спортсмен уже есть в таблице
 						Intent tableCountryFilterIntent = new Intent(this, DialogActivity.class);
 						// Далее вторым параметром стоит 2. Это requestCode, он может быть любым числом.
@@ -133,19 +170,27 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 						break;
 					}
 					// Т.е. если не нашли атлета в списке, то вставлять его будем в начало.
-					if (addAthlete(name, 0)) {
+					if (addAthlete(0)) {
 						Toast.makeText(this, "Новый спортсмен добавлен", Toast.LENGTH_SHORT).show();
+						int athleteNumber = competitionList.getAthleteNumber(competition);
+						int athleteMaxNumber = competitionList.getMaxAthleteNumber(competition);
+						athleteCompetitionNumber.setText("Осталось: " + (athleteMaxNumber - athleteNumber) +
+								"/" + athleteMaxNumber);
 					}
 				} else {
 					// Имя спортсмена.
 					String name = oldAthleteName;
-					int athleteIndex = getAthleteListIndex(name);
+					// Соревнование.
+					String competition = competitionNamesList[sp.getSelectedItemPosition()];
+					int athleteIndex = this.competitionList.getAthleteListIndex(name, competition);
 					// Удаляем старые данные из таблицы пользователя.
-					tableLayout.removeViewAt(athleteIndex + 1);
-					// Удаляем старые данные о спортсмене в athleteList.
-					athleteList.remove(athleteIndex);
-
-					if (addAthlete(name, athleteIndex)) {
+					Log.d("DAN", "delete view index " + athleteIndex);
+					((TableLayout) horizontalScrollView.getChildAt(0)).removeViewAt(athleteIndex + 1);
+					// Удаляем старые данные о спортсмене
+					Log.d("DAN", "delete list " +  name + " " + competition);
+					competitionList.deleteAthlete(name, competition);
+					Log.d("DAN", "deleted");
+					if (addAthlete(athleteIndex)) {
 						Toast.makeText(this, "Информация изменена", Toast.LENGTH_SHORT).show();
 						forceEdit = false;
 						oldAthleteName = "";
@@ -163,13 +208,17 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				boolean result = data.getBooleanExtra("dialogResult", false);
 				if (result) {
 					String name = text1.getText() + "";
-					int athleteIndex = getAthleteListIndex(name);
-					// Удаляем старые данные из таблицы пользователя.
-					tableLayout.removeViewAt(athleteIndex + 1);
-					// Удаляем старые данные о спортсмене в athleteList.
-					athleteList.remove(athleteIndex);
+					String competition = competitionNamesList[sp.getSelectedItemPosition()];
+					int athleteIndex = this.competitionList.getAthleteListIndex(name, competitionNamesList[sp.getSelectedItemPosition()]);
 
-					if (addAthlete(name, athleteIndex)) {
+					// Удаляем старые данные из таблицы пользователя.
+					Log.d("DAN", "delete view index " + athleteIndex);
+					((TableLayout) horizontalScrollView.getChildAt(0)).removeViewAt(athleteIndex + 1);
+
+					// Удаляем старые данные о спортсмене
+					competitionList.deleteAthlete(name, competition);
+
+					if (addAthlete(athleteIndex)) {
 						Toast.makeText(this, "Информация о спортсмене " + name + " изменёна", Toast.LENGTH_SHORT).show();
 					}
 				}
@@ -178,9 +227,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	}
 
 	private Sex toSex(String str) {
-		if (str.equals("Male")) {
+		if (str.equals("Male") || str.equals("male") || str.equals("M") || str.equals("m")) {
 			return Sex.Male;
-		} else if (str.equals("Female")) {
+		} else if (str.equals("Female") || str.equals("female") || str.equals("F") || str.equals("f")) {
 			return Sex.Female;
 		} else {
 			return Sex.Undefined;
@@ -190,23 +239,25 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	/**
 	 * Adds athlete in a athleteList and adds an row in the user table.
 	 * If athlete is successfully added, returns true, returns false otherwise.
-	 * @param name Is an athlete t be added name.
 	 * @param athleteIndex Is an index in witch new athlete will be added in the list and user table.
 	 */
-	private boolean addAthlete(String name, int athleteIndex) {
+	private boolean addAthlete(int athleteIndex) {
 		// Получение данных из spinner-а(соревнование).
-		String[] choose = getResources().getStringArray(R.array.sport_array);
+		//String[] choose = getResources().getStringArray(R.array.sport_array);
 		// Добавляем данные в список, который будем передавать.
 		try {
+			String name = text1.getText() + "";
 			Sex sex = toSex(text2.getText() + "");
 			// TODO пока что weight и height обязательны для заполнения. Если надо - можно исправить.
 			int weight = Integer.parseInt((text3.getText() + ""));
 			int height = Integer.parseInt((text4.getText() + ""));
-			athleteList.add(athleteIndex, new Athlete(name, sex, weight,
-					height, choose[sp.getSelectedItemPosition()]));
+			String competition = competitionNamesList[sp.getSelectedItemPosition()];
+			Log.d("DAN", "index " + athleteIndex);
+			competitionList.addAthlete(athleteIndex, competition, new Athlete(name, sex, weight, height, competition));
+
 			// Добавляем информацию в таблицу пользователя.
-			addRow(text1.getText() + "", sex + "", weight + "",
-					height + "", choose[sp.getSelectedItemPosition()], athleteIndex + 1);
+			addRow(name + "", sex + "", weight + "",
+					height + "", competition, athleteIndex + 1);
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
 			return false;
@@ -215,20 +266,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		text1.setText(""); text2.setText("");
 		text3.setText(""); text4.setText("");
 		return true;
-	}
-
-	/**
-	 * Returns index, in witch athlete is stored in the athleteList.
-	 * If it is no athlete with the name given, returns -1.
-	 * @param name Is the athlete name.
-	 */
-	private int getAthleteListIndex (String name) {
-		for (int i = 0; i < athleteList.size(); i++) {
-			if (athleteList.get(i).getName().equals(name)) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
@@ -240,11 +277,14 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private EditText text3;
 	private EditText text4;
 	private Spinner sp;
-	private TableLayout tableLayout;
-
+	private HorizontalScrollView horizontalScrollView;
 	private CountryApplication countryApplication;
-	private ArrayList<Athlete> athleteList; // список атлетов, как объектов класса Athlete.
-											// Этот список будет передаваться серверу.
-											// Спортсмены хранятся в этом списке и отображаются
-											// в таблице на экране в одном и том же порядке.
+	private ArrayList<TableLayout> tableLayoutArrayList;
+	private TextView athleteCompetitionNumber;
+	private int[] athleteNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
+	private String[] competitionNamesList; // Список названий соревнований.
+	private CompetitionList competitionList; // Список соревнований и атлетов.
+			// Этот список будет передаваться серверу.
+			// Спортсмены, хранятся в этом списке, отображаются
+			// в таблице на экране и в списве в одном и том же порядке.
 }
