@@ -23,7 +23,10 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
 
-		return applicationConstrainToXML(getCountryApplicationConstrain(country, login, password));
+		ApplicationConstrain applicationConstrain = getCountryApplicationConstrain(country, login, password);
+		String response = applicationConstrainToXML(applicationConstrain);
+		System.out.println(response);
+		return response;
 	}
 
 	//TODO: Need to be implemented with data from database.
