@@ -22,6 +22,7 @@ public class ApplicationResponseCreator extends ResponseCreator {
 			//TODO: запись в базу
 
 			return successResponse();
+
 		} catch (UnsupportedEncodingException e) {
 			System.err.println("Unsupported encoding error!");
 		}

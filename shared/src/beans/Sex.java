@@ -1,7 +1,7 @@
 package beans;
 
 /**
- * Enum represents the sex of sportmen in competitions.
+ * Enum represents the sex of sportsmen in competitions.
  * @author Podkopaev Anton
  */
 
