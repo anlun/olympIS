@@ -205,7 +205,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			athleteList.add(athleteIndex, new Athlete(name, sex, weight,
 					height, choose[sp.getSelectedItemPosition()]));
 			// Добавляем информацию в таблицу пользователя.
-			addRow(text1.getText() + "", sex + "", height + "",
+			addRow(text1.getText() + "", sex + "", weight + "",
 					height + "", choose[sp.getSelectedItemPosition()], athleteIndex + 1);
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
