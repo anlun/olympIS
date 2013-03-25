@@ -43,8 +43,39 @@ public class Competition {
 		this.idRequiredSportObjects = idRequiredSportObjects;
 	}
 
+    //=================
+    public int getBeginHour() {
+        return beginHour;
+    }
+    public void setBeginHour(int newBeginning) {
+        this.beginHour = newBeginning;
+    }
+    public int getEndHour() {
+        return endHour;
+    }
+    public void setEndHour(int newEnd) {
+        this.endHour = newEnd;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String newName) {
+        this.name = newName;
+    }
+    public int getSportType() {
+        return sportType;
+    }
+    public void setSportType(int newSportType) {
+        this.sportType = newSportType;
+    }
+    //add begin and end of the competition
+    private int beginHour;
+    private int endHour;
+    //=================
 	private int id;
+    private String name;
 	private int duration;
 	private Sex athleteSex;
 	private ArrayList<Integer> idRequiredSportObjects;
+    private int sportType;
 }
