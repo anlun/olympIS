@@ -126,6 +126,8 @@ public class ServerConsoleWrapper {
 					return (new ApplicationConstrainResponseCreator(dom)).createResponse();
 				}
 
+				System.err.println(tagName);
+
 			} catch (ParserConfigurationException e) {
 				System.err.println(e.toString());
 			} catch (SAXException e) {
