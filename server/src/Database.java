@@ -295,13 +295,10 @@ public class Database {
 	 * @return encoded {@link beans.Sex}.
 	 */
 	private Sex encodeAthleteSex(int number) {
-		switch (number) {
-			case 1:
-				return Sex.Male;
-			case 0:
-				return Sex.Female;
+		if ((number == Sex.male) || (number == Sex.female)) {
+			return new Sex(number);
 		}
-		return Sex.Undefined;
+		return new Sex(Sex.undefined);
 	}
 
 	/**
