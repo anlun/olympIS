@@ -11,7 +11,7 @@ import java.util.Vector;
  */
 public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	public ApplicationConstrainResponseCreator(Document dom) {
-		super(dom);
+		this.dom = dom;
 	}
 
 	public String createResponse() {
@@ -35,4 +35,6 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 
 		return new ApplicationConstrain(vec);
 	}
+
+	private Document dom;
 }
