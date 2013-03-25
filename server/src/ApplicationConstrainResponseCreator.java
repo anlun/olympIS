@@ -2,10 +2,7 @@ import beans.ApplicationConstrain;
 import beans.Sex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
+import utils.Utils;
 import java.util.Vector;
 
 /**
@@ -24,7 +21,7 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 		String  password = root.getAttribute("password");
 
 		ApplicationConstrain applicationConstrain = getCountryApplicationConstrain(country, login, password);
-		String response = applicationConstrainToXML(applicationConstrain);
+		String response = Utils.beanToString(applicationConstrain);
 		System.out.println(response);
 		return response;
 	}
@@ -37,13 +34,5 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, Sex.Undefined));
 
 		return new ApplicationConstrain(vec);
-	}
-
-	private String applicationConstrainToXML(ApplicationConstrain applicationConstrain) {
-		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
-		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
-		e.writeObject(applicationConstrain);
-		e.close();
-		return byteArr.toString();
 	}
 }
