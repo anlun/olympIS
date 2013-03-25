@@ -49,7 +49,6 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		//TODO
 		if (result) {
 			Log.d("ANL", "Login by " + country + " was successfully done.");
 		} else {
