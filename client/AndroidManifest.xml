@@ -33,6 +33,13 @@
 			<intent-filter>
 			</intent-filter>
 		</activity>
+		<activity android:name=".DialogActivity"
+				  android:label="@string/app_name"
+				  android:theme="@android:style/Theme.Dialog"
+				>
+			<intent-filter>
+			</intent-filter>
+		</activity>
 		<activity android:name=".CalendarActivity"
                   android:label="@string/app_name"
                 >
