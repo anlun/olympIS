@@ -17,7 +17,7 @@ public class Utils {
 	//TODO: ускорить с помощью StringBuilder
 	public static String intToBeanField(String fieldName, int value) {
 		return "<void property=\"" + fieldName + "\">"
-				+ "<string>" + String.valueOf(value) + "</string>"
+				+ "<int>" + String.valueOf(value) + "</int>"
 				+ "</void>";
 	}
 
