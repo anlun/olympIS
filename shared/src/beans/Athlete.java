@@ -3,10 +3,12 @@ package beans;
 import java.io.Serializable;
 
 public class Athlete implements Serializable {
+	public Athlete() {
+	}
 
 	public Athlete(String name, Sex sex, int weight, int height, String competition){
-		this.name = name;
-		this.sex = sex;
+		this.name   = name;
+		this.sex    = sex;
 		this.weight = weight;
 		this.height = height;
 		this.competition = competition;

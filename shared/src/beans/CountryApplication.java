@@ -1,10 +1,13 @@
 package beans;
 
+import utils.CustomSerializable;
+import utils.Utils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CountryApplication implements Serializable {
-
+//TODO: сделать кустарную сериализацию
+public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
 	}
 
@@ -18,7 +21,7 @@ public class CountryApplication implements Serializable {
 		this.athleteList = athleteList;
 	}
 
-	public ArrayList<Athlete> getAthleteList(int index) {
+	public ArrayList<Athlete> getAthleteList() {
 		return athleteList;
 	}
 
@@ -36,6 +39,33 @@ public class CountryApplication implements Serializable {
 
 	public String getLogin() {
 		return login;
+	}
+
+	public String serialize(boolean withBeansHead) {
+		String result = "<object class=\"beans.CountryApplication\">";
+
+		//Tags for fields
+		//May be need to be in alphabetical order
+
+		//athleteList
+		result += Utils.arrayListToBeanField("athleteList", athleteList);
+
+		//login
+		result += Utils.stringToBeanField("login", login);
+
+		//password
+		result += Utils.stringToBeanField("password", password);
+
+		result += "</object>";
+
+		if (withBeansHead) {
+			result =  "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n"
+					+ "<java version=\"1.7.0_09\" class=\"com.googlecode.openbeans.XMLDecoder\">"
+					+ result
+					+ "</java>";
+		}
+
+		return result;
 	}
 
 	private String login;

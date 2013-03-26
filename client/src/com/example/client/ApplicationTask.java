@@ -18,9 +18,6 @@ public class ApplicationTask extends AsyncTask<String, Integer, Boolean> {
 	protected Boolean doInBackground(String... data) {
 		boolean result = false;
 
-		String requestXML = Utils.beanToString(countryApplication);
-
-		/*
 		try {
 			String requestXML = Utils.beanToString(countryApplication);
 			Client cl = new Client(serverURL);
@@ -33,7 +30,6 @@ public class ApplicationTask extends AsyncTask<String, Integer, Boolean> {
 			Log.d("ANL", "XML generation error!");
 			return false;
 		}
-		*/
 
 		return result;
 	}

@@ -1,3 +1,6 @@
+import beans.Athlete;
+import beans.CountryApplication;
+import beans.Sex;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -5,12 +8,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import utils.Utils;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 /**
  * {@link ServerConsoleWrapper} is the center class of server application.
@@ -28,9 +34,17 @@ public class ServerConsoleWrapper {
 	 * @param args Just ignores now.
 	 */
 	public static void main(String[] args) {
+		ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
+		athleteList.add(new Athlete("asd", new Sex(Sex.male), 123, 124, "asd"));
+		CountryApplication app = new CountryApplication(
+				"log", "pas"
+				, athleteList
+		);
+		String xmlView = Utils.beanToString(app);
+		System.out.println(xmlView);
+
 		System.out.println("Test http server");
 		startServer(new InetSocketAddress(8888));
-
 	}
 
 	/**
