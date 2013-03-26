@@ -1,5 +1,8 @@
 package beans;
 
+import utils.CustomSerializable;
+import utils.Utils;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +10,7 @@ import java.io.Serializable;
  * @author Podkopaev Anton
  */
 
-public class Sex implements Serializable {
+public class Sex implements Serializable, CustomSerializable {
 	public Sex() {
 	}
 
@@ -21,6 +24,22 @@ public class Sex implements Serializable {
 
 	public void setSex(int newSex) {
 		sex = newSex;
+	}
+
+	public String serialize(boolean withBeansHead) {
+		String result = "<object class=\"beans.Sex\">";
+
+		//Tags for fields
+		//May be need to be in alphabetical order
+
+		result += Utils.intToBeanField("sex", sex);
+
+		result += "</object>";
+		if (withBeansHead) {
+			result = Utils.encoderWrap(result);
+		}
+
+		return result;
 	}
 
 	public static final int male      = 1;

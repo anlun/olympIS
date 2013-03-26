@@ -48,4 +48,11 @@ public class Utils {
 				+ value.serialize(false)
 				+ "</void>";
 	}
+
+	public static String encoderWrap(String strToWrap) {
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n"
+				+ "<java version=\"1.7.0_09\" class=\"com.googlecode.openbeans.XMLDecoder\">"
+				+ strToWrap
+				+ "</java>";
+	}
 }

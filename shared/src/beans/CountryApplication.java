@@ -59,10 +59,7 @@ public class CountryApplication implements Serializable, CustomSerializable {
 		result += "</object>";
 
 		if (withBeansHead) {
-			result =  "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n"
-					+ "<java version=\"1.7.0_09\" class=\"com.googlecode.openbeans.XMLDecoder\">"
-					+ result
-					+ "</java>";
+			result = Utils.encoderWrap(result);
 		}
 
 		return result;

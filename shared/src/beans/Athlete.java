@@ -1,8 +1,11 @@
 package beans;
 
+import utils.CustomSerializable;
+import utils.Utils;
+
 import java.io.Serializable;
 
-public class Athlete implements Serializable {
+public class Athlete implements Serializable, CustomSerializable {
 	public Athlete() {
 	}
 
@@ -52,6 +55,26 @@ public class Athlete implements Serializable {
 
 	public String getCompetition() {
 		return this.competition;
+	}
+
+	public String serialize(boolean withBeansHead) {
+		String result = "<object class=\"beans.Athlete\">";
+
+		//Tags for fields
+		//May be need to be in alphabetical order
+
+		result += Utils.stringToBeanField("competition", competition);
+		result += Utils.intToBeanField("height", height);
+		result += Utils.stringToBeanField("name", name);
+		result += Utils.objectToBeanField("sex", sex);
+		result += Utils.intToBeanField("weight", weight);
+
+		result += "</object>";
+		if (withBeansHead) {
+			result = Utils.encoderWrap(result);
+		}
+
+		return result;
 	}
 
 	private String name;
