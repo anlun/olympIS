@@ -65,6 +65,15 @@ public class CompetitionList {
 		return -1;
 	}
 
+	public Athlete getAthlete(String name, String competitionName){
+		for (Competition competition : this.competitionList) {
+			if (competition.getCompetition().equals(competitionName)) {
+				return competition.getAthlete(name);
+			}
+		}
+		return null;
+	}
+
 	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
 
 	private class Competition {
@@ -79,6 +88,15 @@ public class CompetitionList {
 			this.competition = competition;
 			this.athleteCompetitionList = new ArrayList<Athlete>();
 			this.athleteNumber = maxAthleteNumber;
+		}
+
+		private Athlete getAthlete(String name) {
+			for (Athlete athlete : athleteCompetitionList) {
+				if (athlete.getName().equals(name)) {
+					return athlete;
+				}
+			}
+			return null;
 		}
 
 		private int getAthleteListIndex(String name) {

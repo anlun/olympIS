@@ -14,19 +14,18 @@ import beans.Athlete;
 import beans.Sex;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class realize completing an application GUI for authorized country.
  *  @author danya
  */
+
 public class CountryGUI extends Activity implements OnClickListener, View.OnLongClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.postrequest);
+		setContentView(R.layout.postapplication);
 
 		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
 		competitionNamesList = getResources().getStringArray(R.array.sport_array);
@@ -42,15 +41,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		text2 = (EditText)findViewById(R.id.text2);
 		text3 = (EditText)findViewById(R.id.text3);
 		text4 = (EditText)findViewById(R.id.text4);
-		horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
+		linearLayout = (LinearLayout) findViewById(R.id.linLayMain);
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		tableLayoutArrayList = new ArrayList<TableLayout>();
+		linearLayoutArrayList = new ArrayList<LinearLayout>();
 		for (int i = 0; i < competitionNamesList.length; i++) {
-			TableLayout tl = (TableLayout) inflater.inflate(R.layout.tablelayout, null);
-			tableLayoutArrayList.add(tl);
+			LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.listlayout, null);
+			linearLayoutArrayList.add(lv);
 		}
-		horizontalScrollView.addView(tableLayoutArrayList.get(0));
+		linearLayout.addView(linearLayoutArrayList.get(0));
 		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 
 		addButton = (Button)findViewById(R.id.add_button);
@@ -61,8 +60,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 									   int position, long id) {
-				horizontalScrollView.removeViewAt(0);
-				horizontalScrollView.addView(tableLayoutArrayList.get(position));
+				forceEdit = false;
+				linearLayout.removeViewAt(0);
+				linearLayout.addView(linearLayoutArrayList.get(position));
 				String competition = competitionNamesList[sp.getSelectedItemPosition()];
 				int athleteNumber = competitionList.getAthleteNumber(competition);
 				int athleteMaxNumber = competitionList.getMaxAthleteNumber(competition);
@@ -101,35 +101,48 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * Adds dynamically a row in a table.
-	 * @param index Is an index in witch new Row will be added in tableLayout.
-	 */
+/**
+ * Adds dynamically a row in a table.
+ * @param index Is an index in witch new Row will be added in tableLayout.
+ */
 	public void addRow(String name, String sex, String weight, String height, String competition, int index) {
+		Log.d("DAN","in addRow");
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		TableRow ll = (TableRow) inflater.inflate(R.layout.tablerow, null);
-		List<String> l = Arrays.asList(name, sex, weight, height, competition);
-		for (int i = 0; i <= 4; i++) {
-			((TextView) ll.getChildAt(i)).setText(l.get(i));
-		}
+		Log.d("DAN","getting TextView");
+		TextView tv = (TextView) inflater.inflate(R.layout.textview, null);
+		Log.d("DAN","getted TextView. set name");
+		tv.setText(name);
+		Log.d("DAN","name setted");
 
 		// Листенер долгого нажатия, для правки иформации о спортсмене.
-		ll.setOnLongClickListener(this);
+		tv.setOnLongClickListener(this);
+		tv.setOnClickListener(this);
+		Log.d("DAN","OnLongClick setted");
 
 		// tableLayout.addView(ll, index);
-		((TableLayout) horizontalScrollView.getChildAt(0)).addView(ll, index);
+		LinearLayout lv = (LinearLayout) linearLayout.getChildAt(0);
+		Log.d("DAN","LinearLayout lv = (LinearLayout) linearLayout.getChildAt(0);");
+		lv.addView(tv,index);
+		Log.d("DAN","((LinearLayout) linearLayout.getChildAt(0)).addView(tv, index);");
 	}
 
 	// Считаю, что long click есть только у tableRow.
 	public boolean onLongClick(View v) {
-		TableRow lr = (TableRow) v;
+		TextView tv = (TextView) v;
+		String name = tv. getText() + "";
+		String competition = competitionNamesList[sp.getSelectedItemPosition()];
 
-		text1.setText(((TextView)lr.getChildAt(0)).getText() + "");
-		text2.setText(((TextView)lr.getChildAt(1)).getText() + "");
-		text3.setText(((TextView)lr.getChildAt(2)).getText() + "");
-		text4.setText(((TextView)lr.getChildAt(3)).getText() + "");
+		Log.d("DAN","get athlete");
+		Athlete athlete = competitionList.getAthlete(name, competition);
+		Log.d("DAN","get name");
+		text1.setText(athlete.getName());
+		Log.d("DAN","get sex");
+		text2.setText(athlete.getSex().toString());
+		Log.d("DAN","get weight");
+		text3.setText(athlete.getWeight() + "");
+		Log.d("DAN","get height");
+		text4.setText(athlete.getHeight() + "");
 
-		String competition = ((TextView)lr.getChildAt(4)).getText() + "";
 		int itemSelected = 0;
 		String[] choose = getResources().getStringArray(R.array.sport_array);
 		for (itemSelected = 0; itemSelected < choose.length; itemSelected++) {
@@ -140,7 +153,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		sp.setSelection(itemSelected);
 
 		forceEdit = true;
-		oldAthleteName = ((TextView)lr.getChildAt(0)).getText() + "";
+		oldAthleteName = tv.getText() + "";
 
 		return true;
 	}
@@ -183,19 +196,30 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					// Соревнование.
 					String competition = competitionNamesList[sp.getSelectedItemPosition()];
 					int athleteIndex = this.competitionList.getAthleteListIndex(name, competition);
-					// Удаляем старые данные из таблицы пользователя.
-					Log.d("DAN", "delete view index " + athleteIndex);
-					((TableLayout) horizontalScrollView.getChildAt(0)).removeViewAt(athleteIndex + 1);
-					// Удаляем старые данные о спортсмене
-					Log.d("DAN", "delete list " +  name + " " + competition);
-					competitionList.deleteAthlete(name, competition);
-					Log.d("DAN", "deleted");
 					if (addAthlete(athleteIndex)) {
 						Toast.makeText(this, "Информация изменена", Toast.LENGTH_SHORT).show();
 						forceEdit = false;
 						oldAthleteName = "";
 					}
 				}
+				break;
+			default: // Это значит, что это был клик по спортсмену.
+				TextView tv = (TextView) v;
+				String name = tv. getText() + "";
+				String competition = competitionNamesList[sp.getSelectedItemPosition()];
+				Athlete athlete = competitionList.getAthlete(name, competition);
+
+				Log.d("DAN","get athleteInformation");
+				String athleteInformation = "Name: " + athlete.getName() + "\n\n" +
+						"Sex: " + athlete.getSex().toString() + "\n\n" +
+						"Weight: " + athlete.getWeight() + "\n\n" +
+						"Height: " + athlete.getHeight() + "\n\n" +
+						"Competition: " + athlete.getCompetition() + "";
+				Log.d("DAN","new intent");
+				Intent dayActivityIntent = new Intent(this, AthleteInformationActivity.class);
+				dayActivityIntent.putExtra("athleteInformation", athleteInformation);
+				Log.d("DAN","startActivity");
+				startActivity(dayActivityIntent);
 				break;
 		}
 	}
@@ -213,7 +237,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 					// Удаляем старые данные из таблицы пользователя.
 					Log.d("DAN", "delete view index " + athleteIndex);
-					((TableLayout) horizontalScrollView.getChildAt(0)).removeViewAt(athleteIndex + 1);
+					((LinearLayout) linearLayout.getChildAt(0)).removeViewAt(athleteIndex);
 
 					// Удаляем старые данные о спортсмене
 					competitionList.deleteAthlete(name, competition);
@@ -252,12 +276,24 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			int weight = Integer.parseInt((text3.getText() + ""));
 			int height = Integer.parseInt((text4.getText() + ""));
 			String competition = competitionNamesList[sp.getSelectedItemPosition()];
+
+			if(forceEdit){
+				// Удаляем старые данные из таблицы пользователя.
+				Log.d("DAN", "delete view index " + athleteIndex);
+				((LinearLayout) linearLayout.getChildAt(0)).removeViewAt(athleteIndex);
+				// Удаляем старые данные о спортсмене
+				Log.d("DAN", "delete list " +  name + " " + competition);
+				competitionList.deleteAthlete(oldAthleteName, competition);
+				Log.d("DAN", "deleted");
+				forceEdit = false;
+			}
+
 			Log.d("DAN", "index " + athleteIndex);
 			competitionList.addAthlete(athleteIndex, competition, new Athlete(name, sex, weight, height, competition));
 
 			// Добавляем информацию в таблицу пользователя.
 			addRow(name + "", sex + "", weight + "",
-					height + "", competition, athleteIndex + 1);
+					height + "", competition, athleteIndex);
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
 			return false;
@@ -277,9 +313,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private EditText text3;
 	private EditText text4;
 	private Spinner sp;
-	private HorizontalScrollView horizontalScrollView;
+
+	private LinearLayout linearLayout;
 	private CountryApplication countryApplication;
-	private ArrayList<TableLayout> tableLayoutArrayList;
+	private ArrayList<LinearLayout> linearLayoutArrayList;
+
 	private TextView athleteCompetitionNumber;
 	private int[] athleteNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 	private String[] competitionNamesList; // Список названий соревнований.
