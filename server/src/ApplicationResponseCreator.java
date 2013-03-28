@@ -1,5 +1,11 @@
 import beans.CountryApplication;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import utils.RequestResponseConst;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -30,14 +36,12 @@ public class ApplicationResponseCreator extends ResponseCreator {
 		return failResponse();
 	}
 
-	//TODO
 	private static String failResponse() {
-		return "";
+		return RequestResponseConst.failCountryApplicationResponse();
 	}
 
-	//TODO
 	private static String successResponse() {
-		return "";
+		return RequestResponseConst.successCountryApplicationResponse();
 	}
 
 	String applicationXML;

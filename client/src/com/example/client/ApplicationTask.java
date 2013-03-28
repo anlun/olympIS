@@ -3,6 +3,7 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import beans.CountryApplication;
+import utils.RequestResponseConst;
 import utils.Utils;
 
 import java.io.IOException;
@@ -45,9 +46,10 @@ public class ApplicationTask extends AsyncTask<String, Integer, Boolean> {
 		//TODO: добавить обработку со стороны вьюшки
 	}
 
-	//TODO: сделать нормальный парсинг XML ответа
 	private static boolean getResultFromXML(String answerXML) {
-		return false;
+		return answerXML.equals(
+				RequestResponseConst.successCountryApplicationResponse()
+		);
 	}
 
 	private CountryApplication countryApplication;

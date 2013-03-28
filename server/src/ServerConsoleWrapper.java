@@ -137,6 +137,18 @@ public class ServerConsoleWrapper {
 
 				} else if (tagName.equalsIgnoreCase("application-constrain-request")) {
 					return (new ApplicationConstrainResponseCreator(dom)).createResponse();
+				} else if (
+						tagName.equalsIgnoreCase("java")
+						&& root.hasAttribute("class")
+						&& root.getAttribute("class")
+								.contains("XMLDecoder")
+				) {
+					Element object = (Element) root.getFirstChild();
+					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
+						if (object.getAttribute("class").equals("beans.CountryApplication")) {
+							return (new ApplicationResponseCreator(xmlString)).createResponse();
+						} //else ...
+					}
 				}
 
 				System.err.println(tagName);
