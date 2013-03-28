@@ -8,12 +8,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import sun.misc.IOUtils;
 import utils.Utils;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -96,10 +96,9 @@ public class ServerConsoleWrapper {
 	private class Handler implements HttpHandler {
 		public void handle(HttpExchange exc) throws IOException {
 			// Reading the http request to string
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(exc.getRequestBody()));
-			String command = in.readLine();
-			in.close();
+			String command = new String(
+					IOUtils.readFully(exc.getRequestBody(), -1, false)
+					, "UTF-8");
 
 			//for debug purposes
 			//System.out.println(command);
