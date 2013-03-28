@@ -6,7 +6,6 @@ import utils.Utils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-//TODO: сделать кустарную сериализацию
 public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
 	}
@@ -41,7 +40,7 @@ public class CountryApplication implements Serializable, CustomSerializable {
 		return login;
 	}
 
-	public String serialize(boolean withBeansHead) {
+	public String serialize() {
 		String result = "<object class=\"beans.CountryApplication\">";
 
 		//Tags for fields
@@ -55,12 +54,7 @@ public class CountryApplication implements Serializable, CustomSerializable {
 
 		//password
 		result += Utils.stringToBeanField("password", password);
-
 		result += "</object>";
-
-		if (withBeansHead) {
-			result = Utils.encoderWrap(result);
-		}
 
 		return result;
 	}

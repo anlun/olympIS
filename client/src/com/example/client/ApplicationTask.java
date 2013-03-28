@@ -19,7 +19,7 @@ public class ApplicationTask extends AsyncTask<String, Integer, Boolean> {
 		boolean result = false;
 
 		try {
-			String requestXML = Utils.beanToString(countryApplication);
+			String requestXML = Utils.encoderWrap(countryApplication.serialize());
 			Client cl = new Client(serverURL);
 			String answerXML = cl.execute(requestXML);
 

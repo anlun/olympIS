@@ -34,7 +34,7 @@ public class Utils {
 		result += "<object class=\"java.util.ArrayList\">";
 
 		for (CustomSerializable el : list) {
-			result += "<void method=\"add\">" + el.serialize(false) + "</void>";
+			result += "<void method=\"add\">" + el.serialize() + "</void>";
 		}
 
 		result += "</object>";
@@ -45,7 +45,7 @@ public class Utils {
 
 	public static String objectToBeanField(String fieldName, CustomSerializable value) {
 		return "<void property=\"" + fieldName + "\">"
-				+ value.serialize(false)
+				+ value.serialize()
 				+ "</void>";
 	}
 

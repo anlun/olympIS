@@ -57,7 +57,7 @@ public class Athlete implements Serializable, CustomSerializable {
 		return this.competition;
 	}
 
-	public String serialize(boolean withBeansHead) {
+	public String serialize() {
 		String result = "<object class=\"beans.Athlete\">";
 
 		//Tags for fields
@@ -70,9 +70,6 @@ public class Athlete implements Serializable, CustomSerializable {
 		result += Utils.intToBeanField("weight", weight);
 
 		result += "</object>";
-		if (withBeansHead) {
-			result = Utils.encoderWrap(result);
-		}
 
 		return result;
 	}

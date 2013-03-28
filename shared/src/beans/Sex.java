@@ -26,18 +26,11 @@ public class Sex implements Serializable, CustomSerializable {
 		sex = newSex;
 	}
 
-	public String serialize(boolean withBeansHead) {
+	public String serialize() {
 		String result = "<object class=\"beans.Sex\">";
 
-		//Tags for fields
-		//May be need to be in alphabetical order
-
 		result += Utils.intToBeanField("sex", sex);
-
 		result += "</object>";
-		if (withBeansHead) {
-			result = Utils.encoderWrap(result);
-		}
 
 		return result;
 	}
