@@ -21,13 +21,13 @@ public class TableFilter extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tablefilter);
+		setContentView(R.layout.table_filter);
 
 		resultOfChoice = new ArrayList<String>();
 
 		lvMain = (ListView) findViewById(R.id.lvMain);
 		lvMain.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		// Смотрим в какой фтльтр выбран, создаем адаптер, используя соответствующий массив из файла ресурсов.
+		// Смотрим в какой фильтр выбран, создаем адаптер, используя соответствующий массив из файла ресурсов.
 		// + запоняем resourceArray всё тем же массивом
 		String filterCase = this.getIntent().getStringExtra("filterNumber");
 		//заодно инициализируем 0-ой элемент resultOfChoice
