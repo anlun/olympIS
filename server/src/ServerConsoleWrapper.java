@@ -34,15 +34,6 @@ public class ServerConsoleWrapper {
 	 * @param args Just ignores now.
 	 */
 	public static void main(String[] args) {
-		ArrayList<Athlete> athleteList = new ArrayList<Athlete>();
-		athleteList.add(new Athlete("asd", new Sex(Sex.male), 123, 124, "asd"));
-		CountryApplication app = new CountryApplication(
-				"log", "pas"
-				, athleteList
-		);
-		String xmlView = Utils.beanToString(app);
-		System.out.println(xmlView);
-
 		System.out.println("Test http server");
 		startServer(new InetSocketAddress(8888));
 	}
@@ -137,6 +128,10 @@ public class ServerConsoleWrapper {
 
 				} else if (tagName.equalsIgnoreCase("application-constrain-request")) {
 					return (new ApplicationConstrainResponseCreator(dom)).createResponse();
+
+				} else if (tagName.equalsIgnoreCase("application-request")) {
+					return (new ApplicationPostResponseCreator(dom)).createResponse();
+
 				} else if (
 						tagName.equalsIgnoreCase("java")
 						&& root.hasAttribute("class")

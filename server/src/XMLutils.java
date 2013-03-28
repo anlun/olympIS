@@ -18,7 +18,7 @@ import java.io.StringWriter;
  * Class with useful functions for work with XML.
  * @author Podkopaev Anton
  */
-public class XMLutils {
+public abstract class XMLutils {
 	public static String domToXmlString(Document dom) throws DomToStringTranslationException {
 		try {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();

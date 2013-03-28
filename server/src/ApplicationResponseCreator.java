@@ -25,7 +25,7 @@ public class ApplicationResponseCreator extends ResponseCreator {
 				return failResponse();
 			}
 
-			//TODO: запись в базу
+			//TODO: запись в базу, проверка login, password из app.
 
 			return successResponse();
 
