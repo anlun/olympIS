@@ -25,11 +25,12 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.postapplication);
+		setContentView(R.layout.post_application);
 
 		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
 		competitionNamesList = getResources().getStringArray(R.array.sport_array);
 		athleteNumberList = new int[competitionNamesList.length];
+		// Задаём число спортсменов для каждого соревнования.
 		for (int i = 0 ; i < athleteNumberList.length; i++) {
 			athleteNumberList[i] = 2;
 		}
@@ -46,7 +47,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		linearLayoutArrayList = new ArrayList<LinearLayout>();
 		for (int i = 0; i < competitionNamesList.length; i++) {
-			LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.listlayout, null);
+			LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.linear_layout_pattern, null);
 			linearLayoutArrayList.add(lv);
 		}
 		linearLayout.addView(linearLayoutArrayList.get(0));
@@ -57,13 +58,17 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 		sp = (Spinner) findViewById(R.id.competitionSpinner);
 		sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			// Вызывается при смене Item в спиннере sp.
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 									   int position, long id) {
 				forceEdit = false;
+				// Удаляем старый список спортсменов из видимости.
 				linearLayout.removeViewAt(0);
+				// Делаем видимым список спортсменов, соответствующий соревнованию.
 				linearLayout.addView(linearLayoutArrayList.get(position));
 				String competition = competitionNamesList[sp.getSelectedItemPosition()];
+				// Выставляем число атлетов в заявке и макс.число атлетов по данному соревнованию.
 				int athleteNumber = competitionList.getAthleteNumber(competition);
 				int athleteMaxNumber = competitionList.getMaxAthleteNumber(competition);
 				athleteCompetitionNumber.setText("Осталось: " + (athleteMaxNumber - athleteNumber) +
@@ -93,6 +98,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case 1:// post application
+				// TODO проверить работоспособность этих строчек.
 				AuthorizationData data = AuthorizationData.getInstance();
 				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
 				//TODO: дописать передачу countryApplication через Тошин класс
@@ -101,15 +107,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		return super.onOptionsItemSelected(item);
 	}
 
-/**
- * Adds dynamically a row in a table.
- * @param index Is an index in witch new Row will be added in tableLayout.
- */
-	public void addRow(String name, String sex, String weight, String height, String competition, int index) {
+	/**
+	* Adds dynamically a athlete in list and visible layout.
+	* @param index Is an index in witch new Row will be added in layout.
+	*/
+	public void addRow(String name, int index) {
 		Log.d("DAN","in addRow");
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("DAN","getting TextView");
-		TextView tv = (TextView) inflater.inflate(R.layout.textview, null);
+		TextView tv = (TextView) inflater.inflate(R.layout.text_view_pattern, null);
 		Log.d("DAN","getted TextView. set name");
 		tv.setText(name);
 		Log.d("DAN","name setted");
@@ -119,14 +125,13 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		tv.setOnClickListener(this);
 		Log.d("DAN","OnLongClick setted");
 
-		// tableLayout.addView(ll, index);
 		LinearLayout lv = (LinearLayout) linearLayout.getChildAt(0);
 		Log.d("DAN","LinearLayout lv = (LinearLayout) linearLayout.getChildAt(0);");
 		lv.addView(tv,index);
 		Log.d("DAN","((LinearLayout) linearLayout.getChildAt(0)).addView(tv, index);");
 	}
 
-	// Считаю, что long click есть только у tableRow.
+	// Считаю, что long click есть только у TextView каждого атлета.
 	public boolean onLongClick(View v) {
 		TextView tv = (TextView) v;
 		String name = tv. getText() + "";
@@ -136,11 +141,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		Athlete athlete = competitionList.getAthlete(name, competition);
 		Log.d("DAN","get name");
 		text1.setText(athlete.getName());
-		Log.d("DAN","get sex");
+		Log.d("DAN", "get sex");
 		text2.setText(athlete.getSex().toString());
-		Log.d("DAN","get weight");
+		Log.d("DAN", "get weight");
 		text3.setText(athlete.getWeight() + "");
-		Log.d("DAN","get height");
+		Log.d("DAN", "get height");
 		text4.setText(athlete.getHeight() + "");
 
 		int itemSelected = 0;
@@ -174,12 +179,12 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					String name = text1.getText() + "";
 					int athleteIndex = this.competitionList.getAthleteListIndex(name, competitionNamesList[sp.getSelectedItemPosition()]);
 					if (athleteIndex != -1) { // Т.е. спортсмен уже есть в таблице
-						Intent tableCountryFilterIntent = new Intent(this, DialogActivity.class);
+						Intent dialogActivity = new Intent(this, DialogActivity.class);
 						// Далее вторым параметром стоит 2. Это requestCode, он может быть любым числом.
 						// Выбрана 2, т.к. 1 уже использовалось в другом классе. requestCode может совпадать
 						// в разных местах программы и даже в одном классе,
 						// но рекомендуется ставить разные значения, во избежания неожиданных ошибок.
-						startActivityForResult(tableCountryFilterIntent, 2);
+						startActivityForResult(dialogActivity, 2);
 						break;
 					}
 					// Т.е. если не нашли атлета в списке, то вставлять его будем в начало.
@@ -261,13 +266,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	}
 
 	/**
-	 * Adds athlete in a athleteList and adds an row in the user table.
+	 * Adds athlete in a athleteList and adds an row in the user list.
 	 * If athlete is successfully added, returns true, returns false otherwise.
-	 * @param athleteIndex Is an index in witch new athlete will be added in the list and user table.
+	 * @param athleteIndex Is an index in witch new athlete will be added in the list and user list.
 	 */
 	private boolean addAthlete(int athleteIndex) {
-		// Получение данных из spinner-а(соревнование).
-		//String[] choose = getResources().getStringArray(R.array.sport_array);
 		// Добавляем данные в список, который будем передавать.
 		try {
 			String name = text1.getText() + "";
@@ -292,8 +295,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			competitionList.addAthlete(athleteIndex, competition, new Athlete(name, sex, weight, height, competition));
 
 			// Добавляем информацию в таблицу пользователя.
-			addRow(name + "", sex + "", weight + "",
-					height + "", competition, athleteIndex);
+			addRow(name + "", athleteIndex);
 		} catch (NumberFormatException e) {
 			Toast.makeText(this, "Вес или рост введены некорректно.", Toast.LENGTH_SHORT).show();
 			return false;
@@ -305,18 +307,20 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
-								// становится истиной. Если она true, то диалога изменения не будет.
+			// становится истиной. Если она true, то диалога изменения не будет.
 	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
-	private Button addButton;
+	private Button addButton; // Кнопка добавления атлета.
 	private EditText text1;
 	private EditText text2;
 	private EditText text3;
 	private EditText text4;
-	private Spinner sp;
+	private Spinner sp; // Спиннер для выбора соревнования.
 
-	private LinearLayout linearLayout;
+	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
 	private CountryApplication countryApplication;
-	private ArrayList<LinearLayout> linearLayoutArrayList;
+	private ArrayList<LinearLayout> linearLayoutArrayList; // Массив LinearLayout-ов. Каждому эл-ту
+			// соответствует спорт. При смене вида спорта происходит смена Layout-а, и, соответственно,
+			// меняется отображаемый список спортсменов.
 
 	private TextView athleteCompetitionNumber;
 	private int[] athleteNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
