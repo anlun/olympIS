@@ -8,19 +8,19 @@
 		</LinearLayout>
 		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="Name:"></TextView>
-			<EditText android:id="@+id/text1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Name" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
+			<EditText android:id="@+id/nameTextEdit" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Name" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
 		</LinearLayout>
 		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="Sex:"></TextView>
-			<EditText android:id="@+id/text2"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="sex" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
+			<Spinner android:id="@+id/sexSpinner" android:layout_width="fill_parent" android:layout_height="wrap_content" android:entries="@array/sex_array" android:prompt="@string/sex"/>
 		</LinearLayout>
 		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="Weight:"></TextView>
-			<EditText android:id="@+id/text3"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="weight" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
+			<EditText android:id="@+id/weightTextEdit"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="number" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
 		</LinearLayout>
 		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="Height:"></TextView>
-			<EditText android:id="@+id/text4"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="height" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
+			<EditText android:id="@+id/heightTextEdit"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="number" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
 		</LinearLayout>
 		<Button android:id="@+id/add_button" android:text="+" android:layout_margin="2dip"/>
 		<LinearLayout android:id="@+id/linLayMain" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
