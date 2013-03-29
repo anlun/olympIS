@@ -3,6 +3,7 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -14,12 +15,12 @@ import beans.Athlete;
 import beans.Sex;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class realize completing an application GUI for authorized country.
  *  @author danya
  */
-
 public class CountryGUI extends Activity implements OnClickListener, View.OnLongClickListener {
 
 	@Override
@@ -32,16 +33,16 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		athleteNumberList = new int[competitionNamesList.length];
 		// Задаём число спортсменов для каждого соревнования.
 		for (int i = 0 ; i < athleteNumberList.length; i++) {
-			athleteNumberList[i] = 2;
+			athleteNumberList[i] = 20;
 		}
 		competitionList = new CompetitionList(competitionNamesList, athleteNumberList);
 
 		forceEdit = false;
 		oldAthleteName = "";
-		text1 = (EditText)findViewById(R.id.text1);
-		text2 = (EditText)findViewById(R.id.text2);
-		text3 = (EditText)findViewById(R.id.text3);
-		text4 = (EditText)findViewById(R.id.text4);
+		nameTextEdit = (EditText)findViewById(R.id.nameTextEdit);
+		sexSpinner = (Spinner) findViewById(R.id.sexSpinner);
+		weightTextEdit = (EditText)findViewById(R.id.weightTextEdit);
+		heightTextEdit = (EditText)findViewById(R.id.heightTextEdit);
 		linearLayout = (LinearLayout) findViewById(R.id.linLayMain);
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,8 +54,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		linearLayout.addView(linearLayoutArrayList.get(0));
 		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 
-		addButton = (Button)findViewById(R.id.add_button);
-		addButton.setOnClickListener(this);
+		findViewById(R.id.add_button).setOnClickListener(this);
 
 		sp = (Spinner) findViewById(R.id.competitionSpinner);
 		sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -123,6 +123,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		// Листенер долгого нажатия, для правки иформации о спортсмене.
 		tv.setOnLongClickListener(this);
 		tv.setOnClickListener(this);
+		tv.setGravity(Gravity.CENTER);
+		int randomColor = Color.rgb(random.nextInt() % 255, random.nextInt() % 255, random.nextInt() % 255);
+		tv.setBackgroundColor(randomColor);
+		tv.setTextColor(Color.rgb(Color.red(randomColor) / 2, 255 - Color.green(randomColor), 255 - Color.blue(randomColor)));
 		Log.d("DAN","OnLongClick setted");
 
 		LinearLayout lv = (LinearLayout) linearLayout.getChildAt(0);
@@ -140,15 +144,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		Log.d("DAN","get athlete");
 		Athlete athlete = competitionList.getAthlete(name, competition);
 		Log.d("DAN","get name");
-		text1.setText(athlete.getName());
+		nameTextEdit.setText(athlete.getName());
 		Log.d("DAN", "get sex");
-		text2.setText(athlete.getSex().toString());
+		sexSpinner.setSelection(competitionList.getAthlete(name, competition).getSex().getSex());
 		Log.d("DAN", "get weight");
-		text3.setText(athlete.getWeight() + "");
+		weightTextEdit.setText(athlete.getWeight() + "");
 		Log.d("DAN", "get height");
-		text4.setText(athlete.getHeight() + "");
+		heightTextEdit.setText(athlete.getHeight() + "");
 
-		int itemSelected = 0;
+		int itemSelected;
 		String[] choose = getResources().getStringArray(R.array.sport_array);
 		for (itemSelected = 0; itemSelected < choose.length; itemSelected++) {
 			if (choose[itemSelected].equals(competition)) {
@@ -176,7 +180,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					}
 
 					// Имя спортсмена.
-					String name = text1.getText() + "";
+					String name = nameTextEdit.getText() + "";
 					int athleteIndex = this.competitionList.getAthleteListIndex(name, competitionNamesList[sp.getSelectedItemPosition()]);
 					if (athleteIndex != -1) { // Т.е. спортсмен уже есть в таблице
 						Intent dialogActivity = new Intent(this, DialogActivity.class);
@@ -216,7 +220,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 				Log.d("DAN","get athleteInformation");
 				String athleteInformation = "Name: " + athlete.getName() + "\n\n" +
-						"Sex: " + athlete.getSex().toString() + "\n\n" +
+						"Sex: " + sexToString(athlete.getSex()) + "\n\n" +
 						"Weight: " + athlete.getWeight() + "\n\n" +
 						"Height: " + athlete.getHeight() + "\n\n" +
 						"Competition: " + athlete.getCompetition() + "";
@@ -236,7 +240,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			if (resultCode == RESULT_OK) {
 				boolean result = data.getBooleanExtra("dialogResult", false);
 				if (result) {
-					String name = text1.getText() + "";
+					String name = nameTextEdit.getText() + "";
 					String competition = competitionNamesList[sp.getSelectedItemPosition()];
 					int athleteIndex = this.competitionList.getAthleteListIndex(name, competitionNamesList[sp.getSelectedItemPosition()]);
 
@@ -273,11 +277,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private boolean addAthlete(int athleteIndex) {
 		// Добавляем данные в список, который будем передавать.
 		try {
-			String name = text1.getText() + "";
-			Sex sex = toSex(text2.getText() + "");
+			String name = nameTextEdit.getText() + "";
+			Sex sex = toSex(sexArray[sexSpinner.getSelectedItemPosition()]);
 			// TODO пока что weight и height обязательны для заполнения. Если надо - можно исправить.
-			int weight = Integer.parseInt((text3.getText() + ""));
-			int height = Integer.parseInt((text4.getText() + ""));
+			int weight = Integer.parseInt((weightTextEdit.getText() + ""));
+			int height = Integer.parseInt((heightTextEdit.getText() + ""));
 			String competition = competitionNamesList[sp.getSelectedItemPosition()];
 
 			if(forceEdit){
@@ -301,19 +305,31 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			return false;
 		}
 
-		text1.setText(""); text2.setText("");
-		text3.setText(""); text4.setText("");
+		nameTextEdit.setText("");
+		sexSpinner.setSelection(0);
+		weightTextEdit.setText(""); heightTextEdit.setText("");
 		return true;
+	}
+
+	private String sexToString(Sex sex) {
+		switch (sex.getSex()) {
+			case 0:
+				return "undefined";
+			case 1:
+				return "male";
+			default:
+				return "female";
+		}
 	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
 			// становится истиной. Если она true, то диалога изменения не будет.
 	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
-	private Button addButton; // Кнопка добавления атлета.
-	private EditText text1;
-	private EditText text2;
-	private EditText text3;
-	private EditText text4;
+	private EditText nameTextEdit; // Поле для ввода имени.
+	private Spinner sexSpinner; // Спиннер для выбора пола.
+	private final static String[] sexArray = {"undefined", "male", "female"};
+	private EditText weightTextEdit; // Поле для ввода веса.
+	private EditText heightTextEdit; // Поле для ввода роста.
 	private Spinner sp; // Спиннер для выбора соревнования.
 
 	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
@@ -329,4 +345,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			// Этот список будет передаваться серверу.
 			// Спортсмены, хранятся в этом списке, отображаются
 			// в таблице на экране и в списве в одном и том же порядке.
+
+	private Random random = new Random(); // Для генерации случайных цветов.
 }
