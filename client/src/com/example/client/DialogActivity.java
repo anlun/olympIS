@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.View.*;
 import android.widget.TextView;
 
+/* Class-activity realizes the View with information for user.
+ * @author danya
+ */
 public class DialogActivity extends Activity implements OnClickListener {
 
 	@Override
