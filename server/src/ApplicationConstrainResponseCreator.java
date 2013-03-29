@@ -29,9 +29,9 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	//TODO: Need to be implemented with data from database.
 	private ApplicationConstrain getCountryApplicationConstrain(String country, String login, String password) {
 		Vector<ApplicationConstrain.SportConstrain> vec = new Vector<ApplicationConstrain.SportConstrain>();
-		vec.add(new ApplicationConstrain.SportConstrain("Baseball",   10, Sex.Male));
-		vec.add(new ApplicationConstrain.SportConstrain("Basketball", 15, Sex.Female));
-		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, Sex.Undefined));
+		vec.add(new ApplicationConstrain.SportConstrain("Baseball",   10, new Sex(Sex.male)));
+		vec.add(new ApplicationConstrain.SportConstrain("Basketball", 15, new Sex(Sex.female)));
+		vec.add(new ApplicationConstrain.SportConstrain("Swim",       25, new Sex(Sex.undefined)));
 
 		return new ApplicationConstrain(vec);
 	}

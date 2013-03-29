@@ -257,11 +257,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	private Sex toSex(String str) {
 		if (str.equals("Male") || str.equals("male") || str.equals("M") || str.equals("m")) {
-			return Sex.Male;
+			return new Sex(Sex.male);
 		} else if (str.equals("Female") || str.equals("female") || str.equals("F") || str.equals("f")) {
-			return Sex.Female;
+			return new Sex(Sex.female);
 		} else {
-			return Sex.Undefined;
+			return new Sex(Sex.undefined);
 		}
 	}
 
