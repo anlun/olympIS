@@ -23,9 +23,9 @@ public class Sex implements Serializable {
 		sex = newSex;
 	}
 
+	public static final int undefined = 0;
 	public static final int male      = 1;
-	public static final int female    = 0;
-	public static final int undefined = 2;
+	public static final int female    = 2;
 
 	private int sex;
 }

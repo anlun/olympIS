@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.View.*;
 import android.widget.TextView;
 
+/* Class-activity realizes the View with information for user.
+ * @author danya
+ */
 public class DialogActivity extends Activity implements OnClickListener {
 
 	@Override
@@ -14,7 +17,7 @@ public class DialogActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog);
 
-		((TextView)findViewById(R.id.dialog_text)).setText("This athlete is in the table. You are really want to edit it?");
+		((TextView)findViewById(R.id.dialog_text)).setText("This athlete is in the list. You are really want to edit it?");
 
 		findViewById(R.id.yes_button).setOnClickListener(this);
 		findViewById(R.id.no_button).setOnClickListener(this);

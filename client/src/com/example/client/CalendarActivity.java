@@ -87,6 +87,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			default:
 				Intent dayActivityIntent = new Intent(this, DayActivity.class);
 				dayActivityIntent.putExtra("dayNumber", ((TextView) view).getHint());
+				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
+				dayActivityIntent.putExtra("dayTimetable", "9-00 football \n11-00 swimming\n13-00 hockey");
 				startActivity(dayActivityIntent);
 				break;
 		}

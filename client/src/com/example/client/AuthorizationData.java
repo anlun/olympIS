@@ -1,5 +1,8 @@
 package com.example.client;
 
+/*
+* @author danya
+*/
 public class AuthorizationData {
 
 	public static synchronized AuthorizationData getInstance() {

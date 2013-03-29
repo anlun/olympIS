@@ -22,7 +22,8 @@ public class DayActivity extends Activity implements OnClickListener {
 		//устанавливаем №дня
 		((TextView) findViewById(R.id.dayNumberTextView)).setText("day №" + this.getIntent().getStringExtra("dayNumber"));
 
-        // нужен ещё метод заполнения рассписанием формочки
+        // Установка расписания.
+		((TextView) findViewById(R.id.dayTimetableTextView)).setText(this.getIntent().getStringExtra("dayTimetable"));
     }
 
 	public void onClick(View view){
