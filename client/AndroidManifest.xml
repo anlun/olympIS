@@ -26,6 +26,13 @@
 			<intent-filter>
 			</intent-filter>
 		</activity>
+		<activity android:name=".AthleteInformationActivity"
+				  android:label="@string/app_name"
+				  android:theme="@android:style/Theme.Dialog"
+				>
+			<intent-filter>
+			</intent-filter>
+		</activity>
 		<activity android:name=".TableFilter"
 				  android:label="@string/app_name"
 				  android:theme="@android:style/Theme.Dialog"

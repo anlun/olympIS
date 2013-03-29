@@ -8,18 +8,18 @@ public class CountryApplication implements Serializable {
 	public CountryApplication() {
 	}
 
-	public CountryApplication(String login, String password, ArrayList<Athlete> athleteList) {
-		this.athleteList = athleteList;
+	public CountryApplication(String login, String password, CompetitionList competitionList) {
+		this.competitionList = competitionList;
 		this.login = login;
 		this.password = password;
 	}
 
-	public void setAthleteList(ArrayList<Athlete> athleteList) {
-		this.athleteList = athleteList;
+	public void setCompetitionList(CompetitionList competitionList) {
+		this.competitionList = competitionList;
 	}
 
-	public ArrayList<Athlete> getAthleteList(int index) {
-		return athleteList;
+	public CompetitionList getCompetitionList() {
+		return competitionList;
 	}
 
 	public void setPassword(String password) {
@@ -40,5 +40,5 @@ public class CountryApplication implements Serializable {
 
 	private String login;
 	private String password;
-	private ArrayList<Athlete> athleteList;
+	private CompetitionList competitionList;
 }

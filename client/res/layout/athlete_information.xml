@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:id="@+id/athleteInformationMainLinearLayout"
+			  android:orientation="vertical"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent">
+	<TextView android:text="Information" android:textColor="#FFD700" android:background="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="1dip" android:layout_marginRight="1dip" android:layout_marginBottom="1dip"/>
+</LinearLayout>
