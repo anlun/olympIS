@@ -1,7 +1,5 @@
 package beans;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class CompetitionList {
@@ -32,7 +30,6 @@ public class CompetitionList {
 	public void deleteAthlete(String name, String competition) {
 		for (Competition competitionIterator : competitionList) {
 			if (competitionIterator.getCompetition().equals(competition)) {
-				Log.d("DAN", "enter to Competition");
 				competitionIterator.deleteAthlete(name);
 				return;
 			}
@@ -115,9 +112,7 @@ public class CompetitionList {
 		private void deleteAthlete(String name) {
 			for (Athlete athlete : this.athleteCompetitionList) {
 				if (athlete.getName().equals(name)) {
-					Log.d("DAN", "delete athlete ");
 					this.athleteCompetitionList.remove(athlete);
-					Log.d("DAN", "deleted");
 					return;
 				}
 			}
