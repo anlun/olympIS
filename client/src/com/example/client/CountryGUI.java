@@ -324,6 +324,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
+	/**
+	 * It is doing the index for sexArray from the Sex object.
+	 * @param sex Is the Sex object.
+	 * @return index for sexArray accordingly for the sexSpinner with is match the order of sex sequence in sexSpinner.
+	 */
 	private int doIndexFomSex(Sex sex) {
 		switch (sex.getSex()) {
 			case Sex.male:
