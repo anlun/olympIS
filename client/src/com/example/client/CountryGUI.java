@@ -30,6 +30,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
 		competitionNamesList = getResources().getStringArray(R.array.sport_array);
+		sexArray = getResources().getStringArray(R.array.sex_array);
 		athleteNumberList = new int[competitionNamesList.length];
 		// Задаём число спортсменов для каждого соревнования.
 		for (int i = 0 ; i < athleteNumberList.length; i++) {
@@ -345,7 +346,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
 	private EditText nameTextEdit; // Поле для ввода имени.
 	private Spinner sexSpinner; // Спиннер для выбора пола.
-	private final static String[] sexArray = {"undefined", "male", "female"};
+	private String[] sexArray; // Массив полов.
 	private EditText weightTextEdit; // Поле для ввода веса.
 	private EditText heightTextEdit; // Поле для ввода роста.
 	private Spinner sp; // Спиннер для выбора соревнования.
