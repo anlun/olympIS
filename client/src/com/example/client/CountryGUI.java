@@ -146,7 +146,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		Log.d("DAN","get name");
 		nameTextEdit.setText(athlete.getName());
 		Log.d("DAN", "get sex");
-		sexSpinner.setSelection(competitionList.getAthlete(name, competition).getSex().getSex());
+		sexSpinner.setSelection(doIndexFomSex(competitionList.getAthlete(name, competition).getSex()));
 		Log.d("DAN", "get weight");
 		weightTextEdit.setText(athlete.getWeight() + "");
 		Log.d("DAN", "get height");
@@ -313,12 +313,25 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	private String sexToString(Sex sex) {
 		switch (sex.getSex()) {
-			case 0:
+			case Sex.undefined:
 				return "undefined";
-			case 1:
+			case Sex.male:
 				return "male";
-			default:
+			case Sex.female:
 				return "female";
+			default:
+				return "undefined";
+		}
+	}
+
+	private int doIndexFomSex(Sex sex) {
+		switch (sex.getSex()) {
+			case Sex.male:
+				return 1;
+			case Sex.female:
+				return 2;
+			default:
+				return 0;
 		}
 	}
 
