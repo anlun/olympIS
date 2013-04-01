@@ -89,7 +89,7 @@ public class CompetitionList implements CustomSerializable {
 		return result;
 	}
 
-	private class Competition implements CustomSerializable {
+	public class Competition implements CustomSerializable {
 		public Competition() {
 			this.competition = "";
 			this.athleteCompetitionList = new ArrayList<Athlete>();
