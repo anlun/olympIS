@@ -114,7 +114,7 @@ public class CompetitionList implements CustomSerializable {
 			this.athleteNumber = maxAthleteNumber;
 		}
 
-		private Athlete getAthlete(String name) {
+		public Athlete getAthlete(String name) {
 			for (Athlete athlete : athleteCompetitionList) {
 				if (athlete.getName().equals(name)) {
 					return athlete;
@@ -123,7 +123,7 @@ public class CompetitionList implements CustomSerializable {
 			return null;
 		}
 
-		private int getAthleteListIndex(String name) {
+		public int getAthleteListIndex(String name) {
 			for (int i = 0; i < this.athleteCompetitionList.size(); i++) {
 				if (this.athleteCompetitionList.get(i).getName().equals(name)) {
 					return i;
@@ -132,11 +132,11 @@ public class CompetitionList implements CustomSerializable {
 			return -1;
 		}
 
-		private void addAthlete(int index, Athlete athlete) {
+		public void addAthlete(int index, Athlete athlete) {
 			this.athleteCompetitionList.add(index, athlete);
 		}
 
-		private void deleteAthlete(String name) {
+		public void deleteAthlete(String name) {
 			for (Athlete athlete : this.athleteCompetitionList) {
 				if (athlete.getName().equals(name)) {
 					this.athleteCompetitionList.remove(athlete);
@@ -145,27 +145,27 @@ public class CompetitionList implements CustomSerializable {
 			}
 		}
 
-		private void setAthleteCompetitionList(ArrayList<Athlete> athleteCompetitionList) {
+		public void setAthleteCompetitionList(ArrayList<Athlete> athleteCompetitionList) {
 			this.athleteCompetitionList = athleteCompetitionList;
 		}
 
-		private ArrayList<Athlete> getAthleteCompetitionList() {
+		public ArrayList<Athlete> getAthleteCompetitionList() {
 			return this.athleteCompetitionList;
 		}
 
-		private void setCompetition(String competition) {
+		public void setCompetition(String competition) {
 			this.competition = competition;
 		}
 
-		private String getCompetition() {
+		public String getCompetition() {
 			return this.competition;
 		}
 
-		private int getAthleteNumber() {
+		public int getAthleteNumber() {
 			return this.athleteCompetitionList.size();
 		}
 
-		private int getMaxAthleteNumber() {
+		public int getMaxAthleteNumber() {
 			return this.athleteNumber;
 		}
 
