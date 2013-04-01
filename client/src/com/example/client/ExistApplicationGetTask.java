@@ -49,7 +49,7 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 
 	private String generateXML() throws XMLgenerationException{
 		XmlSerializer serializer = Xml.newSerializer();
-		StringWriter writer     = new StringWriter();
+		StringWriter  writer     = new StringWriter();
 
 		try {
 			serializer.setOutput(writer);

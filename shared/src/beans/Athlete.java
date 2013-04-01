@@ -75,9 +75,9 @@ public class Athlete implements Serializable, CustomSerializable {
 	}
 
 	private String name;
-	private Sex sex;
-	private int weight;
-	private int height;
+	private Sex    sex;
+	private int    weight;
+	private int    height;
 	private String competition;
 }
 
