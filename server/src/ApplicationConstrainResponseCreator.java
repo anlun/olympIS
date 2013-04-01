@@ -2,10 +2,7 @@ import beans.ApplicationConstrain;
 import beans.Sex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
+import utils.Utils;
 import java.util.Vector;
 
 /**
@@ -14,7 +11,7 @@ import java.util.Vector;
  */
 public class ApplicationConstrainResponseCreator extends ResponseCreator {
 	public ApplicationConstrainResponseCreator(Document dom) {
-		super(dom);
+		this.dom = dom;
 	}
 
 	public String createResponse() {
@@ -23,7 +20,10 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
 
-		return applicationConstrainToXML(getCountryApplicationConstrain(country, login, password));
+		ApplicationConstrain applicationConstrain = getCountryApplicationConstrain(country, login, password);
+		String response = Utils.beanToString(applicationConstrain);
+		System.out.println(response);
+		return response;
 	}
 
 	//TODO: Need to be implemented with data from database.
@@ -36,11 +36,5 @@ public class ApplicationConstrainResponseCreator extends ResponseCreator {
 		return new ApplicationConstrain(vec);
 	}
 
-	private String applicationConstrainToXML(ApplicationConstrain applicationConstrain) {
-		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
-		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
-		e.writeObject(applicationConstrain);
-		e.close();
-		return byteArr.toString();
-	}
+	private Document dom;
 }
