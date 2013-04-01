@@ -93,7 +93,7 @@ public class CompetitionList implements CustomSerializable {
 		public Competition() {
 			this.competition = "";
 			this.athleteCompetitionList = new ArrayList<Athlete>();
-			this.athleteNumber = 0;
+			this.maxAthleteNumber = 0;
 		}
 
 		public String serialize() {
@@ -101,7 +101,7 @@ public class CompetitionList implements CustomSerializable {
 
 			result += Utils.arrayListToBeanField("athleteCompetitionList", athleteCompetitionList);
 			result += Utils.stringToBeanField("competition", competition);
-			result += Utils.intToBeanField("athleteNumber", athleteNumber);
+			result += Utils.intToBeanField("maxAthleteNumber", maxAthleteNumber);
 
 			result += "</object>";
 
@@ -111,7 +111,7 @@ public class CompetitionList implements CustomSerializable {
 		private Competition(String competition, int maxAthleteNumber) {
 			this.competition = competition;
 			this.athleteCompetitionList = new ArrayList<Athlete>();
-			this.athleteNumber = maxAthleteNumber;
+			this.maxAthleteNumber = maxAthleteNumber;
 		}
 
 		public Athlete getAthlete(String name) {
@@ -144,7 +144,12 @@ public class CompetitionList implements CustomSerializable {
 				}
 			}
 		}
+		public int getAthleteNumber() {
+			return this.athleteCompetitionList.size();
+		}
 
+
+		//JavaBeans methods
 		public void setAthleteCompetitionList(ArrayList<Athlete> athleteCompetitionList) {
 			this.athleteCompetitionList = athleteCompetitionList;
 		}
@@ -153,25 +158,26 @@ public class CompetitionList implements CustomSerializable {
 			return this.athleteCompetitionList;
 		}
 
-		public void setCompetition(String competition) {
-			this.competition = competition;
-		}
-
 		public String getCompetition() {
 			return this.competition;
 		}
 
-		public int getAthleteNumber() {
-			return this.athleteCompetitionList.size();
+		public void setCompetition(String competition) {
+			this.competition = competition;
 		}
 
 		public int getMaxAthleteNumber() {
-			return this.athleteNumber;
+			return this.maxAthleteNumber;
+		}
+
+		public void setMaxAthleteNumber(int newMaxAthleteNumber) {
+			maxAthleteNumber = maxAthleteNumber;
 		}
 
 		private ArrayList<Athlete> athleteCompetitionList;
-		private String competition;
-		private int athleteNumber; // Количество атлетов, которое страна пожет подать на данное соревнование.
+		private String             competition;
+		// Количество атлетов, которое страна пожет подать на данное соревнование.
+		private int                maxAthleteNumber;
 	}
 
 	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
