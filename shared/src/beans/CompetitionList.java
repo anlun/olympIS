@@ -1,10 +1,17 @@
 package beans;
 
+import utils.CustomSerializable;
+import utils.Utils;
+
 import java.util.ArrayList;
 
-public class CompetitionList {
-	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
+public class CompetitionList implements CustomSerializable {
+	public CompetitionList() {
 		this.competitionList = new ArrayList<Competition>();
+	}
+
+	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
+		this();
 		for (int i = 0; i < competitionNameList.length; i++) {
 			this.competitionList.add(new Competition(competitionNameList[i], athleteNumberList[i]));
 		}
@@ -71,14 +78,34 @@ public class CompetitionList {
 		return null;
 	}
 
-	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
+	public String serialize() {
+		String result = "<object class=\"beans.CompetitionList\">";
 
-	private class Competition {
+		//competitionList
+		result += Utils.arrayListToBeanField("competitionList", competitionList);
 
-		private Competition() {
+		result += "</object>";
+
+		return result;
+	}
+
+	private class Competition implements CustomSerializable {
+		public Competition() {
 			this.competition = "";
 			this.athleteCompetitionList = new ArrayList<Athlete>();
 			this.athleteNumber = 0;
+		}
+
+		public String serialize() {
+			String result = "<object class=\"beans.CompetitionList.Competition\">";
+
+			result += Utils.arrayListToBeanField("athleteCompetitionList", athleteCompetitionList);
+			result += Utils.stringToBeanField("competition", competition);
+			result += Utils.intToBeanField("athleteNumber", athleteNumber);
+
+			result += "</object>";
+
+			return result;
 		}
 
 		private Competition(String competition, int maxAthleteNumber) {
@@ -146,4 +173,6 @@ public class CompetitionList {
 		private String competition;
 		private int athleteNumber; // Количество атлетов, которое страна пожет подать на данное соревнование.
 	}
+
+	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
 }
