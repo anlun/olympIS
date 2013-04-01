@@ -10,18 +10,18 @@ public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
 	}
 
-	public CountryApplication(String login, String password, ArrayList<Athlete> athleteList) {
-		this.athleteList = athleteList;
+	public CountryApplication(String login, String password, CompetitionList competitionList) {
+		this.competitionList = competitionList;
 		this.login = login;
 		this.password = password;
 	}
 
-	public void setAthleteList(ArrayList<Athlete> athleteList) {
-		this.athleteList = athleteList;
+	public void setCompetitionList(CompetitionList competitionList) {
+		this.competitionList = competitionList;
 	}
 
-	public ArrayList<Athlete> getAthleteList() {
-		return athleteList;
+	public CompetitionList getCompetitionList() {
+		return competitionList;
 	}
 
 	public void setPassword(String password) {
@@ -46,8 +46,8 @@ public class CountryApplication implements Serializable, CustomSerializable {
 		//Tags for fields
 		//May be need to be in alphabetical order
 
-		//athleteList
-		result += Utils.arrayListToBeanField("athleteList", athleteList);
+		//competitionList
+		result += Utils.objectToBeanField("competitionList", competitionList);
 
 		//login
 		result += Utils.stringToBeanField("login", login);
@@ -61,5 +61,5 @@ public class CountryApplication implements Serializable, CustomSerializable {
 
 	private String login;
 	private String password;
-	private ArrayList<Athlete> athleteList;
+	private CompetitionList competitionList;
 }

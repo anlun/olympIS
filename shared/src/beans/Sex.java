@@ -35,8 +35,8 @@ public class Sex implements Serializable, CustomSerializable {
 		return result;
 	}
 
-	public static final int male      = 1;
-	public static final int female    = 0;
+	public static final int male      = 0;
+	public static final int female    = 1;
 	public static final int undefined = 2;
 
 	private int sex;

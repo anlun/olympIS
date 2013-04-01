@@ -19,4 +19,11 @@
 		<item>England</item>
     </string-array>
 
+	<string name="sex">Choose sex</string>
+	<string-array name="sex_array">
+		<item>undefined</item>
+		<item>male</item>
+		<item>female</item>
+	</string-array>
+
 </resources>
