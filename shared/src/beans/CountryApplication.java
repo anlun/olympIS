@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
+		competitionList = new CompetitionList();
 	}
 
 	public CountryApplication(String login, String password, CompetitionList competitionList) {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import beans.Athlete;
+import beans.CompetitionList;
 import beans.CountryApplication;
 
 import java.net.URL;
@@ -38,7 +39,7 @@ public class MyActivity extends Activity {
 //							= new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888"));
 					ApplicationSendTask app
 							= new ApplicationSendTask(
-								new CountryApplication("asd", "123", new ArrayList<Athlete>())
+								new CountryApplication("asd", "123", new CompetitionList())
 								, new URL("http://10.0.2.2:8888")
 					);
 					app.execute();
