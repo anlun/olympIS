@@ -30,6 +30,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
 		competitionNamesList = getResources().getStringArray(R.array.sport_array);
+		sexArray = getResources().getStringArray(R.array.sex_array);
 		athleteNumberList = new int[competitionNamesList.length];
 		// Задаём число спортсменов для каждого соревнования.
 		for (int i = 0 ; i < athleteNumberList.length; i++) {
@@ -146,7 +147,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		Log.d("DAN","get name");
 		nameTextEdit.setText(athlete.getName());
 		Log.d("DAN", "get sex");
-		sexSpinner.setSelection(competitionList.getAthlete(name, competition).getSex().getSex());
+		sexSpinner.setSelection(doIndexFomSex(competitionList.getAthlete(name, competition).getSex()));
 		Log.d("DAN", "get weight");
 		weightTextEdit.setText(athlete.getWeight() + "");
 		Log.d("DAN", "get height");
@@ -313,12 +314,30 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	private String sexToString(Sex sex) {
 		switch (sex.getSex()) {
-			case 0:
+			case Sex.undefined:
 				return "undefined";
-			case 1:
+			case Sex.male:
 				return "male";
-			default:
+			case Sex.female:
 				return "female";
+			default:
+				return "undefined";
+		}
+	}
+
+	/**
+	 * It is doing the index for sexArray from the Sex object.
+	 * @param sex Is the Sex object.
+	 * @return index for sexArray accordingly for the sexSpinner with is match the order of sex sequence in sexSpinner.
+	 */
+	private int doIndexFomSex(Sex sex) {
+		switch (sex.getSex()) {
+			case Sex.male:
+				return 1;
+			case Sex.female:
+				return 2;
+			default:
+				return 0;
 		}
 	}
 
@@ -327,7 +346,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
 	private EditText nameTextEdit; // Поле для ввода имени.
 	private Spinner sexSpinner; // Спиннер для выбора пола.
-	private final static String[] sexArray = {"undefined", "male", "female"};
+	private String[] sexArray; // Массив полов.
 	private EditText weightTextEdit; // Поле для ввода веса.
 	private EditText heightTextEdit; // Поле для ввода роста.
 	private Spinner sp; // Спиннер для выбора соревнования.
