@@ -43,14 +43,6 @@ public class CompetitionList implements CustomSerializable {
 		}
 	}
 
-	public void setCompetitionList(ArrayList<Competition> competitionList) {
-		this.competitionList = competitionList;
-	}
-
-	public ArrayList<Competition> getCompetitionList() {
-		return this.competitionList;
-	}
-
 	public int getAthleteNumber(String competitionName) {
 		for (Competition competition : this.competitionList) {
 			if (competition.getCompetition().equals(competitionName)) {
@@ -87,6 +79,15 @@ public class CompetitionList implements CustomSerializable {
 		result += "</object>";
 
 		return result;
+	}
+
+	//JavaBeans methods
+	public ArrayList<Competition> getCompetitionList() {
+		return this.competitionList;
+	}
+
+	public void setCompetitionList(ArrayList<Competition> competitionList) {
+		this.competitionList = competitionList;
 	}
 
 	public class Competition implements CustomSerializable {
