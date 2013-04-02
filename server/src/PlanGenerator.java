@@ -98,7 +98,7 @@ public class PlanGenerator {
         boolean flagGen = false;
 
         //Check restriction on total length of the Games
-        if (getMaxCurrHour() > MAX_DAYS * DAY_LENGTH + 1){  //getMaxCurrDay() > MAX_DAYS){
+        if (getMaxCurrHour() > MAX_DAYS * DAY_LENGTH + 1) {  //getMaxCurrDay() > MAX_DAYS){
             return false;
         }
 
@@ -126,7 +126,7 @@ public class PlanGenerator {
             //trying all possible sportObjects to hold current competition:
             for (int spObj : cmptn.getIdRequiredSportObjects()) {
                 flagCheck = checkPlanRestrictions(cmptn, spObj);
-                if (flagCheck){
+                if (flagCheck) {
                     pushIntoPlan(cmptn,spObj);
                     flagGen = generatePlan();
                     if (flagGen) {
@@ -212,9 +212,9 @@ public class PlanGenerator {
         }
         //check if there's any collisions during the supposed competition
         for (int d = 0; d < competition.getDuration(); d++) {
-            for (int sO = 1; sO <= sportObjectCount; sO++){
+            for (int sO = 1; sO <= sportObjectCount; sO++) {
                 //if it's not itself and if there's a collision return false;
-                if ((sO != sportObject) && (athleteCollision(competition.getId(),plan[sO][currHour[sportObject] + d]))){
+                if ((sO != sportObject) && (athleteCollision(competition.getId(),plan[sO][currHour[sportObject] + d]))) {
                     return false;
                 }
             }
@@ -244,10 +244,10 @@ public class PlanGenerator {
      * Get maximum element from currDay[]
      * @return max element of currDay
      */
-    private int getMaxCurrDay(){
+    private int getMaxCurrDay() {
         int max = currDay[1];
-        for (int i = 2; i <= sportObjectCount; i++){
-            if (currDay[i] > max){
+        for (int i = 2; i <= sportObjectCount; i++) {
+            if (currDay[i] > max) {
                 max = currDay[i];
             }
         }
@@ -303,7 +303,7 @@ public class PlanGenerator {
         System.out.print("\n\n");
         for (int obj = 1; obj <= sportObjectCount; obj++) {
             System.out.print(obj+"\t\t");
-            for (int i = 1; i <= MAX_DAYS * DAY_LENGTH; i++){
+            for (int i = 1; i <= MAX_DAYS * DAY_LENGTH; i++) {
                 System.out.print(" "+plan[obj][i]+"\t");
             }
             System.out.print("\n");
