@@ -1,12 +1,17 @@
 package beans;
 
-import android.util.Log;
+import utils.CustomSerializable;
+import utils.Utils;
 
 import java.util.ArrayList;
 
-public class CompetitionList {
-	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
+public class CompetitionList implements CustomSerializable {
+	public CompetitionList() {
 		this.competitionList = new ArrayList<Competition>();
+	}
+
+	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
+		this();
 		for (int i = 0; i < competitionNameList.length; i++) {
 			this.competitionList.add(new Competition(competitionNameList[i], athleteNumberList[i]));
 		}
@@ -32,19 +37,10 @@ public class CompetitionList {
 	public void deleteAthlete(String name, String competition) {
 		for (Competition competitionIterator : competitionList) {
 			if (competitionIterator.getCompetition().equals(competition)) {
-				Log.d("DAN", "enter to Competition");
 				competitionIterator.deleteAthlete(name);
 				return;
 			}
 		}
-	}
-
-	public void setCompetitionList(ArrayList<Competition> competitionList) {
-		this.competitionList = competitionList;
-	}
-
-	public ArrayList<Competition> getCompetitionList() {
-		return this.competitionList;
 	}
 
 	public int getAthleteNumber(String competitionName) {
@@ -74,23 +70,52 @@ public class CompetitionList {
 		return null;
 	}
 
-	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
+	public String serialize() {
+		String result = "<object class=\"beans.CompetitionList\">";
 
-	private class Competition {
+		//competitionList
+		result += Utils.arrayListToBeanField("competitionList", competitionList);
 
-		private Competition() {
+		result += "</object>";
+
+		return result;
+	}
+
+	//JavaBeans methods
+	public ArrayList<Competition> getCompetitionList() {
+		return this.competitionList;
+	}
+
+	public void setCompetitionList(ArrayList<Competition> competitionList) {
+		this.competitionList = competitionList;
+	}
+
+	public class Competition implements CustomSerializable {
+		public Competition() {
 			this.competition = "";
 			this.athleteCompetitionList = new ArrayList<Athlete>();
-			this.athleteNumber = 0;
+			this.maxAthleteNumber = 0;
+		}
+
+		public String serialize() {
+			String result = "<object class=\"beans.CompetitionList.Competition\">";
+
+			result += Utils.arrayListToBeanField("athleteCompetitionList", athleteCompetitionList);
+			result += Utils.stringToBeanField("competition", competition);
+			result += Utils.intToBeanField("maxAthleteNumber", maxAthleteNumber);
+
+			result += "</object>";
+
+			return result;
 		}
 
 		private Competition(String competition, int maxAthleteNumber) {
 			this.competition = competition;
 			this.athleteCompetitionList = new ArrayList<Athlete>();
-			this.athleteNumber = maxAthleteNumber;
+			this.maxAthleteNumber = maxAthleteNumber;
 		}
 
-		private Athlete getAthlete(String name) {
+		public Athlete getAthlete(String name) {
 			for (Athlete athlete : athleteCompetitionList) {
 				if (athlete.getName().equals(name)) {
 					return athlete;
@@ -99,7 +124,7 @@ public class CompetitionList {
 			return null;
 		}
 
-		private int getAthleteListIndex(String name) {
+		public int getAthleteListIndex(String name) {
 			for (int i = 0; i < this.athleteCompetitionList.size(); i++) {
 				if (this.athleteCompetitionList.get(i).getName().equals(name)) {
 					return i;
@@ -108,47 +133,53 @@ public class CompetitionList {
 			return -1;
 		}
 
-		private void addAthlete(int index, Athlete athlete) {
+		public void addAthlete(int index, Athlete athlete) {
 			this.athleteCompetitionList.add(index, athlete);
 		}
 
-		private void deleteAthlete(String name) {
+		public void deleteAthlete(String name) {
 			for (Athlete athlete : this.athleteCompetitionList) {
 				if (athlete.getName().equals(name)) {
-					Log.d("DAN", "delete athlete ");
 					this.athleteCompetitionList.remove(athlete);
-					Log.d("DAN", "deleted");
 					return;
 				}
 			}
 		}
-
-		private void setAthleteCompetitionList(ArrayList<Athlete> athleteCompetitionList) {
-			this.athleteCompetitionList = athleteCompetitionList;
-		}
-
-		private ArrayList<Athlete> getAthleteCompetitionList() {
-			return this.athleteCompetitionList;
-		}
-
-		private void setCompetition(String competition) {
-			this.competition = competition;
-		}
-
-		private String getCompetition() {
-			return this.competition;
-		}
-
-		private int getAthleteNumber() {
+		public int getAthleteNumber() {
 			return this.athleteCompetitionList.size();
 		}
 
-		private int getMaxAthleteNumber() {
-			return this.athleteNumber;
+
+		//JavaBeans methods
+		public void setAthleteCompetitionList(ArrayList<Athlete> athleteCompetitionList) {
+			this.athleteCompetitionList = athleteCompetitionList;
+		}
+
+		public ArrayList<Athlete> getAthleteCompetitionList() {
+			return this.athleteCompetitionList;
+		}
+
+		public String getCompetition() {
+			return this.competition;
+		}
+
+		public void setCompetition(String competition) {
+			this.competition = competition;
+		}
+
+		public int getMaxAthleteNumber() {
+			return this.maxAthleteNumber;
+		}
+
+		public void setMaxAthleteNumber(int newMaxAthleteNumber) {
+			maxAthleteNumber = maxAthleteNumber;
 		}
 
 		private ArrayList<Athlete> athleteCompetitionList;
-		private String competition;
-		private int athleteNumber; // Количество атлетов, которое страна пожет подать на данное соревнование.
+		private String             competition;
+		// Количество атлетов, которое страна пожет подать на данное соревнование.
+		private int                maxAthleteNumber;
 	}
+
+	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
 }

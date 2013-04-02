@@ -12,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class LoginResponseCreator extends ResponseCreator {
 	public LoginResponseCreator(Document dom) {
-		super(dom);
+		this.dom = dom;
 	}
 
 	public String createResponse() {
@@ -50,4 +50,6 @@ public class LoginResponseCreator extends ResponseCreator {
 	private static String getCountryName(String login, String password) {
 		return "RUSLAND";
 	}
+
+	private Document dom;
 }

@@ -59,7 +59,7 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 		}
 	}
 
-	protected String generateXML() throws XMLgenerationException {
+	private String generateXML() throws XMLgenerationException {
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer     = new StringWriter();
 

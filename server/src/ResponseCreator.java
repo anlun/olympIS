@@ -12,10 +12,4 @@ public abstract class ResponseCreator {
 	 * @return Response XML string for client.
 	 */
 	public abstract String createResponse();
-
-	protected ResponseCreator(Document dom) {
-		this.dom = dom;
-	}
-
-	protected Document dom;
 }

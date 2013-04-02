@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import beans.Athlete;
+import beans.CompetitionList;
+import beans.CountryApplication;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Just test activity.
@@ -31,8 +35,13 @@ public class MyActivity extends Activity {
 			public void onClick(View v) {
 				try {
 					//new LoginTask("RUSSIA", "12345", new URL("http://10.0.2.2:8888")).execute();
-					ApplicationConstrainTask app
-							= new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888"));
+//					ApplicationConstrainTask app
+//							= new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888"));
+					ApplicationSendTask app
+							= new ApplicationSendTask(
+								new CountryApplication("asd", "123", new CompetitionList())
+								, new URL("http://10.0.2.2:8888")
+					);
 					app.execute();
 				} catch (Exception e) {
 					throw new RuntimeException(e);

@@ -1,11 +1,14 @@
 package beans;
 
+import utils.CustomSerializable;
+import utils.Utils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CountryApplication implements Serializable {
-
+public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
+		competitionList = new CompetitionList();
 	}
 
 	public CountryApplication(String login, String password, CompetitionList competitionList) {
@@ -36,6 +39,25 @@ public class CountryApplication implements Serializable {
 
 	public String getLogin() {
 		return login;
+	}
+
+	public String serialize() {
+		String result = "<object class=\"beans.CountryApplication\">";
+
+		//Tags for fields
+		//May be need to be in alphabetical order
+
+		//competitionList
+		result += Utils.objectToBeanField("competitionList", competitionList);
+
+		//login
+		result += Utils.stringToBeanField("login", login);
+
+		//password
+		result += Utils.stringToBeanField("password", password);
+		result += "</object>";
+
+		return result;
 	}
 
 	private String login;
