@@ -1,50 +1,53 @@
 package beans;
 
-import java.util.ArrayList;
-
 /**
  * Class represents sport competition.
  * It's JavaBean that transfers from server to client.
+ *
  * @author Podkopaev Anton
  */
 public class Competition {
-	public Competition(int id, int duration, Sex athleteSex, ArrayList<Integer> idRequiredSportObjects) {
-		this.id         = id;
-		this.duration   = duration;
-		this.athleteSex = athleteSex;
-		this.idRequiredSportObjects = idRequiredSportObjects;
-	}
+    public Competition(int id, int duration, Sex athleteSex, int idTypeRequiredSportObject) {
+        this.id = id;
+        this.duration = duration;
+        this.athleteSex = athleteSex;
+        this.idTypeRequiredSportObject = idTypeRequiredSportObject;
+    }
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getDuration() {
-		return duration;
-	}
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Sex getAthleteSex() {
-		return athleteSex;
-	}
-	public void setAthleteSex(Sex athleteSex) {
-		this.athleteSex = athleteSex;
-	}
+    public int getDuration() {
+        return duration;
+    }
 
-	public ArrayList<Integer> getIdRequiredSportObjects() {
-		return idRequiredSportObjects;
-	}
-	public void setIdRequiredSportObjects(ArrayList<Integer> idRequiredSportObjects) {
-		this.idRequiredSportObjects = idRequiredSportObjects;
-	}
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-	private int id;
-	private int duration;
-	private Sex athleteSex;
-	private ArrayList<Integer> idRequiredSportObjects;
+    public Sex getAthleteSex() {
+        return athleteSex;
+    }
+
+    public void setAthleteSex(Sex athleteSex) {
+        this.athleteSex = athleteSex;
+    }
+
+    public int getidTypeRequiredSportObject() {
+        return idTypeRequiredSportObject;
+    }
+
+    public void setidTypeRequiredSportObject(int idTypeRequiredSportObject) {
+        this.idTypeRequiredSportObject = idTypeRequiredSportObject;
+    }
+
+    private int id;
+    private int duration;
+    private Sex athleteSex;
+    private int idTypeRequiredSportObject;
 }
