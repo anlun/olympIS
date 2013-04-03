@@ -28,14 +28,16 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_application);
 
-		competitionNamesList = getResources().getStringArray(R.array.sport_array);
+		// competitionNamesList = getResources().getStringArray(R.array.sport_array);
 		sexArray = getResources().getStringArray(R.array.sex_array);
+		/*
 		athleteNumberList = new int[competitionNamesList.length];
 		// Задаём число спортсменов для каждого соревнования.
 		for (int i = 0 ; i < athleteNumberList.length; i++) {
 			athleteNumberList[i] = 20;
 		}
-		competitionList = new CompetitionList(competitionNamesList, athleteNumberList);
+		*/
+		// competitionList = new CompetitionList(competitionNamesList, athleteNumberList);
 
 		forceEdit = false;
 		oldAthleteName = "";
@@ -45,13 +47,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		heightTextEdit = (EditText)findViewById(R.id.heightTextEdit);
 		linearLayout = (LinearLayout) findViewById(R.id.linLayMain);
 
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		// LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		linearLayoutArrayList = new ArrayList<LinearLayout>();
+		/*
 		for (int i = 0; i < competitionNamesList.length; i++) {
 			LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.linear_layout_pattern, null);
 			linearLayoutArrayList.add(lv);
 		}
 		linearLayout.addView(linearLayoutArrayList.get(0));
+		*/
 		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 
 		findViewById(R.id.add_button).setOnClickListener(this);
@@ -87,17 +91,40 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				data.getLogin(), data.getPassword(), data.getServerURL(), this);
 		task.execute();
 
-		// TODO вешаем гуи пока не дождемся ответа от сервера
-		// startActivity(new Intent(this, AskForWaitActivity.class));
+		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+		startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 	}
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
 		this.competitionList = result.getCompetitionList();
-		Log.d("DAN", competitionList.toString());
-		// TODO заполнить layout-ы спортсменами
+		ArrayList<CompetitionList.Competition>  compList = competitionList.getCompetitionList();
 
+		if (compList.size() != 0) {
+			Log.d("DAN", competitionList.toString());
+			// TODO заполнить layout-ы спортсменами
+			athleteNumberList = new int[compList.size()];
+			competitionNamesList = new String[compList.size()];
+			int i = 0;
+			for (CompetitionList.Competition competition: compList) {
+				athleteNumberList[i] = competition.getMaxAthleteNumber(); // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
+				competitionNamesList[i] = competition.getCompetition(); // Список названий соревнований.
+			}
 
-		// TODO развесить гуи. По идее, это делатся в Task.
+			Log.d("DAN", "создаём linearLayout-ы");
+			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			for (int j = 0; j < competitionNamesList.length; j++) {
+				LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.linear_layout_pattern, null);
+				linearLayoutArrayList.add(lv);
+			}
+			linearLayout.addView(linearLayoutArrayList.get(0));
+		} else {
+			// TODO если заявка пуста.
+			finish();
+		}
+
+		// Убиваем AskForWaitActivity. 10 - requestCode этого активити.
+		Log.d("DAN", "убиваем AskForWaitActivity");
+		finishActivity(10);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -372,6 +399,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
 	private CountryApplication countryApplication;
 	private AuthorizationData data;
+	private Intent askForWaitActivityIntent;
 	private ArrayList<LinearLayout> linearLayoutArrayList; // Массив LinearLayout-ов. Каждому эл-ту
 			// соответствует спорт. При смене вида спорта происходит смена Layout-а, и, соответственно,
 			// меняется отображаемый список спортсменов.

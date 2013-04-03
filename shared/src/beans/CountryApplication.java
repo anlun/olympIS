@@ -4,7 +4,6 @@ import utils.CustomSerializable;
 import utils.Utils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {

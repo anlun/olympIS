@@ -1,3 +1,4 @@
+import beans.CompetitionList;
 import beans.CountryApplication;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
