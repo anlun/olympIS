@@ -14,7 +14,6 @@ import beans.CompetitionList;
 import beans.Athlete;
 import beans.Sex;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,15 +27,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_application);
-
-		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
-		data = AuthorizationData.getInstance();
-		// countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), new CompetitionList());
-		ExistApplicationGetTask task = new ExistApplicationGetTask(
-				data.getLogin(), data.getPassword(), data.getServerURL(), this);
-		task.execute();
-		// TODO вешаем гуи пока не дождемся ответа от сервера
-
 
 		competitionNamesList = getResources().getStringArray(R.array.sport_array);
 		sexArray = getResources().getStringArray(R.array.sex_array);
@@ -89,13 +79,25 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
+
+		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
+		data = AuthorizationData.getInstance();
+		// countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), new CompetitionList());
+		ExistApplicationGetTask task = new ExistApplicationGetTask(
+				data.getLogin(), data.getPassword(), data.getServerURL(), this);
+		task.execute();
+
+		// TODO вешаем гуи пока не дождемся ответа от сервера
+		// startActivity(new Intent(this, AskForWaitActivity.class));
 	}
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
 		this.competitionList = result.getCompetitionList();
 		Log.d("DAN", competitionList.toString());
 		// TODO заполнить layout-ы спортсменами
-		// TODO развесить гуи
+
+
+		// TODO развесить гуи. По идее, это делатся в Task.
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
