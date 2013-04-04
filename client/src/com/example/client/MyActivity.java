@@ -40,7 +40,7 @@ public class MyActivity extends Activity {
 					ApplicationSendTask app
 							= new ApplicationSendTask(
 								new CountryApplication("asd", "123", new CompetitionList())
-								, new URL("http://10.0.2.2:8888")
+								, new URL("http://10.0.2.2:8888"), null
 					);
 					app.execute();
 				} catch (Exception e) {

@@ -81,7 +81,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			}
 		});
 
-		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
+		// получение уже имеющейся заявки от базы + число спортсменов
 		authorizationData = AuthorizationData.getInstance();
 		// countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), new CompetitionList());
 		ExistApplicationGetTask task = new ExistApplicationGetTask(
@@ -97,17 +97,17 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		ArrayList<ClientCompetition>  compList = competitionList.getCompetitionList();
 
 		if (compList.size() != 0) {
-			Log.d("DAN", competitionList.toString());
-			// TODO заполнить layout-ы спортсменами
+			Log.d("DAN", competitionList.toString() + "\n" + compList.size());
+			// заполнить layout-ы спортсменами
 			athleteNumberList = new int[compList.size()];
 			competitionNamesList = new String[compList.size()];
 			int i = 0;
 			for (ClientCompetition competition: compList) {
 				athleteNumberList[i] = competition.getMaxAthleteNumber(); // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 				competitionNamesList[i] = competition.getCompetition(); // Список названий соревнований.
+				i++;
 			}
 
-			Log.d("DAN", "создаём linearLayout-ы");
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			for (int j = 0; j < competitionNamesList.length; j++) {
 				LinearLayout lv = (LinearLayout) inflater.inflate(R.layout.linear_layout_pattern, null);
@@ -116,10 +116,49 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			linearLayout.addView(linearLayoutArrayList.get(0));
 
 			// Убиваем AskForWaitActivity. 10 - requestCode этого активити.
-			Log.d("DAN", "убиваем AskForWaitActivity");
 			finishActivity(10);
+
+			// Устанавливаем массив ресурсов для спиннера.
+			sp.setAdapter(new ArrayAdapter(this,
+					android.R.layout.simple_spinner_item, competitionNamesList));
+
+			// Забиваем вьюшки спортсменами из базы.
+			for (ClientCompetition competition : compList) {
+				int athleteIndex = 0;
+				for (Athlete athlete : competition.getAthleteCompetitionList()) {
+					/* // ВРОДЕ! не нужно добавление, т.к. атлет уже должен буть там.
+					competitionList.addAthlete(athleteIndex, competition.getCompetition(),
+							new Athlete(athlete.getName(), athlete.getSex(),
+									athlete.getWeight(), athlete.getWeight(),
+									competition.getCompetition()));
+                     */
+
+					// Добавляем информацию в таблицу пользователя.
+
+					TextView tv = (TextView) inflater.inflate(R.layout.text_view_pattern, null);
+					tv.setText(athlete.getName());
+					// Листенер долгого нажатия, для правки иформации о спортсмене.
+					tv.setOnLongClickListener(this);
+					tv.setOnClickListener(this);
+					tv.setGravity(Gravity.CENTER);
+					int randomColor = Color.rgb(random.nextInt() % 255, random.nextInt() % 255, random.nextInt() % 255);
+					tv.setBackgroundColor(randomColor);
+					tv.setTextColor(Color.rgb(Color.red(randomColor) / 2, 255 - Color.green(randomColor), 255 - Color.blue(randomColor)));
+
+					int linearLayoutIndex = 0;
+					for (linearLayoutIndex = 0; linearLayoutIndex < competitionNamesList.length; linearLayoutIndex++) {
+						if (competitionNamesList[linearLayoutIndex].equals(competition.getCompetition())) {
+							break;
+						}
+					}
+					LinearLayout lv = linearLayoutArrayList.get(linearLayoutIndex);
+					lv.addView(tv,athleteIndex);
+
+					athleteIndex++;
+				}
+			}
+
 		} else {
-			// TODO если заявка пуста.
 			Log.d("DAN", "убиваем CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
 			finish();
 		}
@@ -144,7 +183,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			case 1:// post application
 				AuthorizationData data = AuthorizationData.getInstance();
 				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
-				//TODO: дописать передачу countryApplication через Тошин класс
+				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
+
+				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -196,9 +238,8 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		heightTextEdit.setText(athlete.getHeight() + "");
 
 		int itemSelected;
-		String[] choose = getResources().getStringArray(R.array.sport_array);
-		for (itemSelected = 0; itemSelected < choose.length; itemSelected++) {
-			if (choose[itemSelected].equals(competition)) {
+		for (itemSelected = 0; itemSelected < competitionNamesList.length; itemSelected++) {
+			if (competitionNamesList[itemSelected].equals(competition)) {
 				break;
 			}
 		}
@@ -280,7 +321,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data == null) return;
 		if (requestCode == 10) { // т.е. вернулись из AskForWaitActivity
-			//TODO
 			Log.d("DAN", "перезапуск AskForWaitActivity");
 			startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 		} else if (requestCode == 2) {   // 2 соответствует параметру requestCode, передаваемому диалоговому окну при инициализации.
@@ -385,6 +425,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			default:
 				return 0;
 		}
+	}
+
+	public void doFinish() {
+		finishActivity(10);
+		this.finish();
 	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
