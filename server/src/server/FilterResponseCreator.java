@@ -1,3 +1,5 @@
+package server;
+
 import beans.DayList;
 import beans.FilterList;
 import utils.Utils;

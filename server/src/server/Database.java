@@ -1,6 +1,7 @@
+package server;
+
 import beans.ApplicationConstrain;
 import beans.ApplicationConstrain.SportConstrain;
-import beans.Competition;
 import beans.Sex;
 import com.mysql.jdbc.PreparedStatement;
 
@@ -141,7 +142,7 @@ public class Database {
 
 	/**
 	 * @param competition name
-	 * @return Id Competition
+	 * @return Id server.Competition
 	 */
 	public int competitionId(String competition) {
 		PreparedStatement stmt = null;

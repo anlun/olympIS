@@ -1,4 +1,6 @@
-package beans;
+package server;
+
+import beans.Sex;
 
 /**
  * Class represents sport competition.
@@ -37,15 +39,29 @@ public class Competition {
 	public void setAthleteSex(Sex athleteSex) {
 		this.athleteSex = athleteSex;
 	}
-
-	public int getidTypeRequiredSportObject() {
-		return idTypeRequiredSportObject;
-	}
-
-	public void setidTypeRequiredSportObject(int idTypeRequiredSportObject) {
-		this.idTypeRequiredSportObject = idTypeRequiredSportObject;
-	}
-
+    //=================
+    public int getBeginHour() {
+        return beginHour;
+    }
+    public void setBeginHour(int newBeginning) {
+        this.beginHour = newBeginning;
+    }
+    public int getEndHour() {
+        return endHour;
+    }
+    public void setEndHour(int newEnd) {
+        this.endHour = newEnd;
+    }
+    public int getIdTypeRequiredSportObject() {
+        return idTypeRequiredSportObject;
+    }
+    public void setIdTypeRequiredSportObject(int newSportType) {
+        this.idTypeRequiredSportObject = newSportType;
+    }
+    //add begin and end of the competition
+    private int beginHour;
+    private int endHour;
+    //=================
 	private int id;
 	private int duration;
 	private Sex athleteSex;
