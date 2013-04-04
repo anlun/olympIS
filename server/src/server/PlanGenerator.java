@@ -304,7 +304,7 @@ public class PlanGenerator {
     private ArrayList<Competition> nonPlannedCompetitions; // competitions not planned yet
     private int allCompetitionCount;   //count of existing competitions
     private int sportObjectCount;   //count of existing sportObjects
-    private ArrayList<Integer>[] spObjByType;
+    private ArrayList<Integer>[] spObjByType;   //type <-> spObjects
 
     private Competition[] competitionIDs;    //used to set bijection between Competitions and their IDs.
 
