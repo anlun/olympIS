@@ -8,8 +8,8 @@ import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
-public class FilterResponseCreator extends ResponseCreator {
-	public FilterResponseCreator(String filterListXML) {
+public class FilterDayListResponseCreator extends ResponseCreator {
+	public FilterDayListResponseCreator(String filterListXML) {
 		this.filterListXML = filterListXML;
 	}
 
