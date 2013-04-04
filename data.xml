@@ -1,32 +1,89 @@
 <?xml version="1.0"?>
 <root>
-<object title ="olo">
+<object title ="stan">
 	<type>stadion</type>
 	<capacity>10000</capacity>
 	<city>sochi</city>
 </object>
+<object title ="john">
+	<type>bobslei</type>
+	<capacity>10000</capacity>
+	<city>sochi</city>
+</object>
+
+<object title ="nikol">
+	<type>ice arena</type>
+	<capacity>3000</capacity>
+	<city>sochi</city>
+</object>
+
+<object title ="loop">
+	<type>ski trail</type>
+	<capacity>2000</capacity>
+	<city>sochi</city>
+</object>
+
 <competition title ="olimp_open">
 	<type_object>stadion</type_object>
 	<sex_participants>2</sex_participants>
 	<duration>2</duration>
 </competition>
 
-<competition title ="olo">
-	<type_object>stadion</type_object>
+<competition title ="ski race">
+	<type_object>ski trail</type_object>
 	<sex_participants>1</sex_participants>
 	<duration>2</duration>
 </competition>
-<country name="ololo">
-		<login>stadion</login>
-		<password>sochi</password>
+
+<competition title ="biathlon">
+	<type_object>ski trail</type_object>
+	<sex_participants>1</sex_participants>
+	<duration>3</duration>
+</competition>
+
+<competition title ="curling">
+	<type_object>ice arena</type_object>
+	<sex_participants>1</sex_participants>
+	<duration>2</duration>
+</competition>
+
+
+<country name="russia">
+		<login>russia</login>
+		<password>russia</password>
+</country>
+
+<country name="usa">
+		<login>usa</login>
+		<password>usa</password>
+</country>
+
+<country name="germany">
+		<login>germany</login>
+		<password>germany</password>
 </country>
 
 <quote>
-	<countryQuote name="ololo">
-		 <competitionQuote name="olo" count="12"/>
-	       <competitionQuote name="ololo" count="13"/>
+	<countryQuote name="russia">
+		 <competitionQuote name="ski race" count="12"/>
+	       <competitionQuote name="biathlon" count="5"/>
+		 <competitionQuote name="curling" count="2"/>
 	</countryQuote>
+
+		<countryQuote name="usa">
+		 <competitionQuote name="ski race" count="3"/>
+	       <competitionQuote name="biathlon" count="2"/>
+		 <competitionQuote name="curling" count="4"/>
+	</countryQuote>
+
+	<countryQuote name="germany">
+		 <competitionQuote name="ski race" count="3"/>
+	       <competitionQuote name="biathlon" count="2"/>
+		 <competitionQuote name="curling" count="7"/>
+	</countryQuote>
+	
 </quote>
+
 
 	
 		

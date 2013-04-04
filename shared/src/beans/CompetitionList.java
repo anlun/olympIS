@@ -18,7 +18,9 @@ public class CompetitionList implements Serializable, CustomSerializable {
 	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
 		this();
 		for (int i = 0; i < competitionNameList.length; i++) {
-			this.competitionList.add(new ClientCompetition(competitionNameList[i], athleteNumberList[i]));
+			ClientCompetition comp = new ClientCompetition(competitionNameList[i], athleteNumberList[i]);
+			comp.addAthlete(0, new Athlete("name", new Sex(1), 1, 1, competitionNameList[i]));
+			this.competitionList.add(comp);
 		}
 	}
 

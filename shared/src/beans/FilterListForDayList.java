@@ -6,23 +6,24 @@ import utils.Utils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FilterList implements Serializable, CustomSerializable {
-	public FilterList() {
+public class FilterListForDayList implements Serializable, CustomSerializable {
+	public FilterListForDayList() {
 		filters = new ArrayList<Filter>();
 	}
 
-	public FilterList(ArrayList<Filter> filters) {
+	public FilterListForDayList(ArrayList<Filter> filters) {
 		this.filters = filters;
 	}
 
 	public String serialize() {
-		String result = "<object class=\"beans.Filter\">";
+		String result = "<object class=\"beans.FilterListForDayList\">";
 
 		result += Utils.arrayListToBeanField("filters", filters);
 
 		result += "</object>";
 
-		return result;	}
+		return result;
+	}
 
 
 	public ArrayList<Filter> getFilters() {
