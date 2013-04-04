@@ -304,14 +304,15 @@ public class PlanGenerator {
     private ArrayList<Competition> nonPlannedCompetitions; // competitions not planned yet
     private int allCompetitionCount;   //count of existing competitions
     private int sportObjectCount;   //count of existing sportObjects
+
     private ArrayList<Integer>[] spObjByType;   //type <-> spObjects
 
-    private Competition[] competitionIDs;    //used to set bijection between Competitions and their IDs.
+    //private Competition[] competitionIDs;    //used to set bijection between Competitions and their IDs.
 
     private int[][] plan;           //main structure for the plan
     private ArrayList<Competition> plannedCompetitions;    // competitions added to plan
 
-    private int[] currHour; //NOT NECESSARY!// current hour at each sportObject (when the last competition finishes)
+    private int[] currHour;  // current hour at each sportObject (when the last competition finishes)
     private int[] hoursLeft; // Hours left from current time to next day // maybe set this field for easier way to write code
     private int[] currDay;   // current day of the Championship/Games at each sportObject
 
