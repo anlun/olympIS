@@ -73,16 +73,16 @@ public class Database {
 	}
 
 	/**
-	 * @param login    countryByLoginPassword
-	 * @param password countryByLoginPassword
-	 * @return name Country
+	 * @param login    country
+	 * @param password country
+	 *                    * @return name Country
 	 */
 	public String countryByLoginPassword(String login, String password) {
 		PreparedStatement stmt = null;
 		String result = "";
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SELECT country_name  FROM countryByLoginPassword WHERE login=? and hash_password=?;");
+					"SELECT country_name  FROM country WHERE login=? and hash_password=?;");
 			stmt.setString(1, login);
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
@@ -101,7 +101,7 @@ public class Database {
 		int countryId = 0;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SELECT id  FROM countryByLoginPassword WHERE country_name=?;");
+					"SELECT id  FROM country WHERE country_name=?;");
 			stmt.setString(1, country);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -505,7 +505,7 @@ public class Database {
 				return;
 			}
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"INSERT INTO countryByLoginPassword  Values (NULL,?,?,?)");
+					"INSERT INTO country  Values (NULL,?,?,?)");
 			stmt.setString(1, name);
 			stmt.setString(2, login);
 			stmt.setString(3, pass);
