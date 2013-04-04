@@ -1,8 +1,10 @@
 package server;
 
 import beans.*;
+import beans.DayTimetable.DaySportElement;
 import beans.ApplicationConstrain.SportConstrain;
 import com.mysql.jdbc.PreparedStatement;
+import com.sun.imageio.plugins.bmp.BMPConstants;
 import utils.Utils;
 
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Vector;
 
 public class Database {
@@ -75,7 +77,7 @@ public class Database {
 	/**
 	 * @param login    country
 	 * @param password country
-	 *                    * @return name Country
+	 *                 * @return name Country
 	 */
 	public String countryByLoginPassword(String login, String password) {
 		PreparedStatement stmt = null;
@@ -116,7 +118,7 @@ public class Database {
 
 	public Date getCompetitionDate(int competitionId) {
 		PreparedStatement stmt = null;
-		java.util.Date dateCompetition = new java.util.Date();
+		java.sql.Date dateCompetition = null;
 		java.text.SimpleDateFormat sdf =
 				new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
@@ -144,14 +146,14 @@ public class Database {
 		ArrayList<Date> datesCountry = getCountryDates(countryId);
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		Date dateOpenOlymp = getCompetitionDate(1);
-		for (Date date: datesCountry)  {
-			res.add((int)((date.getTime() - dateOpenOlymp.getTime()) / (1000L * 60L * 60L * 24L)));
+		for (Date date : datesCountry) {
+			res.add((int) ((date.getTime() - dateOpenOlymp.getTime()) / (1000L * 60L * 60L * 24L)));
 		}
 		return res;
 	}
 
 
-	public ArrayList<Date>  getCountryDates(int countryId){
+	public ArrayList<Date> getCountryDates(int countryId) {
 		PreparedStatement stmt = null;
 		java.util.Date dateCompetition = new java.util.Date();
 		ArrayList<Date> res = new ArrayList<Date>();
@@ -197,7 +199,7 @@ public class Database {
 		return competitionId;
 	}
 
-	public int  athleteId(Athlete athlete){
+	public int athleteId(Athlete athlete) {
 		PreparedStatement stmt = null;
 		int athleteId = 0;
 		try {
@@ -206,7 +208,7 @@ public class Database {
 			stmt.setString(1, athlete.getName());
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-			    athleteId = rs.getInt("id");
+				athleteId = rs.getInt("id");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -216,7 +218,7 @@ public class Database {
 
 	}
 
-	public  void insertInParticipantsAthlets(int competitionId, int athleteId){
+	public void insertInParticipantsAthlets(int competitionId, int athleteId) {
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
@@ -231,8 +233,122 @@ public class Database {
 
 	}
 
+	public boolean isSportInDay(String sport, Date day) {
+		int competitionId = competitionId(sport);
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT *  FROM schedule_olymp WHERE competition_id=? and start_time = ?;");
+			stmt.setInt(1, competitionId);
+			stmt.setDate(2, day);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	public void insertCountryApplication(CountryApplication countryApplication){
+		return false;
+	}
+
+	public ArrayList<String> competitionsInDay(Date day) {
+		ArrayList<String> res = new ArrayList<String>();
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT competition_name  FROM schedule_olymp join competition" +
+							"on competition.id = competition_id WHERE start_time = ?;");
+			stmt.setDate(1, day);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				res.add(rs.getString("competition_name"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public int isCountryInDay(String country, Date day) {
+		int countryId = countryId(country);
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"select competition_id from participation_athletes join schedule_olymp" +
+							" on participation_athletes.competition_id = schedule_olymp.competition_id" +
+							" join athlete on participation_athletes.athlete_id = athlete.id " +
+							" where athlete.country_id in (select id from country where country.id = ?)" +
+							" and start_time = ?;");
+			stmt.setInt(1, countryId);
+			stmt.setDate(2, day);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("competition_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	public String competition(int competitionId) {
+		PreparedStatement stmt = null;
+		String result = "";
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT competition_name  FROM competition WHERE id=?;");
+			stmt.setInt(1, competitionId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getString("competition_name");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public DayTimetable getTimeTable(ArrayList<Filter> filters, int numberDay) {
+
+		Date dayOlimp = getCompetitionDate(1);
+		Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
+		ArrayList<String> filtSport = new ArrayList<String>();
+		ArrayList<String> filtCountry = new ArrayList<String>();
+		ArrayList<String> competitionInDay = new ArrayList<String>();
+		ArrayList<DaySportElement> res = new ArrayList<DaySportElement>();
+		for (Filter filter : filters) {
+			if (filter.getFilterName().equals("sport_array")) {
+				for (String sport : filter.getFilter()) {
+					if (isSportInDay(sport, day)) {
+						filtSport.add(sport);
+					}
+				}
+				if (filter.getFilterName().equals("country_filter")) {
+					for (String country : filter.getFilter()) {
+						int temp = isCountryInDay(country, day);
+						if (temp != 0) {
+							filtCountry.add(competition(temp));
+						}
+					}
+				}
+				for (String competition : competitionInDay) {
+					if (filtCountry.contains(competition) || filtSport.contains(competition)) {
+						res.add(new DaySportElement(getCompetitionDate(competitionId(competition)).toString() + competition, true));
+					} else {
+						res.add(new DaySportElement(getCompetitionDate(competitionId(competition)).toString() + competition, false));
+					}
+				}
+			}
+		}
+		return new DayTimetable(res);
+
+	}
+
+
+	public void insertCountryApplication(CountryApplication countryApplication) {
 		PreparedStatement stmt = null;
 		String login = countryApplication.getLogin();
 		String password = countryApplication.getPassword();
@@ -247,14 +363,14 @@ public class Database {
 							"\t(Select id from country where login=? and hash_password=?);\n");
 			stmt.setString(1, login);
 			stmt.setString(2, password);
-			stmt.setString(3,login);
+			stmt.setString(3, login);
 			stmt.setString(4, password);
 			stmt.executeUpdate();
 			String country = countryByLoginPassword(login, password);
 			int countryId = countryId(country);
-			for (ClientCompetition clientCompetition : countryApplication.getCompetitionList().getCompetitionList()){
+			for (ClientCompetition clientCompetition : countryApplication.getCompetitionList().getCompetitionList()) {
 				String competition = clientCompetition.getCompetition();
-				for(Athlete athlete : clientCompetition.getAthleteCompetitionList()){
+				for (Athlete athlete : clientCompetition.getAthleteCompetitionList()) {
 					insertInAthlets(athlete, countryId);
 					int athleteId = athleteId(athlete);
 					int competitionId = competitionId(competition);
@@ -285,8 +401,7 @@ public class Database {
 	}
 
 
-
-	private static int[] getFilterCountryArray(ArrayList<String> countries){
+	private static int[] getFilterCountryArray(ArrayList<String> countries) {
 		int[] res = new int[Utils.maxCountDays];
 		try {
 			Database db = Database.createDatabase();
@@ -296,8 +411,8 @@ public class Database {
 			for (String country : countries) {
 				int countryId = db.countryId(country);
 				ArrayList<Integer> temp = db.countryDays(countryId);
-				for(int a : temp)  {
-				res[a] = 1;
+				for (int a : temp) {
+					res[a] = 1;
 				}
 			}
 		} catch (Exception e) {
@@ -306,44 +421,44 @@ public class Database {
 		return res;
 	}
 
-	public  DayList getDayList(ArrayList<Filter> filters){
-		int[] dayList = new int[Utils.maxCountDays+1];
-		for (int i = 0; i < Utils.maxCountDays+1; ++i) {
+	public DayList getDayList(ArrayList<Filter> filters) {
+		int[] dayList = new int[Utils.maxCountDays + 1];
+		for (int i = 0; i < Utils.maxCountDays + 1; ++i) {
 			dayList[i] = 1;
 		}
 		for (Filter filt : filters) {
-			int[] temp = new int[Utils.maxCountDays+1];
-			int[] temp2 = new int[Utils.maxCountDays+1];
+			int[] temp = new int[Utils.maxCountDays + 1];
+			int[] temp2 = new int[Utils.maxCountDays + 1];
 			//in this "if" we iterate all filters/
 			if (filt.getFilterName().equals("sport_array")) {
 				temp = getFilterSportArray(filt.getFilter());
 			}
-			if(filt.getFilterName().equals("country_filter")) {
+			if (filt.getFilterName().equals("country_filter")) {
 				temp2 = getFilterCountryArray(filt.getFilter());
 			}
-			for (int i = 0; i < Utils.maxCountDays+1; ++i) {
+			for (int i = 0; i < Utils.maxCountDays + 1; ++i) {
 				if (temp[i] == 0) {
 					dayList[i] = 0;
 				}
-				if (temp2[i] == 0){
+				if (temp2[i] == 0) {
 					dayList[i] = 0;
 				}
 			}
 		}
 		ArrayList<Integer> res = new ArrayList<Integer>();
-		for(int i = 0; i < Utils.maxCountDays; ++i){
-			if (dayList[i] == 1){
+		for (int i = 0; i < Utils.maxCountDays; ++i) {
+			if (dayList[i] == 1) {
 				res.add(i);
 			}
 		}
 		return new DayList(res);
 	}
 
-	public CountryApplication getCountryApplication(String login, String password){
+	public CountryApplication getCountryApplication(String login, String password) {
 		CountryApplication res = null;
 		PreparedStatement stmt = null;
 		ArrayList<String> competitions = new ArrayList<String>();
-		ArrayList<Integer> maxNumberAthlets= new ArrayList<Integer>();
+		ArrayList<Integer> maxNumberAthlets = new ArrayList<Integer>();
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"select competition_name, number_participants from country_quote join country on country_id = country.id\n" +
@@ -353,7 +468,7 @@ public class Database {
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				String competition_name = rs.getString("competition_name") ;
+				String competition_name = rs.getString("competition_name");
 				int number_participants = rs.getInt("number_participants");
 				competitions.add(competition_name);
 				maxNumberAthlets.add(number_participants);
@@ -361,11 +476,11 @@ public class Database {
 			int size = competitions.size();
 			String[] temp1 = new String[size];
 			int[] temp2 = new int[size];
-			for (int i = 0; i < size; ++i){
+			for (int i = 0; i < size; ++i) {
 				temp1[i] = competitions.get(i);
 				temp2[i] = maxNumberAthlets.get(i);
 			}
-			return new CountryApplication(login, password, new CompetitionList(temp1, temp2)) ;
+			return new CountryApplication(login, password, new CompetitionList(temp1, temp2));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -375,7 +490,7 @@ public class Database {
 
 	}
 
-	public void insertInAthlets(Athlete athlete, int country_id){
+	public void insertInAthlets(Athlete athlete, int country_id) {
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
@@ -384,7 +499,7 @@ public class Database {
 			stmt.setInt(2, athlete.getSex().getSex());
 			stmt.setFloat(3, athlete.getWeight());
 			stmt.setFloat(4, athlete.getHeight());
-			stmt.setInt(5,country_id);
+			stmt.setInt(5, country_id);
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -392,6 +507,7 @@ public class Database {
 		}
 
 	}
+
 	/**
 	 * Insert into country_quote
 	 *
@@ -565,10 +681,9 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (result.size() < 0){
+		if (result.size() < 0) {
 			return new ApplicationConstrain(result);
-		}
-		else{
+		} else {
 			return new ApplicationConstrain();
 		}
 	}

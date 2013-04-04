@@ -33,9 +33,7 @@ public class ServerConsoleWrapper {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Test http server");
-		//startServer(new InetSocketAddress(8888));
-		XMLutils.parserCountries("F:\\Vova\\olimpIS\\olympIS\\data.xml");
-		XMLutils.parserQotes("F:\\Vova\\olimpIS\\olympIS\\data.xml");
+		startServer(new InetSocketAddress(8888));
 	}
 
 	/**
