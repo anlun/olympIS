@@ -97,7 +97,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		ArrayList<ClientCompetition>  compList = competitionList.getCompetitionList();
 
 		if (compList.size() != 0) {
-			Log.d("DAN", competitionList.toString());
+			Log.d("DAN", competitionList.toString() + "\n" + compList.size());
 			// TODO заполнить layout-ы спортсменами
 			athleteNumberList = new int[compList.size()];
 			competitionNamesList = new String[compList.size()];
@@ -105,6 +105,8 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			for (ClientCompetition competition: compList) {
 				athleteNumberList[i] = competition.getMaxAthleteNumber(); // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 				competitionNamesList[i] = competition.getCompetition(); // Список названий соревнований.
+				Log.d("DAN", "adding competition" + athleteNumberList[i] + "\n" + competitionNamesList[i]);
+				i++;
 			}
 
 			Log.d("DAN", "создаём linearLayout-ы");
@@ -118,6 +120,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			// Убиваем AskForWaitActivity. 10 - requestCode этого активити.
 			Log.d("DAN", "убиваем AskForWaitActivity");
 			finishActivity(10);
+
+			// Устанавливаем массив ресурсов для спиннера.
+			sp.setAdapter(new ArrayAdapter(this,
+					android.R.layout.simple_spinner_item, competitionNamesList));
+
 		} else {
 			// TODO если заявка пуста.
 			Log.d("DAN", "убиваем CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
@@ -196,9 +203,8 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		heightTextEdit.setText(athlete.getHeight() + "");
 
 		int itemSelected;
-		String[] choose = getResources().getStringArray(R.array.sport_array);
-		for (itemSelected = 0; itemSelected < choose.length; itemSelected++) {
-			if (choose[itemSelected].equals(competition)) {
+		for (itemSelected = 0; itemSelected < competitionNamesList.length; itemSelected++) {
+			if (competitionNamesList[itemSelected].equals(competition)) {
 				break;
 			}
 		}
