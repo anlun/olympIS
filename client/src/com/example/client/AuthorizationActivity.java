@@ -3,10 +3,13 @@ package com.example.client;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 
 // GUI авторизации
@@ -52,6 +55,11 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 				AuthorizationData data = AuthorizationData.getInstance();
 				data.setLogin(login);
 				data.setPassword(password);
+				try {
+					data.setServerURL(new URL("http://10.0.2.2:8888"));
+				} catch (MalformedURLException e) {
+					Log.d("DAN", "MalformedURLException in OnClick method AuthorizationActivity.java");
+				}
 
 				try {
 					LoginTask loginTask = new LoginTask(login, password, new URL("http://10.0.2.2:8888"), this);

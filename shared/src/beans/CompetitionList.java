@@ -3,11 +3,16 @@ package beans;
 import utils.CustomSerializable;
 import utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CompetitionList implements CustomSerializable {
+public class CompetitionList implements Serializable, CustomSerializable {
 	public CompetitionList() {
 		this.competitionList = new ArrayList<Competition>();
+
+		listTest = new ArrayList<Integer>();
+		listTest.add(5);
+		listTest.add(6);
 	}
 
 	public CompetitionList(String[] competitionNameList, int[] athleteNumberList) {
@@ -85,12 +90,20 @@ public class CompetitionList implements CustomSerializable {
 	public ArrayList<Competition> getCompetitionList() {
 		return this.competitionList;
 	}
-
+    /*
 	public void setCompetitionList(ArrayList<Competition> competitionList) {
 		this.competitionList = competitionList;
+	}*/
+
+	public ArrayList<Integer> getListTest() {
+		return listTest;
 	}
 
-	public class Competition implements CustomSerializable {
+	public void setListTest(ArrayList<Integer> arr) {
+		this.listTest = arr;
+	}
+
+	public class Competition implements Serializable, CustomSerializable {
 		public Competition() {
 			this.competition = "";
 			this.athleteCompetitionList = new ArrayList<Athlete>();
@@ -172,7 +185,7 @@ public class CompetitionList implements CustomSerializable {
 		}
 
 		public void setMaxAthleteNumber(int newMaxAthleteNumber) {
-			maxAthleteNumber = maxAthleteNumber;
+			maxAthleteNumber = newMaxAthleteNumber;
 		}
 
 		private ArrayList<Athlete> athleteCompetitionList;
@@ -182,4 +195,5 @@ public class CompetitionList implements CustomSerializable {
 	}
 
 	private ArrayList<Competition> competitionList; // Список соревнований и атлетов.
+	private ArrayList<Integer>     listTest;
 }

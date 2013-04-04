@@ -15,10 +15,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryApplication> {
-	public ExistApplicationGetTask(String login, String password, URL serverURL) {
+	public ExistApplicationGetTask(String login, String password, URL serverURL, CountryGUI countryGUIObject) {
 		this.login     = login;
 		this.password  = password;
 		this.serverURL = serverURL;
+		this.countryGUIObject = countryGUIObject;
 	}
 
 	@Override
@@ -27,6 +28,8 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 			Client cl = new Client(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
+			Log.d("DAN", "requestXML" + requestXML);
+			Log.d("DAN", "answerXML" + answerXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
 			return (CountryApplication) decoder.readObject();
@@ -45,6 +48,7 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 	@Override
 	protected void onPostExecute(CountryApplication result) {
 		//TODO: обработка со стороны вьюшки
+		countryGUIObject.getCountryApplicationFromServer(result);
 	}
 
 	private String generateXML() throws XMLgenerationException{
@@ -70,4 +74,5 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 	private final String login;
 	private final String password;
 	private final URL    serverURL;
+	private CountryGUI countryGUIObject;
 }

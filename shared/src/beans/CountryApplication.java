@@ -4,11 +4,12 @@ import utils.CustomSerializable;
 import utils.Utils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class CountryApplication implements Serializable, CustomSerializable {
 	public CountryApplication() {
 		competitionList = new CompetitionList();
+		login = "";
+		password = "";
 	}
 
 	public CountryApplication(String login, String password, CompetitionList competitionList) {

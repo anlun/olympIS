@@ -1,5 +1,7 @@
 package com.example.client;
 
+import java.net.URL;
+
 /*
 * @author danya
 */
@@ -28,6 +30,14 @@ public class AuthorizationData {
 		return password;
 	}
 
+	public void setServerURL(URL serverURL) {
+		this.serverURL = serverURL;
+	}
+
+	public URL getServerURL() {
+		return serverURL;
+	}
+
 	private AuthorizationData() {
 		login = "";
 		password = "";
@@ -36,4 +46,5 @@ public class AuthorizationData {
 	private static AuthorizationData authorizationData;
 	private String login;
 	private String password;
+	private URL serverURL;
 }
