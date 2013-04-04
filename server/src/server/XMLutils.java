@@ -75,7 +75,7 @@ public abstract class XMLutils {
 	}
 
 	/**
-	 * <countryByLoginPassword name="ololo">
+	 * <country name="ololo">
 	 * <login>stadion</login>
 	 * <password>sochi</password>
 	 * </countryByLoginPassword>
@@ -90,7 +90,7 @@ public abstract class XMLutils {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName("countryByLoginPassword");
+			NodeList nList = doc.getElementsByTagName("country");
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
