@@ -9,10 +9,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import android.view.View.OnClickListener;
-import beans.CountryApplication;
-import beans.CompetitionList;
-import beans.Athlete;
-import beans.Sex;
+import beans.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -97,7 +94,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
 		this.competitionList = result.getCompetitionList();
-		ArrayList<CompetitionList.Competition>  compList = competitionList.getCompetitionList();
+		ArrayList<ClientCompetition>  compList = competitionList.getCompetitionList();
 
 		if (compList.size() != 0) {
 			Log.d("DAN", competitionList.toString());
@@ -105,7 +102,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			athleteNumberList = new int[compList.size()];
 			competitionNamesList = new String[compList.size()];
 			int i = 0;
-			for (CompetitionList.Competition competition: compList) {
+			for (ClientCompetition competition: compList) {
 				athleteNumberList[i] = competition.getMaxAthleteNumber(); // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 				competitionNamesList[i] = competition.getCompetition(); // Список названий соревнований.
 			}
