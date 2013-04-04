@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boolean> {
 	public FilterDayTimetableSendTask(ArrayList<Filter> filters, URL serverURL) {
-		this.filters    = filters;
+		this.filters   = filters;
 		this.serverURL = serverURL;
 	}
 
