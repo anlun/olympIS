@@ -12,4 +12,8 @@ public abstract class RequestResponseConst {
 	public static String successCountryApplicationResponse() {
 		return "Country application request succeeded.";
 	}
+
+	public static String successFilterPostResponse() {
+		return "Filter request succeeded.";
+	}
 }
