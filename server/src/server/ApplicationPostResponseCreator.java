@@ -1,5 +1,6 @@
 package server;
 
+import beans.CompetitionList;
 import beans.CountryApplication;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,11 +31,13 @@ public class ApplicationPostResponseCreator extends ResponseCreator {
 
 	private CountryApplication getApplicationByCountry(String countryName) {
 		if (countryName.equals("")) {
-			return new CountryApplication();
+			//return new CountryApplication();
 		}
 
 		//TODO: reading from database, change this return
-		return new CountryApplication();
+        int[]mas={2,3,4};
+        String[] st={"a","b","c"};
+		return new CountryApplication("","",new CompetitionList(st, mas));
 	}
 
 	private Document dom;
