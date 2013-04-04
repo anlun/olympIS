@@ -1,6 +1,5 @@
-import beans.Athlete;
-import beans.CountryApplication;
-import beans.Sex;
+package server;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -9,14 +8,12 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import sun.misc.IOUtils;
-import utils.Utils;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 
 /**
  * {@link ServerConsoleWrapper} is the center class of server application.

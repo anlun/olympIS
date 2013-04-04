@@ -1,6 +1,7 @@
+package server;
+
 import beans.ApplicationConstrain;
 import beans.ApplicationConstrain.SportConstrain;
-import beans.Competition;
 import beans.Sex;
 import com.mysql.jdbc.PreparedStatement;
 
@@ -29,12 +30,12 @@ public class Database {
 
 	private static Connection getConnection() {
 		try {
-			String url      = "jdbc:mysql://localhost/olimpis";
+			String url = "jdbc:mysql://localhost/olimpis";
 			String username = "root";
 			String password = "pass";
 			return DriverManager.getConnection(url, username, password);
 
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -141,7 +142,7 @@ public class Database {
 
 	/**
 	 * @param competition name
-	 * @return Id Competition
+	 * @return Id server.Competition
 	 */
 	public int competitionId(String competition) {
 		PreparedStatement stmt = null;
@@ -291,6 +292,7 @@ public class Database {
 	 * 0 -> Sex.Female
 	 * 1 -> Sex.Male
 	 * otherwise -> Sex.Undefined
+	 *
 	 * @param number value to encode.
 	 * @return encoded {@link beans.Sex}.
 	 */
@@ -303,6 +305,7 @@ public class Database {
 
 	/**
 	 * Returns {@link ApplicationConstrain} for the country by its name.
+	 *
 	 * @param country name of the country.
 	 * @return {@link ApplicationConstrain} for the country.
 	 */
@@ -337,6 +340,7 @@ public class Database {
 
 	/**
 	 * Returns number of sport objects in DB.
+	 *
 	 * @return number of sport objects in DB.
 	 */
 	public int sportObjectNumber() {
@@ -371,17 +375,99 @@ public class Database {
 				int objectTypeId = rs.getInt("object_type");
 				int duration = rs.getInt("duration");
 				Sex sexParticipant = encodeAthleteSex(rs.getInt("sex_participant"));
-				ArrayList<Integer> temp = new ArrayList<Integer>();
-				stmt = (PreparedStatement) connection.prepareStatement(
-						"select sport_object.id from sport_object join sportobject_type on " +
-								"sport_object.object_type_id = sportobject_type.id where object_type_id = ?;");
-				stmt.setInt(1, objectTypeId);
-				ResultSet rs2 = stmt.executeQuery();
-				while (rs2.next()) {
-					temp.add(rs2.getInt("id"));
-				}
-				result.add(new Competition(id, duration, sexParticipant, temp));
+				result.add(new Competition(id, duration, sexParticipant, objectTypeId));
 
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * @param competitionID1
+	 * @param competitionID2
+	 * @return true If the competition have the same participants
+	 */
+	public boolean athleteCollision(int competitionID1, int competitionID2) {
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT  athlete_id FROM participation_athletes\n" +
+							"WHERE competition_id = ? and (athlete_id) IN\n" +
+							"(SELECT athlete_id FROM participation_athletes\n" +
+							" where competition_id = ?);");
+			stmt.setInt(1, competitionID1);
+			stmt.setInt(2, competitionID2);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.first()) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * @return lists sportobjects where index=typeIdSportObjects
+	 */
+	public ArrayList<Integer>[] allSportObjectsByType() {
+		PreparedStatement stmt = null;
+		int countTypeObject = countTypeSportObjects();
+		ArrayList<Integer>[] result = new ArrayList[countTypeObject + 1];
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT id FROM sportobject_type");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int typeId = rs.getInt("id");
+				result[typeId] = sportObjectsIdByTypeID(typeId);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * @return count types sport objects
+	 */
+	public int countTypeSportObjects() {
+		PreparedStatement stmt = null;
+		int res = 0;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT count(*)  FROM sportobject_type;");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				res = rs.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+
+	/**
+	 * @param typeIdSportobject
+	 * @return all sport objects with typeID = typeIdSportobject
+	 */
+	public ArrayList<Integer> sportObjectsIdByTypeID(int typeIdSportobject) {
+		PreparedStatement stmt = null;
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT id FROM sport_object where object_type_id = ?");
+			stmt.setInt(1, typeIdSportobject);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int sportObjectId = rs.getInt("id");
+				result.add(sportObjectId);
 			}
 
 		} catch (SQLException e) {

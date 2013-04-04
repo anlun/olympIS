@@ -1,16 +1,15 @@
-import beans.Competition;
+package server;
+
 import beans.Sex;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
-//TODO: сейчас все работает только локально (без БД).
-//Когда появится БД, я немного переделаю некоторые методы.
+//TODO: сейчас все работает только локально (без БД). Сделать с БД!
 
 /**
- * Class PlanGenerator for generating competition plan.
+ * Class server.PlanGenerator for generating competition plan.
  * @author Oderov Roman
  */
 public class PlanGenerator {
@@ -18,49 +17,29 @@ public class PlanGenerator {
     public PlanGenerator() {
         try{
             ArrayList<Competition> result = new ArrayList<Competition>();
-//1
-            ArrayList<Integer> spObjs = new ArrayList<Integer>();
-            spObjs.add(2);spObjs.add(1);
-            result.add(new Competition(1,3,null,spObjs));
-//2
-            spObjs = new ArrayList<Integer>();spObjs.add(1);spObjs.add(2);
-            result.add(new Competition(2,4,null,spObjs));
-//3
-            spObjs = new ArrayList<Integer>();spObjs.add(2);spObjs.add(1);
-            result.add(new Competition(3,3,null,spObjs));
-//4
-            spObjs = new ArrayList<Integer>();spObjs.add(1);spObjs.add(2);
-            result.add(new Competition(4,2,null,spObjs));
-//5
-            spObjs = new ArrayList<Integer>();spObjs.add(3);
-            result.add(new Competition(5,2,null,spObjs));
-//6
-            spObjs = new ArrayList<Integer>();spObjs.add(3);
-            result.add(new Competition(6,5,null,spObjs));
-//7
-            spObjs = new ArrayList<Integer>();spObjs.add(3);
-            result.add(new Competition(7,2,null,spObjs));
-//8
-            spObjs = new ArrayList<Integer>();spObjs.add(3);
-            result.add(new Competition(8,2,null,spObjs));
-//9
-            spObjs = new ArrayList<Integer>();spObjs.add(4);
-            result.add(new Competition(9,6,null,spObjs));
-//10
-            spObjs = new ArrayList<Integer>();spObjs.add(4);
-            result.add(new Competition(10,1,null,spObjs));
-//11
-            spObjs = new ArrayList<Integer>();spObjs.add(4);
-            result.add(new Competition(11,8,null,spObjs));
-//12
-            spObjs = new ArrayList<Integer>();spObjs.add(2);spObjs.add(1);
-            result.add(new Competition(12,3,null,spObjs));
-//13
-            spObjs = new ArrayList<Integer>();spObjs.add(1);spObjs.add(2);
-            result.add(new Competition(13,5,null,spObjs));
+            result.add(new Competition(1,3,new Sex(Sex.undefined),1));
+            result.add(new Competition(2,4,new Sex(Sex.undefined),1));
+            result.add(new Competition(3,3,new Sex(Sex.undefined),1));
+            result.add(new Competition(4,2,new Sex(Sex.undefined),1));
+            result.add(new Competition(5,2,new Sex(Sex.undefined),2));
+            result.add(new Competition(6,5,new Sex(Sex.undefined),2));
+            result.add(new Competition(7,2,new Sex(Sex.undefined),2));
+            result.add(new Competition(8,2,new Sex(Sex.undefined),2));
+            result.add(new Competition(9,6,new Sex(Sex.undefined),3));
+            result.add(new Competition(10,1,new Sex(Sex.undefined),3));
+            result.add(new Competition(11,8,new Sex(Sex.undefined),3));
+            result.add(new Competition(12,3,new Sex(Sex.undefined),1));
+            result.add(new Competition(13,5,new Sex(Sex.undefined),1));
+
+            //spObjs by type:
+            spObjByType = new ArrayList[4];
+            spObjByType[0] = null;
+            spObjByType[1] = new ArrayList<Integer>(Arrays.asList(1,2));
+            spObjByType[2] = new ArrayList<Integer>(Arrays.asList(3));
+            spObjByType[3] = new ArrayList<Integer>(Arrays.asList(4));
 
             this.nonPlannedCompetitions = result;
-            //Database db = Database.createDatabase();
+            //server.Database db = server.Database.createDatabase();
             //this.nonPlannedCompetitions = db.competitions();
             this.allCompetitionCount = this.nonPlannedCompetitions.size();
             //this.sportObjectCount = db.sportObjectNumber();
@@ -98,7 +77,7 @@ public class PlanGenerator {
         boolean flagGen = false;
 
         //Check restriction on total length of the Games
-        if (getMaxCurrHour() > MAX_DAYS * DAY_LENGTH + 1) {  //getMaxCurrDay() > MAX_DAYS){
+        if (getMaxCurrHour() > MAX_DAYS * DAY_LENGTH + 1) {
             return false;
         }
 
@@ -112,19 +91,9 @@ public class PlanGenerator {
             cmptn = nonPlannedCompetitions.get(i);
             nonPlannedCompetitions.remove(cmptn);
 
-            /*TODO: попросить Вову дать мне тип у каждого соревнования. И списки id объектов под каждый тип.
-            и после цикла сделать так: (чтобы в след. раз перебирали с другого спорт.объекта и равномернее распределялись)
-            Это нужно для большей оптимальности раскладки.
-                for (int spObj : Types[cmptn.getTypeSpObj()])
-                {
-                 ...
-                }
-                 int temp = Types[cmptn.getTypeSpObj()].get(0);
-                 Types[cmptn.getTypeSpObj()].add(temp);
-                 Types[cmptn.getTypeSpObj()].remove(0);
-            */
             //trying all possible sportObjects to hold current competition:
-            for (int spObj : cmptn.getIdRequiredSportObjects()) {
+            int cmptnType = cmptn.getIdTypeRequiredSportObject();
+            for (int spObj : spObjByType[cmptnType]) {
                 flagCheck = checkPlanRestrictions(cmptn, spObj);
                 if (flagCheck) {
                     pushIntoPlan(cmptn,spObj);
@@ -136,11 +105,24 @@ public class PlanGenerator {
                     }
                 }
             }
+
+            /*
+            Pop first element from the respective spObjByTest list and push it at the end.
+            It's necessary for more uniform a priory competition distribution.
+            //TODO: запилить, чтоб работала оптимизация! Сейчас выдает ConcurrentModificationException
+            if (spObjByType[cmptnType].size() > 1) {
+                int temp = spObjByType[cmptnType].get(0);
+                spObjByType[cmptnType].add(temp);
+                spObjByType[cmptnType].remove(0);
+            }
+            * */
+
             nonPlannedCompetitions.add(i,cmptn);
         }
 
-        // делаем сдвиг времени(currDay & hoursLeft & currHour) на 1 час для объектов c минимальным currHour.
-        // И попробуем еще разок сгенерить расписание. Если не прокатит - откатим эти изменения и попробуем по-другому.
+        /* делаем сдвиг времени(currDay & hoursLeft & currHour) на 1 час для объектов c минимальным currHour.
+         И попробуем еще разок сгенерить расписание. Если не прокатит - откатим эти изменения и попробуем по-другому.
+        * */
         int SpObjWithMinCurrHour = getSpObjWithMinCurrHour();
         pushIntoPlan(null,SpObjWithMinCurrHour); // изменить как описано в комменте выше.
         flagGen = generatePlan();
@@ -241,19 +223,6 @@ public class PlanGenerator {
     }
 
     /**
-     * Get maximum element from currDay[]
-     * @return max element of currDay
-     */
-    private int getMaxCurrDay() {
-        int max = currDay[1];
-        for (int i = 2; i <= sportObjectCount; i++) {
-            if (currDay[i] > max) {
-                max = currDay[i];
-            }
-        }
-        return max;
-    }
-    /**
      * Get maximum element from currHour[]
      * @return max element of currHour
      */
@@ -291,11 +260,11 @@ public class PlanGenerator {
     }
 
     /**
-     * Export renewed competition info back to the Database
+     * Export renewed competition info back to the server.Database
      * Now it writes plan in the console
      */
     private void exportPlanToDatabase() {
-        //TODO: export competitions back to the Database. Ask Vova to implement it.
+        //TODO: export competitions back to the server.Database. Ask Vova to implement it.
         System.out.print("\t\t");
         for (int i = 1; i <= DAY_LENGTH * MAX_DAYS; i++) {
             System.out.print(" "+i+"\t");
@@ -335,6 +304,7 @@ public class PlanGenerator {
     private ArrayList<Competition> nonPlannedCompetitions; // competitions not planned yet
     private int allCompetitionCount;   //count of existing competitions
     private int sportObjectCount;   //count of existing sportObjects
+    private ArrayList<Integer>[] spObjByType;
 
     private Competition[] competitionIDs;    //used to set bijection between Competitions and their IDs.
 

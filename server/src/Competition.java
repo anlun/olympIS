@@ -1,23 +1,25 @@
-package beans;
+package server;
 
-import java.util.ArrayList;
+import beans.Sex;
 
 /**
  * Class represents sport competition.
  * It's JavaBean that transfers from server to client.
+ *
  * @author Podkopaev Anton
  */
 public class Competition {
-	public Competition(int id, int duration, Sex athleteSex, ArrayList<Integer> idRequiredSportObjects) {
-		this.id         = id;
-		this.duration   = duration;
+	public Competition(int id, int duration, Sex athleteSex, int idTypeRequiredSportObject) {
+		this.id = id;
+		this.duration = duration;
 		this.athleteSex = athleteSex;
-		this.idRequiredSportObjects = idRequiredSportObjects;
+		this.idTypeRequiredSportObject = idTypeRequiredSportObject;
 	}
 
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -25,6 +27,7 @@ public class Competition {
 	public int getDuration() {
 		return duration;
 	}
+
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
@@ -32,17 +35,10 @@ public class Competition {
 	public Sex getAthleteSex() {
 		return athleteSex;
 	}
+
 	public void setAthleteSex(Sex athleteSex) {
 		this.athleteSex = athleteSex;
 	}
-
-	public ArrayList<Integer> getIdRequiredSportObjects() {
-		return idRequiredSportObjects;
-	}
-	public void setIdRequiredSportObjects(ArrayList<Integer> idRequiredSportObjects) {
-		this.idRequiredSportObjects = idRequiredSportObjects;
-	}
-
     //=================
     public int getBeginHour() {
         return beginHour;
@@ -56,26 +52,18 @@ public class Competition {
     public void setEndHour(int newEnd) {
         this.endHour = newEnd;
     }
-    public String getName() {
-        return name;
+    public int getIdTypeRequiredSportObject() {
+        return idTypeRequiredSportObject;
     }
-    public void setName(String newName) {
-        this.name = newName;
-    }
-    public int getSportType() {
-        return sportType;
-    }
-    public void setSportType(int newSportType) {
-        this.sportType = newSportType;
+    public void setIdTypeRequiredSportObject(int newSportType) {
+        this.idTypeRequiredSportObject = newSportType;
     }
     //add begin and end of the competition
     private int beginHour;
     private int endHour;
     //=================
 	private int id;
-    private String name;
 	private int duration;
 	private Sex athleteSex;
-	private ArrayList<Integer> idRequiredSportObjects;
-    private int sportType;
+	private int idTypeRequiredSportObject;
 }

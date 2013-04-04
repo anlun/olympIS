@@ -1,3 +1,5 @@
+package server;
+
 import beans.CountryApplication;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
