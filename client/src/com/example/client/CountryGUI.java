@@ -81,7 +81,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			}
 		});
 
-		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
+		// получение уже имеющейся заявки от базы + число спортсменов
 		authorizationData = AuthorizationData.getInstance();
 		// countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), new CompetitionList());
 		ExistApplicationGetTask task = new ExistApplicationGetTask(
@@ -98,7 +98,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 		if (compList.size() != 0) {
 			Log.d("DAN", competitionList.toString() + "\n" + compList.size());
-			// TODO заполнить layout-ы спортсменами
+			// заполнить layout-ы спортсменами
 			athleteNumberList = new int[compList.size()];
 			competitionNamesList = new String[compList.size()];
 			int i = 0;
@@ -159,7 +159,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			}
 
 		} else {
-			// TODO если заявка пуста.
 			Log.d("DAN", "убиваем CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
 			finish();
 		}
@@ -184,7 +183,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			case 1:// post application
 				AuthorizationData data = AuthorizationData.getInstance();
 				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
-				//TODO: дописать передачу countryApplication через Тошин класс
+				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
+
+				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -424,6 +426,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			default:
 				return 0;
 		}
+	}
+
+	public void doFinish() {
+		finishActivity(10);
+		this.finish();
 	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
