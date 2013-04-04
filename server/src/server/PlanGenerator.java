@@ -37,9 +37,11 @@ public class PlanGenerator {
             spObjByType[1] = new ArrayList<Integer>(Arrays.asList(1,2));
             spObjByType[2] = new ArrayList<Integer>(Arrays.asList(3));
             spObjByType[3] = new ArrayList<Integer>(Arrays.asList(4));
+            //Database db = Database.createDatabase();
+            //ArrayList<Integer>[] spObjByType = db.allSportObjectsByType();
 
             this.nonPlannedCompetitions = result;
-            //server.Database db = server.Database.createDatabase();
+            //Database db = Database.createDatabase();
             //this.nonPlannedCompetitions = db.competitions();
             this.allCompetitionCount = this.nonPlannedCompetitions.size();
             //this.sportObjectCount = db.sportObjectNumber();
@@ -59,12 +61,12 @@ public class PlanGenerator {
             /*try {
                 db.closeConnection();
             } catch (SQLException e) {
-                System.err.println("Can't close database connection!");
+                System.err.print("\nCan't close database connection!");
                 e.printStackTrace();
             } */
         }
         catch (Exception e){
-            System.err.print("Can't create DB connection!");
+            System.err.print("\nCan't create DB connection!");
         }
     }
 //======================================
@@ -109,13 +111,14 @@ public class PlanGenerator {
             /*
             Pop first element from the respective spObjByTest list and push it at the end.
             It's necessary for more uniform a priory competition distribution.
+            */
             //TODO: запилить, чтоб работала оптимизация! Сейчас выдает ConcurrentModificationException
             if (spObjByType[cmptnType].size() > 1) {
                 int temp = spObjByType[cmptnType].get(0);
                 spObjByType[cmptnType].add(temp);
                 spObjByType[cmptnType].remove(0);
             }
-            * */
+            /* */
 
             nonPlannedCompetitions.add(i,cmptn);
         }
@@ -244,7 +247,7 @@ public class PlanGenerator {
      * @return TRUE if there's a collision. FALSE - on the contrary
      */
     private boolean athleteCollision(int cmptnID1, int cmptnID2) {
-        //TODO: ask Vova to implement it
+        //TODO: implement it with DB
         if (
             (cmptnID1 == 1 && cmptnID2 == 6)||(cmptnID1 == 1 && cmptnID2 == 6)||
             (cmptnID1 == 2 && cmptnID2 == 5)||(cmptnID1 == 5 && cmptnID2 == 2)||
@@ -295,12 +298,14 @@ public class PlanGenerator {
             System.out.print("\n\n=========\nPRESS ENTER!");
             System.in.read();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
 
 //=======================================================
+    private Database db; //database entity
+
     private ArrayList<Competition> nonPlannedCompetitions; // competitions not planned yet
     private int allCompetitionCount;   //count of existing competitions
     private int sportObjectCount;   //count of existing sportObjects
