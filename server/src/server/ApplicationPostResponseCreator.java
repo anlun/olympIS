@@ -1,6 +1,7 @@
+package server;
+
 import beans.CompetitionList;
 import beans.CountryApplication;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import utils.Utils;
@@ -34,8 +35,8 @@ public class ApplicationPostResponseCreator extends ResponseCreator {
 		}
 
 		//TODO: reading from database, change this return
-		int[]mas={2,3,4};
-		String[] st={"a", "b", "c"};
+        int[]mas={2,3,4};
+        String[] st={"a","b","c"};
 		return new CountryApplication("","",new CompetitionList(st, mas));
 	}
 

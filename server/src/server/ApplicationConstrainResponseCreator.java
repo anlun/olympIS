@@ -1,3 +1,5 @@
+package server;
+
 import beans.ApplicationConstrain;
 import beans.Sex;
 import org.w3c.dom.Document;

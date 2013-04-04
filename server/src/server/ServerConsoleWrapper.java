@@ -1,7 +1,6 @@
-import beans.Athlete;
-import beans.CompetitionList;
-import beans.CountryApplication;
-import beans.Sex;
+package server;
+
+import beans.FilterListForTimetable;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -10,14 +9,12 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import sun.misc.IOUtils;
-import utils.Utils;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 
 /**
  * {@link ServerConsoleWrapper} is the center class of server application.
@@ -35,14 +32,10 @@ public class ServerConsoleWrapper {
 	 * @param args Just ignores now.
 	 */
 	public static void main(String[] args) {
-		int[]mas={2,3,4};
-		String[] st={"a", "b", "c"};
-		CountryApplication app = new CountryApplication("asd", "123", new CompetitionList(st, mas));
-		System.out.println(Utils.beanToString(app));
-
-
 		System.out.println("Test http server");
-		startServer(new InetSocketAddress(8888));
+		//startServer(new InetSocketAddress(8888));
+		XMLutils.parserCountries("F:\\Vova\\olimpIS\\olympIS\\data.xml");
+		XMLutils.parserQotes("F:\\Vova\\olimpIS\\olympIS\\data.xml");
 	}
 
 	/**
@@ -149,7 +142,11 @@ public class ServerConsoleWrapper {
 					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
 						if (object.getAttribute("class").equals("beans.CountryApplication")) {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
-						} //else ...
+						} else if (object.getAttribute("class").equals("beans.FilterListForDayList")) {
+							return (new FilterDayListResponseCreator(xmlString)).createResponse();
+						} else if (object.getAttribute("class").equals("FilterListForTimetable")) {
+							return (new FilterDayTimetableResponseCreator(xmlString)).createResponse();
+						}
 					}
 				}
 
