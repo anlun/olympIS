@@ -1,7 +1,7 @@
 package server;
 
 import beans.DayList;
-import beans.FilterList;
+import beans.FilterListForDayList;
 import utils.Utils;
 
 import java.beans.XMLDecoder;
@@ -18,7 +18,7 @@ public class FilterResponseCreator extends ResponseCreator {
 			XMLDecoder decoder = new XMLDecoder(
 					new ByteArrayInputStream(filterListXML.getBytes("UTF-8"))
 			);
-			FilterList filterList = (FilterList) decoder.readObject();
+			FilterListForDayList filterList = (FilterListForDayList) decoder.readObject();
 			if (filterList == null) {
 				return Utils.beanToString(new DayList());
 			}

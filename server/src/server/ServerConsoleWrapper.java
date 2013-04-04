@@ -139,7 +139,7 @@ public class ServerConsoleWrapper {
 					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
 						if (object.getAttribute("class").equals("beans.CountryApplication")) {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
-						} else if (object.getAttribute("class").equals("beans.FilterList")) {
+						} else if (object.getAttribute("class").equals("beans.FilterListForDayList")) {
 							return (new FilterResponseCreator(xmlString)).createResponse();
 						}
 					}

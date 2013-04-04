@@ -2,12 +2,10 @@ package com.example.client;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import beans.ApplicationConstrain;
 import beans.DayList;
 import beans.Filter;
 import beans.FilterList;
 import com.googlecode.openbeans.XMLDecoder;
-import utils.RequestResponseConst;
 import utils.Utils;
 
 import java.io.ByteArrayInputStream;

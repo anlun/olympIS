@@ -6,12 +6,12 @@ import utils.Utils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FilterList implements Serializable, CustomSerializable {
-	public FilterList() {
+public class FilterListForDayList implements Serializable, CustomSerializable {
+	public FilterListForDayList() {
 		filters = new ArrayList<Filter>();
 	}
 
-	public FilterList(ArrayList<Filter> filters) {
+	public FilterListForDayList(ArrayList<Filter> filters) {
 		this.filters = filters;
 	}
 
@@ -22,7 +22,8 @@ public class FilterList implements Serializable, CustomSerializable {
 
 		result += "</object>";
 
-		return result;	}
+		return result;
+	}
 
 
 	public ArrayList<Filter> getFilters() {
