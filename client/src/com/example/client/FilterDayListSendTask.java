@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import beans.DayList;
 import beans.Filter;
-import beans.FilterList;
+import beans.FilterListForDayList;
 import com.googlecode.openbeans.XMLDecoder;
 import utils.Utils;
 
@@ -14,8 +14,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class FilterSendTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterSendTask(ArrayList<Filter> filters, URL serverURL) {
+public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
+	public FilterDayListSendTask(ArrayList<Filter> filters, URL serverURL) {
 		this.filters    = filters;
 		this.serverURL = serverURL;
 	}
@@ -24,7 +24,7 @@ public class FilterSendTask extends AsyncTask<String, Integer, Boolean> {
 	public Boolean doInBackground(String... data) {
 		try {
 			Client cl = new Client(serverURL);
-			String requestXML = Utils.beanToString(new FilterList(filters));
+			String requestXML = Utils.beanToString(new FilterListForDayList(filters));
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
