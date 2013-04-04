@@ -35,11 +35,8 @@ public class ServerConsoleWrapper {
 	 * @param args Just ignores now.
 	 */
 	public static void main(String[] args) {
-		int[]mas={2,3,4};
-		String[] st={"a", "b", "c"};
-		CountryApplication app = new CountryApplication("asd", "123", new CompetitionList(st, mas));
-		System.out.println(Utils.beanToString(app));
-
+		ArrayList<Filter> filters = new ArrayList<Filter>();
+		System.out.println(Utils.beanToString(filters));
 
 		System.out.println("Test http server");
 		startServer(new InetSocketAddress(8888));
@@ -149,7 +146,9 @@ public class ServerConsoleWrapper {
 					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
 						if (object.getAttribute("class").equals("beans.CountryApplication")) {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
-						} //else ...
+						} else if (object.getAttribute("class").equals("beans.ArrayList")) {
+
+						}
 					}
 				}
 

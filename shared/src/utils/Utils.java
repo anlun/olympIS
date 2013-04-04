@@ -31,10 +31,32 @@ public class Utils {
 			String fieldName, ArrayList<? extends CustomSerializable> list
 	) {
 		String result = "<void property=\"" + fieldName + "\">";
-		result += "<object class=\"java.util.ArrayList\">";
+		result += arrayListToBeanXML(list);
+		result += "</void>";
+
+		return result;
+	}
+
+	public static String arrayListToBeanXML(ArrayList<? extends CustomSerializable> list) {
+		String result = "<object class=\"java.util.ArrayList\">";
 
 		for (CustomSerializable el : list) {
 			result += "<void method=\"add\">" + el.serialize() + "</void>";
+		}
+
+		result += "</object>";
+
+		return result;
+	}
+
+	public static String stringArrayListToBeanField(
+			String fieldName, ArrayList<String> list
+	) {
+		String result = "<void property=\"" + fieldName + "\">";
+		result += "<object class=\"java.util.ArrayList\">";
+
+		for (String el : list) {
+			result += "<void method=\"add\">" + "<string>" + el + "</string>" + "</void>";
 		}
 
 		result += "</object>";
@@ -42,6 +64,7 @@ public class Utils {
 
 		return result;
 	}
+
 
 	public static String objectToBeanField(String fieldName, CustomSerializable value) {
 		return "<void property=\"" + fieldName + "\">"
