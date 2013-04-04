@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import beans.DayTimetable;
 import beans.Filter;
-import beans.DayList;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +25,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.calendar);
 
 		filterList = new ArrayList<Filter>();
+		authorizationData = AuthorizationData.getInstance();
 
 		//устанавливаем onClickListener для фильтров
 		(findViewById(R.id.countryFilter)).setOnClickListener(this);
@@ -37,16 +40,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tv.setOnClickListener(this);
 			}
 		}
-
-		// TODO убрать эти 8 строчек. Они сейчас для наглядности работы метода setColor.
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		ArrayList<Integer> ar1 = new ArrayList<Integer>();
-		for (int i = 0; i <= 30; i++) {
-			ar.add(i);
-			if (i % 2 == 0) ar1.add(i);
-		}
-		setColor(ar, Color.GREEN);
-		setColor(ar1, Color.WHITE);
 	}
 
 	/**
@@ -84,12 +77,16 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tableSportsFilterIntent.putExtra("filterNumber", "sportsFilter");
 				startActivityForResult(tableSportsFilterIntent, 1);
 				break;
-			default:
-				Intent dayActivityIntent = new Intent(this, DayActivity.class);
-				dayActivityIntent.putExtra("dayNumber", ((TextView) view).getHint());
+			default: // т.е. клик по дню.
 				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
-				dayActivityIntent.putExtra("dayTimetable", "9-00 football \n11-00 swimming\n13-00 hockey");
-				startActivity(dayActivityIntent);
+				// передаю собственно filterList
+				try {
+					(new FilterDayTimetableSendTask(filterList,
+							Integer.parseInt(((TextView) view).getHint().toString()),
+							new URL("http://10.0.2.2:8888"), this)).execute();
+				} catch (MalformedURLException e) {
+				}
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 	}
@@ -114,8 +111,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					}
 					addFilter(filterName, result);
 
-					// TODO передать собственно filterList и получить ответ в виде DayList
-					// setSelectedDaysGreen(dayList);
+					// передаю собственно filterList
+					(new FilterDayListSendTask(filterList, new URL("http://10.0.2.2:8888"), this)).execute();
+					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
@@ -125,6 +123,36 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			else if (resultCode == RESULT_CANCELED) {
 			}
 		}
+	}
+
+	// получить ответ в виде DayList
+	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
+		Log.d("DAN","onFilterDayListSendTask enter");
+		ArrayList<Integer> ar = new ArrayList<Integer>();
+		for (int i = 0; i <= 30; i++) {
+			ar.add(i);
+		}
+		setColor(ar, Color.WHITE);
+		Log.d("DAN","onFilterDayListSendTask exit");
+		setColor(dayList, Color.GREEN);
+
+		finishActivity(10);
+	}
+
+	// получить ответ в виде DayTimetable
+	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
+		// TODO отобразить dayTimetable
+		Intent dayActivityIntent = new Intent(this, DayActivity.class);
+		dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+
+		String str = "";
+		for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
+			str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
+		}
+		dayActivityIntent.putExtra("dayTimetable", str);
+		startActivity(dayActivityIntent);
+
+		finishActivity(10);
 	}
 
 	/**
@@ -187,4 +215,5 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	private final static int lastDay = 21; // Last day of competitions.
 	private final static int numberOfWeeks = 4; // Nu,ber of weeks.
 	private ArrayList<Filter> filterList;
+	private AuthorizationData authorizationData;
 }

@@ -3,6 +3,7 @@ package server;
 import beans.DayList;
 import beans.Filter;
 import beans.FilterListForDayList;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import utils.Utils;
 
 import java.beans.XMLDecoder;
@@ -17,6 +18,8 @@ public class FilterDayListResponseCreator extends ResponseCreator {
 	}
 
 	public String createResponse() {
+		System.out.println("BBB 1");
+
 		try {
 			XMLDecoder decoder = new XMLDecoder(
 					new ByteArrayInputStream(filterListXML.getBytes("UTF-8"))
@@ -28,10 +31,15 @@ public class FilterDayListResponseCreator extends ResponseCreator {
 
 			ArrayList<Filter> filters = filterList.getFilters();
 
+			System.out.println("BBB 2");
+
 			try {
 				Database db = Database.createDatabase();
 				DayList result = db.getDayList(filters);
 				db.closeConnection();
+
+				System.out.println("BBB 3");
+
 				return Utils.beanToString(result);
 			} catch (SQLException e) {
 				//TODO: норм комментарий
@@ -41,6 +49,8 @@ public class FilterDayListResponseCreator extends ResponseCreator {
 			return Utils.beanToString(new DayList());
 		} catch (UnsupportedEncodingException e) {
 			System.err.println("Unsupported encoding error!");
+		} catch (Exception e) {
+			System.err.println(e.toString());
 		}
 
 		return Utils.beanToString(new DayList());
