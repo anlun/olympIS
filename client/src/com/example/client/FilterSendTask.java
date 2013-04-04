@@ -5,6 +5,7 @@ import android.util.Log;
 import beans.ApplicationConstrain;
 import beans.DayList;
 import beans.Filter;
+import beans.FilterList;
 import com.googlecode.openbeans.XMLDecoder;
 import utils.RequestResponseConst;
 import utils.Utils;
@@ -25,7 +26,7 @@ public class FilterSendTask extends AsyncTask<String, Integer, Boolean> {
 	public Boolean doInBackground(String... data) {
 		try {
 			Client cl = new Client(serverURL);
-			String requestXML = Utils.arrayListToBeanXML(filters);
+			String requestXML = Utils.beanToString(new FilterList(filters));
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
