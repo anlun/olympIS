@@ -321,7 +321,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data == null) return;
 		if (requestCode == 10) { // т.е. вернулись из AskForWaitActivity
-			//TODO
 			Log.d("DAN", "перезапуск AskForWaitActivity");
 			startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 		} else if (requestCode == 2) {   // 2 соответствует параметру requestCode, передаваемому диалоговому окну при инициализации.
