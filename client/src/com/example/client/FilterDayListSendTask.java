@@ -24,7 +24,8 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 	public Boolean doInBackground(String... data) {
 		try {
 			Client cl = new Client(serverURL);
-			String requestXML = Utils.beanToString(new FilterListForDayList(filters));
+			FilterListForDayList fl = new FilterListForDayList(filters);
+			String requestXML = fl.serialize();
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
