@@ -1,7 +1,5 @@
-import beans.ApplicationConstrain;
+import beans.*;
 import beans.ApplicationConstrain.SportConstrain;
-import beans.Competition;
-import beans.Sex;
 import com.mysql.jdbc.PreparedStatement;
 
 import java.sql.Connection;
@@ -161,6 +159,129 @@ public class Database {
 		return competitionId;
 	}
 
+	public int  athleteId(Athlete athlete){
+		PreparedStatement stmt = null;
+		int athleteId = 0;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT id  FROM athlete WHERE athlete_name=?;");
+			stmt.setString(1, athlete.getName());
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+			    athleteId = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return athleteId;
+
+	}
+
+	public  void insertInParticipantsAthlets(int competitionId, int athleteId){
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"INSERT INTO participation_athletes Values (?,?)");
+			stmt.setInt(1, competitionId);
+			stmt.setInt(2, athleteId);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	public void insertCountryApplication(CountryApplication countryApplication){
+		PreparedStatement stmt = null;
+		String login = countryApplication.getLogin();
+		String password = countryApplication.getPassword();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SET SQL_SAFE_UPDATES=0;\n" +
+							"delete from participation_athletes where athlete_id in\n" +
+							"    (Select id from athlete where country_id in\n" +
+							"\t(Select id from country where login = ? and hash_password =?));\n" +
+							"\n" +
+							"delete from athlete where country_id in\n" +
+							"\t(Select id from country where login=? and hash_password=?);\n");
+			stmt.setString(1, login);
+			stmt.setString(2, password);
+			stmt.setString(3,login);
+			stmt.setString(4, password);
+			stmt.executeUpdate();
+			String country = countryByLoginPassword(login, password);
+			int countryId = countryId(country);
+			for (ClientCompetition clientCompetition : countryApplication.getCompetitionList().getCompetitionList()){
+				String competition = clientCompetition.getCompetition();
+				for(Athlete athlete : clientCompetition.getAthleteCompetitionList()){
+					insertInAthlets(athlete, countryId);
+					int athleteId = athleteId(athlete);
+					int competitionId = competitionId(competition);
+					insertInParticipantsAthlets(competitionId, athleteId);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public CountryApplication getCountryApplication(String login, String password){
+		CountryApplication res = null;
+		PreparedStatement stmt = null;
+		ArrayList<String> competitions = new ArrayList<String>();
+		ArrayList<Integer> maxNumberAthlets= new ArrayList<Integer>();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"select competition_name, number_participants from country_quote join country on country_id = country.id\n" +
+							"\t\t\t\t\t\t\tjoin competition on competition_id = competition.id\n" +
+							"where country.login = ? and country.hash_password =?;\n");
+			stmt.setString(1, login);
+			stmt.setString(2, password);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String competition_name = rs.getString("competition_name") ;
+				int number_participants = rs.getInt("number_participants");
+				competitions.add(competition_name);
+				maxNumberAthlets.add(number_participants);
+			}
+			int size = competitions.size();
+			String[] temp1 = new String[size];
+			int[] temp2 = new int[size];
+			for (int i = 0; i < size; ++i){
+				temp1[i] = competitions.get(i);
+				temp2[i] = maxNumberAthlets.get(i);
+			}
+			return new CountryApplication(login, password, new CompetitionList(temp1, temp2)) ;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+
+	}
+
+	public void insertInAthlets(Athlete athlete, int country_id){
+		PreparedStatement stmt = null;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"INSERT INTO athlete Values (NULL,?,?,?,?,?)");
+			stmt.setString(1, athlete.getName());
+			stmt.setInt(2, athlete.getSex().getSex());
+			stmt.setFloat(3, athlete.getWeight());
+			stmt.setFloat(4, athlete.getHeight());
+			stmt.setInt(5,country_id);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 	/**
 	 * Insert into country_quote
 	 *
