@@ -85,10 +85,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		});
 
 		// TODO должно быть получение уже имеющейся заявки от базы + число спортсменов
-		data = AuthorizationData.getInstance();
+		authorizationData = AuthorizationData.getInstance();
 		// countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), new CompetitionList());
 		ExistApplicationGetTask task = new ExistApplicationGetTask(
-				data.getLogin(), data.getPassword(), data.getServerURL(), this);
+				authorizationData.getLogin(), authorizationData.getPassword(), authorizationData.getServerURL(), this);
 		task.execute();
 
 		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
@@ -117,14 +117,15 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				linearLayoutArrayList.add(lv);
 			}
 			linearLayout.addView(linearLayoutArrayList.get(0));
+
+			// Убиваем AskForWaitActivity. 10 - requestCode этого активити.
+			Log.d("DAN", "убиваем AskForWaitActivity");
+			finishActivity(10);
 		} else {
 			// TODO если заявка пуста.
+			Log.d("DAN", "убиваем CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
 			finish();
 		}
-
-		// Убиваем AskForWaitActivity. 10 - requestCode этого активити.
-		Log.d("DAN", "убиваем AskForWaitActivity");
-		finishActivity(10);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,7 +145,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case 1:// post application
-				// TODO проверить работоспособность этих строчек.
 				AuthorizationData data = AuthorizationData.getInstance();
 				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
 				//TODO: дописать передачу countryApplication через Тошин класс
@@ -282,7 +282,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data == null) return;
-		if (requestCode == 2) {   // 2 соответствует параметру requestCode, передаваемому диалоговому окну при инициализации.
+		if (requestCode == 10) { // т.е. вернулись из AskForWaitActivity
+			//TODO
+			Log.d("DAN", "перезапуск AskForWaitActivity");
+			startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+		} else if (requestCode == 2) {   // 2 соответствует параметру requestCode, передаваемому диалоговому окну при инициализации.
 			if (resultCode == RESULT_OK) {
 				boolean result = data.getBooleanExtra("dialogResult", false);
 				if (result) {
@@ -398,7 +402,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
 	private CountryApplication countryApplication;
-	private AuthorizationData data;
+	private AuthorizationData authorizationData;
 	private Intent askForWaitActivityIntent;
 	private ArrayList<LinearLayout> linearLayoutArrayList; // Массив LinearLayout-ов. Каждому эл-ту
 			// соответствует спорт. При смене вида спорта происходит смена Layout-а, и, соответственно,

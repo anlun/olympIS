@@ -28,6 +28,8 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 			Client cl = new Client(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
+			Log.d("DAN", "requestXML" + requestXML);
+			Log.d("DAN", "answerXML" + answerXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
 			return (CountryApplication) decoder.readObject();
