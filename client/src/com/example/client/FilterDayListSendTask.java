@@ -26,6 +26,7 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 		try {
 			Log.d("ANL", "Client cl = new Client(serverURL);");
 			Client cl = new Client(serverURL);
+
 			Log.d("ANL", "String requestXML = Utils.beanToString(new FilterListForDayList(filters));");
 			FilterListForDayList fl = new FilterListForDayList(filters);
 			String requestXML = Utils.encoderWrap(fl.serialize());

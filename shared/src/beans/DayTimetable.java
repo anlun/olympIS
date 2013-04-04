@@ -29,7 +29,7 @@ public class DayTimetable implements Serializable {
 	 * Class contains day element timetable.
 	 *  @author danya
 	 */
-	public class DaySportElement implements Serializable {
+	public static class DaySportElement implements Serializable {
 
 		public DaySportElement(){
 			this.satisfyFilter = false;
