@@ -371,7 +371,7 @@ public class Database {
 			e.printStackTrace();
 		}
 
-		return res;
+		return new CountryApplication();
 
 	}
 
@@ -565,7 +565,12 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new ApplicationConstrain(result);
+		if (result.size() < 0){
+			return new ApplicationConstrain(result);
+		}
+		else{
+			return new ApplicationConstrain();
+		}
 	}
 
 	/**
