@@ -90,10 +90,10 @@ public class CompetitionList implements Serializable, CustomSerializable {
 	public ArrayList<ClientCompetition> getCompetitionList() {
 		return this.competitionList;
 	}
-    /*
-	public void setCompetitionList(ArrayList<Competition> competitionList) {
+
+	public void setCompetitionList(ArrayList<ClientCompetition> competitionList) {
 		this.competitionList = competitionList;
-	}*/
+	}
 
 	public ArrayList<Integer> getListTest() {
 		return listTest;
@@ -104,5 +104,5 @@ public class CompetitionList implements Serializable, CustomSerializable {
 	}
 
 	private ArrayList<ClientCompetition> competitionList; // Список соревнований и атлетов.
-	private ArrayList<Integer>     listTest;
+	private ArrayList<Integer>           listTest;
 }

@@ -1,4 +1,5 @@
 import beans.Athlete;
+import beans.CompetitionList;
 import beans.CountryApplication;
 import beans.Sex;
 import com.sun.net.httpserver.HttpExchange;
@@ -34,6 +35,12 @@ public class ServerConsoleWrapper {
 	 * @param args Just ignores now.
 	 */
 	public static void main(String[] args) {
+		int[]mas={2,3,4};
+		String[] st={"a", "b", "c"};
+		CountryApplication app = new CountryApplication("asd", "123", new CompetitionList(st, mas));
+		System.out.println(Utils.beanToString(app));
+
+
 		System.out.println("Test http server");
 		startServer(new InetSocketAddress(8888));
 	}

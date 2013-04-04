@@ -18,6 +18,7 @@ public class CountryApplication implements Serializable, CustomSerializable {
 		this.password = password;
 	}
 
+
 	public void setCompetitionList(CompetitionList competitionList) {
 		this.competitionList = competitionList;
 	}

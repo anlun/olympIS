@@ -6,13 +6,6 @@ import utils.Utils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * User: danya
- * Date: 4/4/13
- * Time: 10:26 AM
- * To change this template use File | Settings | File Templates.
- */
 public class ClientCompetition implements Serializable, CustomSerializable {
 	public ClientCompetition() {
 		this.competition = "";
@@ -21,7 +14,7 @@ public class ClientCompetition implements Serializable, CustomSerializable {
 	}
 
 	public String serialize() {
-		String result = "<object class=\"beans.CompetitionList.Competition\">";
+		String result = "<object class=\"beans.ClientCompetition\">";
 
 		result += Utils.arrayListToBeanField("athleteCompetitionList", athleteCompetitionList);
 		result += Utils.stringToBeanField("competition", competition);
