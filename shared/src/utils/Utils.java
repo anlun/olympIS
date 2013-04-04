@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Utils {
+	public static final  int maxCountDays = 21;
+
 	public static String beanToString(Object objectToSerialize) {
 		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
 		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(byteArr));
