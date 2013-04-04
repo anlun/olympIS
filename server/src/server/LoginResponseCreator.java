@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.sql.SQLException;
 
 /**
  * Extends the {@link ResponseCreator} for login task.
@@ -47,10 +48,18 @@ public class LoginResponseCreator extends ResponseCreator {
 		return "";
 	}
 
-	//TODO: Need to be implemented with data from database.
-	//If login-password incorrect this method must return ""
 	private static String getCountryName(String login, String password) {
-		return "RUSLAND";
+		try {
+			Database db = Database.createDatabase();
+			String resultCountry = db.countryByLoginPassword(login, password);
+			db.closeConnection();
+			return resultCountry;
+		} catch (SQLException e) {
+			//TODO: норм комментарий
+			System.err.println("Проблема с базой при логине!");
+		}
+		return "";
+		//return "RUSLAND";
 	}
 
 	private Document dom;

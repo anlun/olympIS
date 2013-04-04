@@ -6,6 +6,7 @@ import utils.RequestResponseConst;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 
 public class ApplicationResponseCreator extends ResponseCreator {
 	public ApplicationResponseCreator(String applicationXML) {
@@ -22,9 +23,19 @@ public class ApplicationResponseCreator extends ResponseCreator {
 				return failResponse();
 			}
 
-			//TODO: запись в базу, проверка login, password из app.
+			try {
+				Database db = Database.createDatabase();
+				if (!db.countryByLoginPassword(app.getLogin(), app.getPassword()).equals("")){
+					db.insertCountryApplication(app);
+					return successResponse();
+				}
+				db.closeConnection();
+			} catch (SQLException e) {
+				//TODO: норм комментарий
+				System.err.println("Проблема с базой при добавлении countryApplication!");
+			}
 
-			return successResponse();
+			return failResponse();
 
 		} catch (UnsupportedEncodingException e) {
 			System.err.println("Unsupported encoding error!");

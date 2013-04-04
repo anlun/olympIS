@@ -14,8 +14,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterDayTimetableSendTask(ArrayList<Filter> filters, URL serverURL) {
-		this.filters    = filters;
+	public FilterDayTimetableSendTask(ArrayList<Filter> filters, int dayNumber, URL serverURL) {
+		this.filters   = filters;
+		this.dayNumber = dayNumber;
 		this.serverURL = serverURL;
 	}
 
@@ -23,7 +24,7 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 	public Boolean doInBackground(String... data) {
 		try {
 			Client cl = new Client(serverURL);
-			String requestXML = Utils.beanToString(new FilterListForTimetable(filters));
+			String requestXML = Utils.beanToString(new FilterListForTimetable(filters, dayNumber));
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
@@ -46,6 +47,7 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 	}
 
 	private ArrayList<Filter> filters;
+	private int               dayNumber;
 	private DayTimetable      dayTimetable;
 	private URL               serverURL;
 }

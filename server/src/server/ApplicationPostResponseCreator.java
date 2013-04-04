@@ -6,6 +6,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import utils.Utils;
 
+import java.sql.SQLException;
+
 public class ApplicationPostResponseCreator extends ResponseCreator {
 	public ApplicationPostResponseCreator(Document dom) {
 		this.dom = dom;
@@ -16,28 +18,24 @@ public class ApplicationPostResponseCreator extends ResponseCreator {
 		String  login    = root.getAttribute("login");
 		String  password = root.getAttribute("password");
 
-		CountryApplication application = getApplicationByCountry(
-				getCountryName(login, password)
-		);
+		CountryApplication application = getApplicationByCountry(login, password);
 
 		return Utils.beanToString(application);
 	}
 
-	//TODO: Need to be implemented with data from database.
-	//If login-password incorrect this method must return ""
-	private String getCountryName(String login, String name) {
-		return "RUSLAND";
-	}
+	private CountryApplication getApplicationByCountry(String login, String password) {
+		try {
+			Database db = Database.createDatabase();
+			CountryApplication result = db.getCountryApplication(login, password);
+			db.closeConnection();
+			return result;
 
-	private CountryApplication getApplicationByCountry(String countryName) {
-		if (countryName.equals("")) {
-			//return new CountryApplication();
+		} catch (SQLException e) {
+			//TODO: норм комментарий
+			System.err.println("Проблема с базой при ApplicationConstrain!");
 		}
 
-		//TODO: reading from database, change this return
-        int[]mas={2,3,4};
-        String[] st={"a","b","c"};
-		return new CountryApplication("","",new CompetitionList(st, mas));
+		return new CountryApplication();
 	}
 
 	private Document dom;
