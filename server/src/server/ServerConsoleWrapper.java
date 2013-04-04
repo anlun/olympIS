@@ -1,5 +1,6 @@
 package server;
 
+import beans.FilterListForTimetable;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -141,6 +142,8 @@ public class ServerConsoleWrapper {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
 						} else if (object.getAttribute("class").equals("beans.FilterListForDayList")) {
 							return (new FilterDayListResponseCreator(xmlString)).createResponse();
+						} else if (object.getAttribute("class").equals("FilterListForTimetable")) {
+							return (new FilterDayTimetableResponseCreator(xmlString)).createResponse();
 						}
 					}
 				}
