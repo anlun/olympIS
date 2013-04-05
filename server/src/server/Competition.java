@@ -58,9 +58,18 @@ public class Competition {
     public void setIdTypeRequiredSportObject(int newSportType) {
         this.idTypeRequiredSportObject = newSportType;
     }
+
+	public int getSportObjectId(){
+		return  sportObjectId;
+	}
+
+	public void setSportObjectId(int sportObjectId){
+		this.sportObjectId = sportObjectId;
+	}
     //add begin and end of the competition
     private int beginHour;
     private int endHour;
+	private int sportObjectId;
     //=================
 	private int id;
 	private int duration;
