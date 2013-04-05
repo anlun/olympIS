@@ -40,7 +40,8 @@ public class MyActivity extends Activity {
 					ApplicationSendTask app
 							= new ApplicationSendTask(
 								new CountryApplication("asd", "123", new CompetitionList())
-								, new URL("http://10.0.2.2:8888"), null
+								// , new URL("http://10.0.2.2:8888"), null
+							, new URL("http://178.130.32.141:8888"), null
 					);
 					app.execute();
 				} catch (Exception e) {
@@ -63,7 +64,7 @@ public class MyActivity extends Activity {
 		protected String doInBackground(String... cmds) {
 			String result = "Fail";
 			try {
-				Client cl = new Client(new URL("http://10.0.2.2:8888"));
+				Client cl = new Client(new URL("http://178.130.32.141:8888"));
 				result = cl.execute(cmds[0]);
 			} catch (Exception e) {
 
@@ -105,17 +106,23 @@ public class MyActivity extends Activity {
 
 		switch (item.getItemId()){
 			case 1://"log in" item
-				Intent intent = new Intent(this, AuthorizationActivity.class);
-				startActivityForResult(intent, 11);
+				//проверка на авторизованность, если уже авторизован - не авторизуем заново.
+				if (isAuthorized) {
+					Toast.makeText(this, "you are already authorized", Toast.LENGTH_LONG).show();
+					break;
+				} else {
+					Intent intent = new Intent(this, AuthorizationActivity.class);
+					startActivityForResult(intent, 11);
+				}
 				break;
 			case 2://CountryGUI item.
 				//проверка на авторизованность
-				//if (isAuthorized) {
+				if (isAuthorized) {
 					Intent intent1 = new Intent(this, CountryGUI.class);
 					startActivity(intent1);
-				//} else {
-				//	Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
-				//}
+				} else {
+					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
+				}
 				break;
 			case 3://запускаем календарь
 				Intent intent2 = new Intent(this, CalendarActivity.class);

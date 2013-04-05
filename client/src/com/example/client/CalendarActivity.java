@@ -83,7 +83,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				try {
 					(new FilterDayTimetableSendTask(filterList,
 							Integer.parseInt(((TextView) view).getHint().toString()),
-							new URL("http://10.0.2.2:8888"), this)).execute();
+							new URL("http://178.130.32.141:8888"), this)).execute();
 				} catch (MalformedURLException e) {
 				}
 				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
@@ -112,7 +112,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					addFilter(filterName, result);
 
 					// передаю собственно filterList
-					(new FilterDayListSendTask(filterList, new URL("http://10.0.2.2:8888"), this)).execute();
+					(new FilterDayListSendTask(filterList, new URL("http://178.130.32.141:8888"), this)).execute();
 					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
