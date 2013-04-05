@@ -12,7 +12,7 @@ public class AskForWaitActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wait_activity);
-		Log.d("DAN", "ask wait started");
+		Log.d("DAN", "ask wait started. OK.");
 	}
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {

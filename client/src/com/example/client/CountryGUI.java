@@ -93,11 +93,12 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	}
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
+		Log.d("DAN", "получили ответ от сервера. Запустился getCountryApplicationFromServer.");
 		this.competitionList = result.getCompetitionList();
 		ArrayList<ClientCompetition>  compList = competitionList.getCompetitionList();
 
 		if (compList.size() != 0) {
-			Log.d("DAN", competitionList.toString() + "\n" + compList.size());
+			Log.d("DAN", "получили не пустую заявку.");
 			// заполнить layout-ы спортсменами
 			athleteNumberList = new int[compList.size()];
 			competitionNamesList = new String[compList.size()];
@@ -157,10 +158,16 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					athleteIndex++;
 				}
 			}
-
+			Log.d("DAN", "завершили установку данных, полученных с сервера.");
 		} else {
 			Log.d("DAN", "убиваем CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
+			try{
+				finishActivity(10);
+			} catch (Exception e) {
+				Log.d("DAN", "поймали exception в CountryGUI, когда сфэйлилась авторизация, скорее всего, т.к. не существует WaitActivity, если так, то норм.");
+			}
 			finish();
+			Log.d("DAN", "убили CountryGUIActivity т.к. заявка, пришедшая с базы, пуста");
 		}
 	}
 

@@ -56,13 +56,13 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 				data.setLogin(login);
 				data.setPassword(password);
 				try {
-					data.setServerURL(new URL("http://10.0.2.2:8888"));
+					data.setServerURL(new URL("http://178.130.32.141:8888"));
 				} catch (MalformedURLException e) {
 					Log.d("DAN", "MalformedURLException in OnClick method AuthorizationActivity.java");
 				}
 
 				try {
-					LoginTask loginTask = new LoginTask(login, password, new URL("http://10.0.2.2:8888"), this);
+					LoginTask loginTask = new LoginTask(login, password, new URL("http://178.130.32.141:8888"), this);
 					loginTask.execute();
 				} catch (Exception e) {
 					Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();
