@@ -318,9 +318,9 @@ public class Database {
 	}
 
 	public DayTimetable getTimeTable(ArrayList<Filter> filters, int numberDay) {
-
-		Date dayOlimp = getCompetitionDate(1);
+	   Date dayOlimp = getCompetitionDate(1);
 		Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
+
 		ArrayList<String> filtSport = new ArrayList<String>();
 		ArrayList<String> filtCountry = new ArrayList<String>();
 		ArrayList<String> competitionInDay = competitionsInDay(day);
@@ -384,19 +384,25 @@ public class Database {
 		PreparedStatement stmt = null;
 		String login = countryApplication.getLogin();
 		String password = countryApplication.getPassword();
+		System.out.println(login);
+		System.out.println(password);
+		System.out.println(countryApplication.getCompetitionList().getMaxAthleteNumber("ski race"));
+
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SET SQL_SAFE_UPDATES=0;\n" +
-							"delete from participation_athletes where athlete_id in\n" +
-							"    (Select id from athlete where country_id in\n" +
-							"\t(Select id from country where login = ? and hash_password =?));\n" +
-							"\n" +
-							"delete from athlete where country_id in\n" +
-							"\t(Select id from country where login=? and hash_password=?);\n");
+					"delete from participation_athletes where athlete_id in \n" +
+							"\t\t\t\t\t\t\t    (Select id from athlete where country_id in \n" +
+							"\t\t\t\t\t\t\t (Select id from country where login = ? and hash_password = ?));\n");
+
 			stmt.setString(1, login);
 			stmt.setString(2, password);
-			stmt.setString(3, login);
-			stmt.setString(4, password);
+
+			stmt.executeUpdate();
+			stmt = (PreparedStatement) connection.prepareStatement(
+							"\t\t\t\t\t\t\tdelete from athlete where country_id in \n" +
+							"\t\t\t\t\t\t\t(Select id from country where login = ? and hash_password = ?);");
+			stmt.setString(1, login);
+			stmt.setString(2, password);
 			stmt.executeUpdate();
 			String country = countryByLoginPassword(login, password);
 			int countryId = countryId(country);
@@ -486,6 +492,33 @@ public class Database {
 		return new DayList(res);
 	}
 
+
+	public ArrayList<Athlete> getAthletesByCompetitionAthlete(String country, String competition){
+		PreparedStatement stmt = null;
+		int countryID = countryId(country);
+		ArrayList<Athlete> result = new ArrayList<Athlete>();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT athlete_name, sex, weight,growth  FROM participation_athletes join " +
+							"competition on competition.id = competition_id " +
+							"join athlete on athlete.id = athlete_id WHERE athlete.country_id = ? and competition_name = ? ;");
+			stmt.setInt(1, countryID);
+			stmt.setString(2,competition);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString("athlete_name");
+				Sex sex = encodeAthleteSex(rs.getInt("sex"));
+				int weight = rs.getInt("weight");
+				int height = rs.getInt("growth");
+				Athlete atl = new Athlete(name, sex,weight,height,competition);
+			    result.add(atl);
+			}
+	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public CountryApplication getCountryApplication(String login, String password) {
 		CountryApplication res = null;
 		PreparedStatement stmt = null;
@@ -500,6 +533,7 @@ public class Database {
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+
 				String competition_name = rs.getString("competition_name");
 				int number_participants = rs.getInt("number_participants");
 				competitions.add(competition_name);
@@ -512,7 +546,14 @@ public class Database {
 				temp1[i] = competitions.get(i);
 				temp2[i] = maxNumberAthlets.get(i);
 			}
-			return new CountryApplication(login, password, new CompetitionList(temp1, temp2));
+			CompetitionList competitionList = new CompetitionList(temp1, temp2);
+			for (String competition : competitions){
+				ArrayList<Athlete> athletes = getAthletesByCompetitionAthlete(countryByLoginPassword(login,password), competition);
+				for (Athlete atl : athletes){
+					competitionList.addAthlete(0,competition,atl);
+				}
+			}
+			return new CountryApplication(login, password, competitionList);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
