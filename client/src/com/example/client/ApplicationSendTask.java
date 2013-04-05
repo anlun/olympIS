@@ -45,7 +45,6 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 			Log.d("ANL", "Application sending task failed!");
 		}
 
-		//TODO: добавить обработку со стороны вьюшки
 		Toast.makeText(countryGUIObject, "application has sent to server",Toast.LENGTH_LONG).show();
 		countryGUIObject.doFinish();
 	}

@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-// GUI авторизации
 /**
  * Class realizes the authorization GUI.
  * @author danya
@@ -24,7 +22,7 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.autorizathion);
 
-		((Button) findViewById(R.id.sing_in_button)).setOnClickListener(this);
+		(findViewById(R.id.sing_in_button)).setOnClickListener(this);
 	}
 
 	/**
@@ -33,21 +31,25 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 	 */
 	public void onLogin(boolean result) {
 		if (result){
-			//Toast.makeText(this, "successful", Toast.LENGTH_LONG).show();
+			Log.d("DAN", "CalendarActivity authorization ok.");
 		} else {
-			Toast.makeText(this, "incorrect login or password", Toast.LENGTH_LONG).show();
+			Log.d("DAN", "CalendarActivity authorization fail.");
 		}
 
 		//передаём данные авторизации и выходим
 		Intent intent = new Intent();
 		intent.putExtra("isAuthorized", result);
 		this.setResult(RESULT_OK, intent);
+		finishActivity(10);
 		this.finish();
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.sing_in_button: // процедура авторизации
+				// вешаем гуи
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 				String login = ((EditText) findViewById(R.id.login_editText)).getText().toString();
 				String password = ((EditText) findViewById(R.id.password_editText)).getText().toString();
 

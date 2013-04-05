@@ -24,6 +24,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
+		// TODO получить фильтры от базы!
+
 		filterList = new ArrayList<Filter>();
 		authorizationData = AuthorizationData.getInstance();
 
@@ -129,7 +131,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
 		Log.d("DAN","onFilterDayListSendTask enter");
 		ArrayList<Integer> ar = new ArrayList<Integer>();
-		for (int i = 0; i <= 30; i++) {
+		for (int i = 0; i <= 21; i++) {
 			ar.add(i);
 		}
 		setColor(ar, Color.WHITE);
@@ -142,17 +144,23 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
 		// TODO отобразить dayTimetable
+		Log.d("DAN","получили dayTimetable от сервера.");
 		Intent dayActivityIntent = new Intent(this, DayActivity.class);
 		dayActivityIntent.putExtra("dayNumber", dayNumber + "");
-
+		Log.d("DAN","1");
 		String str = "";
 		for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
+			Log.d("DAN","index " + i);
 			str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
 		}
+		Log.d("DAN","2");
 		dayActivityIntent.putExtra("dayTimetable", str);
+		Log.d("DAN","3");
 		startActivity(dayActivityIntent);
 
+		Log.d("DAN","убили активити временное");
 		finishActivity(10);
+		Log.d("DAN","вышли из onFilterDayListSendTask.");
 	}
 
 	/**
@@ -213,7 +221,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	private final static int firstDay = 1; // First day of competitions.
 	private final static int lastDay = 21; // Last day of competitions.
-	private final static int numberOfWeeks = 4; // Nu,ber of weeks.
+	private final static int numberOfWeeks = 4; // Weeks count.
 	private ArrayList<Filter> filterList;
 	private AuthorizationData authorizationData;
 }

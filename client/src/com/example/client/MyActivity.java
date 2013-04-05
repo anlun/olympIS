@@ -2,20 +2,19 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import beans.Athlete;
 import beans.CompetitionList;
 import beans.CountryApplication;
-
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Just test activity.
@@ -29,27 +28,6 @@ public class MyActivity extends Activity {
 		setContentView(R.layout.main);
 
 		isAuthorized = false;
-
-		Button btn = new Button(getBaseContext());
-		btn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				try {
-					//new LoginTask("RUSSIA", "12345", new URL("http://10.0.2.2:8888")).execute();
-//					ApplicationConstrainTask app
-//							= new ApplicationConstrainTask("RUSLAND","RUSSIA", "12345", new URL("http://10.0.2.2:8888"));
-					ApplicationSendTask app
-							= new ApplicationSendTask(
-								new CountryApplication("asd", "123", new CompetitionList())
-								// , new URL("http://10.0.2.2:8888"), null
-							, new URL("http://178.130.32.141:8888"), null
-					);
-					app.execute();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		});
-		setContentView(btn);
 	}
 
 	/**
@@ -67,7 +45,6 @@ public class MyActivity extends Activity {
 				Client cl = new Client(new URL("http://178.130.32.141:8888"));
 				result = cl.execute(cmds[0]);
 			} catch (Exception e) {
-
 			}
 			return result;
 		}
@@ -82,7 +59,6 @@ public class MyActivity extends Activity {
 
 	/* создание меню*/
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
 		//1-ый пункт - ID группы
 		menu.add(0, 1, 0, "log in");
 		menu.add(0, 2, 0, "Country Application");
@@ -95,15 +71,12 @@ public class MyActivity extends Activity {
 	// обновление меню
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	// обработка нажатий
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-
 		switch (item.getItemId()){
 			case 1://"log in" item
 				//проверка на авторизованность, если уже авторизован - не авторизуем заново.
@@ -111,22 +84,19 @@ public class MyActivity extends Activity {
 					Toast.makeText(this, "you are already authorized", Toast.LENGTH_LONG).show();
 					break;
 				} else {
-					Intent intent = new Intent(this, AuthorizationActivity.class);
-					startActivityForResult(intent, 11);
+					startActivityForResult(new Intent(this, AuthorizationActivity.class), 11);
 				}
 				break;
 			case 2://CountryGUI item.
 				//проверка на авторизованность
 				if (isAuthorized) {
-					Intent intent1 = new Intent(this, CountryGUI.class);
-					startActivity(intent1);
+					startActivity(new Intent(this, CountryGUI.class));
 				} else {
 					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
 				}
 				break;
 			case 3://запускаем календарь
-				Intent intent2 = new Intent(this, CalendarActivity.class);
-				startActivity(intent2);
+				startActivity(new Intent(this, CalendarActivity.class));
 				break;
 			case 4://exit
 				System.exit(0);
