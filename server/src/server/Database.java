@@ -33,8 +33,8 @@ public class Database {
 
 	private static Connection getConnection() {
 		try {
-			String url = "jdbc:mysql://localhost/olimpis";
-			String username = "root";
+			String url = "jdbc:mysql://178.130.32.141:3306/olimpis";
+			String username = "vova";
 			String password = "pass";
 			return DriverManager.getConnection(url, username, password);
 
@@ -43,6 +43,7 @@ public class Database {
 			return null;
 		}
 	}
+
 
 	public void closeConnection() throws SQLException {
 		connection.close();
