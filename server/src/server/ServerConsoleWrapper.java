@@ -36,6 +36,7 @@ public class ServerConsoleWrapper {
 		startServer(new InetSocketAddress(8888));
 	}
 
+
 	/**
 	 * Starts server that will be listened socketAddress socket.
 	 *

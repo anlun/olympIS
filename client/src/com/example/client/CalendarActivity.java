@@ -2,6 +2,7 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
+
+		// TODO получить фильтры от базы!
 
 		filterList = new ArrayList<Filter>();
 		authorizationData = AuthorizationData.getInstance();
@@ -79,14 +82,16 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				break;
 			default: // т.е. клик по дню.
 				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
+				// вешаем гуи.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 				// передаю собственно filterList
 				try {
 					(new FilterDayTimetableSendTask(filterList,
 							Integer.parseInt(((TextView) view).getHint().toString()),
-							new URL("http://10.0.2.2:8888"), this)).execute();
+							new URL("http://178.130.32.141:8888"), this)).execute();
 				} catch (MalformedURLException e) {
 				}
-				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 	}
@@ -97,6 +102,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		if (requestCode == 1) {   //т.е. фильтер
 			if (resultCode == RESULT_OK) {
 				try {
+					// вешаю гуи
+					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 					//сей result есть результат выбора в ListView пользователем.
 					//первый элемент массива - название фильтра
 					ArrayList<String> result = data.getStringArrayListExtra("resultOfChoice");
@@ -112,8 +120,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					addFilter(filterName, result);
 
 					// передаю собственно filterList
-					(new FilterDayListSendTask(filterList, new URL("http://10.0.2.2:8888"), this)).execute();
-					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+					(new FilterDayListSendTask(filterList, new URL("http://178.130.32.141:8888"), this)).execute();
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
@@ -128,31 +135,55 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	// получить ответ в виде DayList
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
 		Log.d("DAN","onFilterDayListSendTask enter");
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		for (int i = 0; i <= 30; i++) {
-			ar.add(i);
-		}
-		setColor(ar, Color.WHITE);
-		Log.d("DAN","onFilterDayListSendTask exit");
-		setColor(dayList, Color.GREEN);
+		try {
+			Log.d("DAN","пытаемся получить dayList");
+			ArrayList<Integer> ar = new ArrayList<Integer>();
+			for (int i = 0; i <= 21; i++) {
+				ar.add(i);
+			}
+			setColor(ar, Color.WHITE);
+			Log.d("DAN","onFilterDayListSendTask exit");
+			setColor(dayList, Color.GREEN);
 
-		finishActivity(10);
+			finishActivity(10);
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity и это активити тоже.
+			finishActivity(10);
+			finish();
+		}
 	}
 
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
 		// TODO отобразить dayTimetable
-		Intent dayActivityIntent = new Intent(this, DayActivity.class);
-		dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+		try {
+			Log.d("DAN","получили dayTimetable от сервера.");
+			Intent dayActivityIntent = new Intent(this, DayActivity.class);
+			dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+			Log.d("DAN","1");
+			String str = "";
+			for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
+				Log.d("DAN","index " + i);
+				str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
+			}
+			Log.d("DAN","2");
+			dayActivityIntent.putExtra("dayTimetable", str);
+			Log.d("DAN","3");
+			startActivity(dayActivityIntent);
 
-		String str = "";
-		for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
-			str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
+			Log.d("DAN","убили активити временное");
+			finishActivity(10);
+			Log.d("DAN","вышли из onFilterDayListSendTask.");
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayTimetableSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity.
+			finishActivity(10);
 		}
-		dayActivityIntent.putExtra("dayTimetable", str);
-		startActivity(dayActivityIntent);
-
-		finishActivity(10);
 	}
 
 	/**
@@ -213,7 +244,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	private final static int firstDay = 1; // First day of competitions.
 	private final static int lastDay = 21; // Last day of competitions.
-	private final static int numberOfWeeks = 4; // Nu,ber of weeks.
+	private final static int numberOfWeeks = 4; // Weeks count.
 	private ArrayList<Filter> filterList;
 	private AuthorizationData authorizationData;
 }
