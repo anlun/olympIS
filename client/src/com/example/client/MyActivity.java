@@ -60,10 +60,11 @@ public class MyActivity extends Activity {
 	/* создание меню*/
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//1-ый пункт - ID группы
-		menu.add(0, 1, 0, "log in");
-		menu.add(0, 2, 0, "Country Application");
-		menu.add(0, 3, 0, "calendar");
-		menu.add(0, 4, 0, "exit");
+		menu.add(2, 1, 0, "log in");
+		menu.add(1, 2, 0, "log out");
+		menu.add(1, 3, 0, "Country Application");
+		menu.add(0, 4, 0, "calendar");
+		menu.add(0, 5, 0, "exit");
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -71,6 +72,11 @@ public class MyActivity extends Activity {
 	// обновление меню
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		// Если авторизованы(), то виден пукт меню "Country Application", иначе нет.
+		// -||- log out.
+		menu.setGroupVisible(1, isAuthorized);
+		// с loginIn наоборот.
+		menu.setGroupVisible(2, !isAuthorized);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -87,18 +93,23 @@ public class MyActivity extends Activity {
 					startActivityForResult(new Intent(this, AuthorizationActivity.class), 11);
 				}
 				break;
-			case 2://CountryGUI item.
+			case 2:// log out.
+				isAuthorized = false;
+				AuthorizationData data = AuthorizationData.getInstance();
+				data.setPassword("");
+				data.setLogin("");
+				Toast.makeText(this, "you are log out", Toast.LENGTH_SHORT).show();
+				break;
+			case 3://CountryGUI item.
 				//проверка на авторизованность
 				if (isAuthorized) {
 					startActivity(new Intent(this, CountryGUI.class));
-				} else {
-					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
 				}
 				break;
-			case 3://запускаем календарь
+			case 4://запускаем календарь
 				startActivity(new Intent(this, CalendarActivity.class));
 				break;
-			case 4://exit
+			case 5://exit
 				System.exit(0);
 				break;
 		}

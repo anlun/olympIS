@@ -25,6 +25,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_application);
 
+		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+		startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 		// competitionNamesList = getResources().getStringArray(R.array.sport_array);
 		sexArray = getResources().getStringArray(R.array.sex_array);
 		/*
@@ -87,9 +90,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		ExistApplicationGetTask task = new ExistApplicationGetTask(
 				authorizationData.getLogin(), authorizationData.getPassword(), authorizationData.getServerURL(), this);
 		task.execute();
-
-		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
-		startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 	}
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
@@ -188,12 +188,12 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case 1:// post application
+				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 				AuthorizationData data = AuthorizationData.getInstance();
 				countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
 				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
-
-				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
-				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 		return super.onOptionsItemSelected(item);
