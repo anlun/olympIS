@@ -2,6 +2,7 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -134,37 +135,55 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	// получить ответ в виде DayList
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
 		Log.d("DAN","onFilterDayListSendTask enter");
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		for (int i = 0; i <= 21; i++) {
-			ar.add(i);
-		}
-		setColor(ar, Color.WHITE);
-		Log.d("DAN","onFilterDayListSendTask exit");
-		setColor(dayList, Color.GREEN);
+		try {
+			Log.d("DAN","пытаемся получить dayList");
+			ArrayList<Integer> ar = new ArrayList<Integer>();
+			for (int i = 0; i <= 21; i++) {
+				ar.add(i);
+			}
+			setColor(ar, Color.WHITE);
+			Log.d("DAN","onFilterDayListSendTask exit");
+			setColor(dayList, Color.GREEN);
 
-		finishActivity(10);
+			finishActivity(10);
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity и это активити тоже.
+			finishActivity(10);
+			finish();
+		}
 	}
 
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
 		// TODO отобразить dayTimetable
-		Log.d("DAN","получили dayTimetable от сервера.");
-		Intent dayActivityIntent = new Intent(this, DayActivity.class);
-		dayActivityIntent.putExtra("dayNumber", dayNumber + "");
-		Log.d("DAN","1");
-		String str = "";
-		for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
-			Log.d("DAN","index " + i);
-			str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
-		}
-		Log.d("DAN","2");
-		dayActivityIntent.putExtra("dayTimetable", str);
-		Log.d("DAN","3");
-		startActivity(dayActivityIntent);
+		try {
+			Log.d("DAN","получили dayTimetable от сервера.");
+			Intent dayActivityIntent = new Intent(this, DayActivity.class);
+			dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+			Log.d("DAN","1");
+			String str = "";
+			for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
+				Log.d("DAN","index " + i);
+				str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
+			}
+			Log.d("DAN","2");
+			dayActivityIntent.putExtra("dayTimetable", str);
+			Log.d("DAN","3");
+			startActivity(dayActivityIntent);
 
-		Log.d("DAN","убили активити временное");
-		finishActivity(10);
-		Log.d("DAN","вышли из onFilterDayListSendTask.");
+			Log.d("DAN","убили активити временное");
+			finishActivity(10);
+			Log.d("DAN","вышли из onFilterDayListSendTask.");
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayTimetableSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity.
+			finishActivity(10);
+		}
 	}
 
 	/**
