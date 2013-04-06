@@ -81,6 +81,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				break;
 			default: // т.е. клик по дню.
 				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
+				// вешаем гуи.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 				// передаю собственно filterList
 				try {
 					(new FilterDayTimetableSendTask(filterList,
@@ -88,7 +91,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 							new URL("http://178.130.32.141:8888"), this)).execute();
 				} catch (MalformedURLException e) {
 				}
-				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 				break;
 		}
 	}
@@ -99,6 +101,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		if (requestCode == 1) {   //т.е. фильтер
 			if (resultCode == RESULT_OK) {
 				try {
+					// вешаю гуи
+					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 					//сей result есть результат выбора в ListView пользователем.
 					//первый элемент массива - название фильтра
 					ArrayList<String> result = data.getStringArrayListExtra("resultOfChoice");
@@ -115,7 +120,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 					// передаю собственно filterList
 					(new FilterDayListSendTask(filterList, new URL("http://178.130.32.141:8888"), this)).execute();
-					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
