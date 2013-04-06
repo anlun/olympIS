@@ -104,8 +104,6 @@ public class MyActivity extends Activity {
 				//проверка на авторизованность
 				if (isAuthorized) {
 					startActivity(new Intent(this, CountryGUI.class));
-				} else {
-					Toast.makeText(this, "you must be authorized to use this option", Toast.LENGTH_LONG).show();
 				}
 				break;
 			case 4://запускаем календарь
