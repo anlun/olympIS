@@ -306,29 +306,6 @@ public class PlanGenerator {
 /** -- FOR TEST -- -- FOR TEST -- -- FOR TEST -- -- FOR TEST -- -- FOR TEST --
  *============================================================================
 
-/*Function checking if there're athlete collisions between two competitions
- * i.e. same athlete participates in two concurrent competitions.
- * @param cmptnID1 first competition's ID
- * @param cmptnID2 second competition's ID
- * @return TRUE if there's a collision. FALSE - on the contrary
- */
-/*private boolean athleteCollision(int cmptnID1, int cmptnID2) {
-    if (
-        (cmptnID1 == 1 && cmptnID2 == 6)||(cmptnID1 == 1 && cmptnID2 == 6)||
-        (cmptnID1 == 2 && cmptnID2 == 5)||(cmptnID1 == 5 && cmptnID2 == 2)||
-        (cmptnID1 == 2 && cmptnID2 == 12)||(cmptnID1 == 12 && cmptnID2 == 2)||
-        (cmptnID1 == 11 && cmptnID2 == 12)||(cmptnID1 == 12 && cmptnID2 == 11)||
-        (cmptnID1 == 13 && cmptnID2 == 8)||(cmptnID1 == 8 && cmptnID2 == 13)||
-        (cmptnID1 == 3 && cmptnID2 == 4)||(cmptnID1 == 4 && cmptnID2 == 3)||
-        (cmptnID1 == 3 && cmptnID2 == 8)||(cmptnID1 == 8 && cmptnID2 == 3)
-            ) {
-        return true;
-    }
-    return false;
-}
-*/
-
-
 /**
  * Class Constructor with manually created data
  */
