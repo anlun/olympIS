@@ -260,9 +260,11 @@ public class PlanGenerator {
             System.out.print(" "+i+"\t");
         }
         System.out.print("\n\n");
+
+        int temp = Math.min(MAX_DAYS * DAY_LENGTH,this.allCompetitionCount*DAY_LENGTH);
         for (int obj = 1; obj <= sportObjectCount; obj++) {
             System.out.print(obj+"\t\t");
-            for (int i = 1; i <= MAX_DAYS * DAY_LENGTH; i++) {
+            for (int i = 1; i <= temp; i++) {
                 System.out.print(" "+plan[obj][i]+"\t");
             }
             System.out.print("\n");
