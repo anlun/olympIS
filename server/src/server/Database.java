@@ -7,6 +7,7 @@ import com.mysql.jdbc.PreparedStatement;
 import com.sun.imageio.plugins.bmp.BMPConstants;
 import utils.Utils;
 
+import java.nio.channels.AsynchronousFileChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -358,12 +359,25 @@ public class Database {
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SET SQL_SAFE_UPDATES=0;\n" +
-							"delete from schedule_olymp;");
+					"delete from schedule_olymp;");
 			stmt.executeUpdate();
 			for (Competition competition : competitions) {
 				stmt = (PreparedStatement) connection.prepareStatement(
 						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
+				Date openOlimp = Utils.openOlimp;
+				openOlimp.setHours(0);
+				openOlimp.setMinutes(0);
+				Date finishOpenOliDate = Utils.openOlimp;
+				finishOpenOliDate.setHours(2);
+				finishOpenOliDate.setMinutes(0);
+				stmt.setInt(1,1);
+				stmt.setInt(2,1);
+				stmt.setDate(3,openOlimp);
+				stmt.setDate(4,finishOpenOliDate);
+				stmt.executeUpdate();
+				stmt = (PreparedStatement) connection.prepareStatement(
+						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
+
 				stmt.setInt(1, competition.getId());
 				stmt.setInt(2, competition.getSportObjectId());
 				Date dayOlimp = getCompetitionDate(1);
@@ -458,6 +472,7 @@ public class Database {
 
 	public DayList getDayList(ArrayList<Filter> filters) {
 		int[] dayList = new int[Utils.maxCountDays + 1];
+		try{
 		for (int i = 0; i < Utils.maxCountDays + 1; ++i) {
 			dayList[i] = 1;
 		}
@@ -483,11 +498,18 @@ public class Database {
 			}
 
 		}
+		} catch (Exception e){
+			System.out.println("Проблема с выдачей DayList");
+		}
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < Utils.maxCountDays; ++i) {
 			if (dayList[i] == 1) {
 				res.add(i);
 			}
+		}
+		System.out.print("DayList :");
+		for( int i = 0; i < res.size(); ++i){
+			System.out.print(dayList[i] + " ");
 		}
 		return new DayList(res);
 	}

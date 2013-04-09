@@ -3,10 +3,12 @@ package utils;
 import com.googlecode.openbeans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Utils {
 	public static final  int maxCountDays = 21;
+	public static final Date openOlimp = new Date(2013,02,1);
 
 	public static String beanToString(Object objectToSerialize) {
 		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
