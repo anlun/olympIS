@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Vector;
@@ -364,12 +366,18 @@ public class Database {
 			for (Competition competition : competitions) {
 				stmt = (PreparedStatement) connection.prepareStatement(
 						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
-				Date openOlimp = Utils.openOlimp;
-				openOlimp.setHours(0);
-				openOlimp.setMinutes(0);
-				Date finishOpenOliDate = Utils.openOlimp;
-				finishOpenOliDate.setHours(2);
-				finishOpenOliDate.setMinutes(0);
+				DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				Date openOlimp = null;
+				Date finishOpenOliDate = null;
+				java.util.Date temp = null;
+				try {
+					temp = inputFormat.parse(Utils.openOlimp);
+					openOlimp = new Date(temp.getTime())
+					finishOpenOliDate = new Date(temp.getTime() +7200000);
+				} catch (ParseException e) {
+
+					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+				}
 				stmt.setInt(1,1);
 				stmt.setInt(2,1);
 				stmt.setDate(3,openOlimp);
