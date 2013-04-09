@@ -237,7 +237,17 @@ public class PlanGenerator {
      * Now it writes plan in the console
      */
     private void exportPlanToDatabase() {
-        //TODO: export competitions back to the server.Database. Ask Vova to implement it.
+        //export competitions back to the Database
+        this.db = Database.createDatabase();
+        this.db.insertInSheduleOlymp(this.plannedCompetitions);
+        try {
+            this.db.closeConnection();
+        } catch (SQLException e) {
+            System.err.print("\nCan't close DB-connection after exporting plan to DB!");
+            e.printStackTrace();
+        }
+
+        //printing plan to the local console
         System.out.print("\t\t");
         for (int i = 1; i <= DAY_LENGTH * MAX_DAYS; i++) {
             System.out.print(" "+i+"\t");
