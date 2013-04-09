@@ -1,92 +1,164 @@
 <?xml version="1.0"?>
 <root>
-<object title ="stan">
-	<type>stadion</type>
-	<capacity>10000</capacity>
-	<city>sochi</city>
-</object>
-<object title ="john">
-	<type>bobslei</type>
-	<capacity>10000</capacity>
-	<city>sochi</city>
-</object>
 
-<object title ="nikol">
-	<type>ice arena</type>
-	<capacity>3000</capacity>
-	<city>sochi</city>
-</object>
+  <object title ="1">
+	  <type>1</type>
+	  <capacity>1</capacity>
+	  <city>sochi</city>
+  </object>
+  <object title ="2">
+	  <type>1</type>
+	  <capacity>2</capacity>
+	  <city>sochi</city>
+  </object>
+  <object title ="3">
+	  <type>2</type>
+	  <capacity>3</capacity>
+	  <city>sochi</city>
+  </object>
+  <object title ="4">
+	  <type>3</type>
+	  <capacity>4</capacity>
+	  <city>sochi</city>
+  </object>
 
-<object title ="loop">
-	<type>ski trail</type>
-	<capacity>2000</capacity>
-	<city>sochi</city>
-</object>
-
-<competition title ="olimp_open">
-	<type_object>stadion</type_object>
-	<sex_participants>2</sex_participants>
-	<duration>2</duration>
-</competition>
-
-<competition title ="ski race">
-	<type_object>ski trail</type_object>
-	<sex_participants>1</sex_participants>
-	<duration>2</duration>
-</competition>
-
-<competition title ="biathlon">
-	<type_object>ski trail</type_object>
-	<sex_participants>1</sex_participants>
-	<duration>3</duration>
-</competition>
-
-<competition title ="curling">
-	<type_object>ice arena</type_object>
-	<sex_participants>1</sex_participants>
-	<duration>2</duration>
-</competition>
-
-
-<country name="russia">
-		<login>russia</login>
-		<password>russia</password>
-</country>
-
-<country name="usa">
-		<login>usa</login>
-		<password>usa</password>
-</country>
-
-<country name="germany">
-		<login>germany</login>
-		<password>germany</password>
-</country>
-
-<quote>
-	<countryQuote name="russia">
-		 <competitionQuote name="ski race" count="12"/>
-	       <competitionQuote name="biathlon" count="5"/>
-		 <competitionQuote name="curling" count="2"/>
-	</countryQuote>
+  
+  <competition title ="olimp_open">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>2</duration>
+  </competition>
+  
+  <competition title ="1">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>3</duration>
+  </competition>
+  <competition title ="2">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>4</duration>
+  </competition>
+  <competition title ="3">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>3</duration>
+  </competition>
+  <competition title ="4">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>2</duration>
+  </competition>
+  <competition title ="5">
+	  <type_object>2</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>2</duration>
+  </competition>
+  <competition title ="6">
+	  <type_object>2</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>5</duration>
+  </competition>
+  <competition title ="7">
+	  <type_object>2</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>2</duration>
+  </competition>
+  <competition title ="8">
+	  <type_object>2</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>2</duration>
+  </competition>
+  <competition title ="9">
+	  <type_object>3</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>6</duration>
+  </competition>
+  <competition title ="10">
+	  <type_object>3</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>1</duration>
+  </competition>
+  <competition title ="11">
+	  <type_object>3</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>8</duration>
+  </competition>
+  <competition title ="12">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>3</duration>
+  </competition>
+  <competition title ="13">
+	  <type_object>1</type_object>
+	  <sex_participants>2</sex_participants>
+	  <duration>5</duration>
+  </competition>
+  
+  
+  <country name="russia">
+		  <login>russia</login>
+		  <password>russia</password>
+  </country>
+  <country name="usa">
+		  <login>usa</login>
+		  <password>usa</password>
+  </country>
+  <country name="germany">
+		  <login>germany</login>
+		  <password>germany</password>
+  </country>
+  
+  <quote>
+	  <countryQuote name="russia">
+	    <competitionQuote name="1" count="12"/>
+      <competitionQuote name="2" count="12"/>
+      <competitionQuote name="3" count="12"/>
+      <competitionQuote name="4" count="12"/>
+      <competitionQuote name="5" count="12"/>
+      <competitionQuote name="6" count="12"/>
+      <competitionQuote name="7" count="12"/>
+      <competitionQuote name="8" count="12"/>
+      <competitionQuote name="9" count="12"/>
+      <competitionQuote name="10" count="12"/>
+      <competitionQuote name="11" count="12"/>
+	    <competitionQuote name="12" count="5"/>
+		  <competitionQuote name="13" count="2"/>
+	  </countryQuote>
 
 		<countryQuote name="usa">
-		 <competitionQuote name="ski race" count="3"/>
-	       <competitionQuote name="biathlon" count="2"/>
-		 <competitionQuote name="curling" count="4"/>
-	</countryQuote>
+		  <competitionQuote name="1" count="12"/>
+      <competitionQuote name="2" count="12"/>
+      <competitionQuote name="3" count="12"/>
+      <competitionQuote name="4" count="12"/>
+      <competitionQuote name="5" count="12"/>
+      <competitionQuote name="6" count="12"/>
+      <competitionQuote name="7" count="12"/>
+      <competitionQuote name="8" count="12"/>
+      <competitionQuote name="9" count="12"/>
+      <competitionQuote name="10" count="12"/>
+      <competitionQuote name="11" count="12"/>
+	    <competitionQuote name="12" count="5"/>
+		  <competitionQuote name="13" count="2"/>
+	  </countryQuote>
 
-	<countryQuote name="germany">
-		 <competitionQuote name="ski race" count="3"/>
-	       <competitionQuote name="biathlon" count="2"/>
-		 <competitionQuote name="curling" count="7"/>
-	</countryQuote>
+	  <countryQuote name="germany">
+		  <competitionQuote name="1" count="12"/>
+      <competitionQuote name="2" count="12"/>
+      <competitionQuote name="3" count="12"/>
+      <competitionQuote name="4" count="12"/>
+      <competitionQuote name="5" count="12"/>
+      <competitionQuote name="6" count="12"/>
+      <competitionQuote name="7" count="12"/>
+      <competitionQuote name="8" count="12"/>
+      <competitionQuote name="9" count="12"/>
+      <competitionQuote name="10" count="12"/>
+      <competitionQuote name="11" count="12"/>
+	    <competitionQuote name="12" count="5"/>
+		  <competitionQuote name="13" count="2"/>
+	  </countryQuote>
 	
-</quote>
+  </quote>
 
-
-	
-		
-
-	
 </root>
+    
