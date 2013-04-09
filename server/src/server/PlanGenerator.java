@@ -18,6 +18,7 @@ public class PlanGenerator {
             this.db = Database.createDatabase();
 
             this.nonPlannedCompetitions = db.competitions();
+            this.nonPlannedCompetitions.remove(0);//remove the first competition - it's the Opening Ceremony (by default)
             this.allCompetitionCount = this.nonPlannedCompetitions.size();
             this.sportObjectCount = db.sportObjectNumber();
 
@@ -35,9 +36,15 @@ public class PlanGenerator {
                 this.currDay[i] = 1;
                 this.currHour[i] = 1;
             }
-            //get all collisions between competitions into array:
-            this.athleteCollisions = new boolean[allCompetitionCount + 1][allCompetitionCount + 1];
-            for (int i = 1; i <= allCompetitionCount; i++) {//zero-row and zero-column are empty: there's no competition with ID = 0
+            /*get all collisions between competitions into array:
+            //Opening included for simplicity (it's under index '1') => ammount of competitions is '0.empty'+'1.Opening'+(all nonPlanned)
+            */
+            this.athleteCollisions = new boolean[allCompetitionCount + 2][allCompetitionCount + 2];//this.athleteCollisions = new boolean[allCompetitionCount + 1][allCompetitionCount + 1];
+
+            /*zero-row and zero-column are empty: there's no competition with ID = 0;
+            first-row and first-column are empty - it's the Opening
+            */
+            for (int i = 2; i <= allCompetitionCount; i++) {
                 this.athleteCollisions[i][i] = false;//no collision with itself
                 for (int j = i + 1; j <= allCompetitionCount; j++) {
                     this.athleteCollisions[i][j] = db.athleteCollision(i,j);
@@ -46,14 +53,14 @@ public class PlanGenerator {
             }
         }
         catch (Exception e){
-            System.err.print("\nCan't create DB connection!");
+            System.err.print("\nCan't create DB connection!\n");
         }
 
         //close db connection:
         try {
             this.db.closeConnection();
         } catch (SQLException e) {
-            System.err.print("\nCan't close database connection!");
+            System.err.print("\nCan't close database connection!\n");
             e.printStackTrace();
         }
     }
@@ -243,7 +250,7 @@ public class PlanGenerator {
         try {
             this.db.closeConnection();
         } catch (SQLException e) {
-            System.err.print("\nCan't close DB-connection after exporting plan to DB!");
+            System.err.print("\nCan't close DB-connection after exporting plan to DB!\n");
             e.printStackTrace();
         }
 
@@ -281,7 +288,7 @@ public class PlanGenerator {
 
         //exit:
         try {
-            System.out.print("\n\n=========\nPRESS ENTER!");
+            System.out.print("\n\n=========\nPRESS ENTER!\n");
             System.in.read();
         } catch (IOException e) {
             e.printStackTrace();
