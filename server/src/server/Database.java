@@ -372,7 +372,7 @@ public class Database {
 				java.util.Date temp = null;
 				try {
 					temp = inputFormat.parse(Utils.openOlimp);
-					openOlimp = new Date(temp.getTime())
+					openOlimp = new Date(temp.getTime());
 					finishOpenOliDate = new Date(temp.getTime() +7200000);
 				} catch (ParseException e) {
 
