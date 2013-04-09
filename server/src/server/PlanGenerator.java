@@ -313,8 +313,8 @@ public class PlanGenerator {
     private int[] currDay;   // current day of the Championship/Games at each sportObject
 
     private boolean[][] athleteCollisions;   //array [allCompetitionCount][allCompetitionCount] to store collisions from db
-    private final static int DAY_LENGTH = 8;
-    private final static int MAX_DAYS = 2;//21
+    public final static int DAY_LENGTH = 8;
+    public final static int MAX_DAYS = 2;//21
 }
 
 

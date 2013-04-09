@@ -363,36 +363,38 @@ public class Database {
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"delete from schedule_olymp;");
 			stmt.executeUpdate();
-			for (Competition competition : competitions) {
-				stmt = (PreparedStatement) connection.prepareStatement(
-						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
-				DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				Date openOlimp = null;
-				Date finishOpenOliDate = null;
-				java.util.Date temp = null;
-				try {
-					temp = inputFormat.parse(Utils.openOlimp);
-					openOlimp = new Date(temp.getTime())
-					finishOpenOliDate = new Date(temp.getTime() +7200000);
-				} catch (ParseException e) {
 
-					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-				}
-				stmt.setInt(1,1);
-				stmt.setInt(2,1);
-				stmt.setDate(3,openOlimp);
-				stmt.setDate(4,finishOpenOliDate);
-				stmt.executeUpdate();
+            stmt = (PreparedStatement) connection.prepareStatement(
+                    "INSERT INTO schedule_olymp Values (?,?,?,?);");
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.util.Date openOlimp = null;
+            java.util.Date finishOpenOliDate = null;
+            java.util.Date temp = null;
+            try {
+                temp = inputFormat.parse(Utils.openOlimp);
+                openOlimp = new Date(temp.getTime());
+                finishOpenOliDate = new Date(temp.getTime() +7200000);
+            } catch (ParseException e) {
+
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            stmt.setInt(1,1);
+            stmt.setInt(2,1);
+            stmt.setString(3,inputFormat.format(openOlimp));
+            stmt.setString(4,inputFormat.format(finishOpenOliDate));
+            stmt.executeUpdate();
+
+            for (Competition competition : competitions) {
 				stmt = (PreparedStatement) connection.prepareStatement(
-						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
+						"INSERT INTO schedule_olymp Values (?,?,?,?);");
 
 				stmt.setInt(1, competition.getId());
 				stmt.setInt(2, competition.getSportObjectId());
-				Date dayOlimp = getCompetitionDate(1);
-				Date startTime = new Date(dayOlimp.getTime() + competition.getBeginHour() * 1000L * 60L * 60L * 24L);
-				Date finishTime = new Date(dayOlimp.getTime() + competition.getEndHour() * 1000L * 60L * 60L * 24L);
-				stmt.setString(3, startTime.toString());
-				stmt.setString(4, finishTime.toString());
+                java.util.Date dayOlimp = getCompetitionDate(1);
+				java.util.Date startTime = new Date(dayOlimp.getTime() + ((competition.getBeginHour() - 1)/PlanGenerator.DAY_LENGTH)*24L * 1000L * 60L * 60L + ((competition.getBeginHour()-1)%PlanGenerator.DAY_LENGTH)*1000L * 60L * 60L);
+                java.util.Date finishTime = new Date(startTime.getTime() + competition.getDuration() * 60L * 60L * 1000L);//((competition.getEndHour() - 1)/PlanGenerator.DAY_LENGTH)*24L * 1000L * 60L * 60L + ((competition.getEndHour()-1)%PlanGenerator.DAY_LENGTH)*1000L * 60L * 60L);
+				stmt.setString(3, inputFormat.format(startTime));
+				stmt.setString(4, inputFormat.format(finishTime));
 				stmt.executeUpdate();
 			}
 			stmt.close();
