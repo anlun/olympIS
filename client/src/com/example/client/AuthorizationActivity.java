@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,13 +59,13 @@ public class AuthorizationActivity extends Activity implements View.OnClickListe
 				data.setLogin(login);
 				data.setPassword(password);
 				try {
-					data.setServerURL(new URL("http://178.130.32.141:8888"));
+					data.setServerURL(new URL(Utils.serverAddress));
 				} catch (MalformedURLException e) {
 					Log.d("DAN", "MalformedURLException in OnClick method AuthorizationActivity.java");
 				}
 
 				try {
-					LoginTask loginTask = new LoginTask(login, password, new URL("http://178.130.32.141:8888"), this);
+					LoginTask loginTask = new LoginTask(login, password, new URL(Utils.serverAddress), this);
 					loginTask.execute();
 				} catch (Exception e) {
 					Toast.makeText(this,"fail",Toast.LENGTH_LONG).show();

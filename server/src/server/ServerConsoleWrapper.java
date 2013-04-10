@@ -133,6 +133,9 @@ public class ServerConsoleWrapper {
 				} else if (tagName.equalsIgnoreCase("application-request")) {
 					return (new ApplicationPostResponseCreator(dom)).createResponse();
 
+				} else if (tagName.equalsIgnoreCase("filters-request")) {
+					return (new FilterPostResponseCreator()).createResponse();
+
 				} else if (
 						tagName.equalsIgnoreCase("java")
 						&& root.hasAttribute("class")
