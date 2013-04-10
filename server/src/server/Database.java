@@ -5,8 +5,10 @@ import beans.DayTimetable.DaySportElement;
 import beans.ApplicationConstrain.SportConstrain;
 import com.mysql.jdbc.PreparedStatement;
 import com.sun.imageio.plugins.bmp.BMPConstants;
+import com.sun.org.apache.xalan.internal.xsltc.dom.FilterIterator;
 import utils.Utils;
 
+import java.lang.reflect.Array;
 import java.nio.channels.AsynchronousFileChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -137,6 +139,9 @@ public class Database {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		if (dateCompetition== null){
+			return getCompetitionDate(1);
 		}
 		return dateCompetition;
 	}
@@ -329,13 +334,13 @@ public class Database {
 		ArrayList<String> competitionInDay = competitionsInDay(day);
 		ArrayList<DaySportElement> res = new ArrayList<DaySportElement>();
 		for (Filter filter : filters) {
-			if (filter.getFilterName().equals("sport_array")) {
+			if (filter.getFilterName().equals("sportFilter")) {
 				for (String sport : filter.getFilter()) {
 					if (isSportInDay(sport, day)) {
 						filtSport.add(sport);
 					}
 				}
-				if (filter.getFilterName().equals("country_filter")) {
+				if (filter.getFilterName().equals("countryFilter")) {
 					for (String country : filter.getFilter()) {
 						ArrayList<Integer> temp = isCountryInDay(country, day);
 						for (int temp2 : temp){
@@ -402,6 +407,52 @@ public class Database {
 			e.printStackTrace();
 		}
 
+	}
+
+
+
+
+
+	public ArrayList<String> getCountryNames(){
+		PreparedStatement stmt = null;
+		ArrayList<String> result = new ArrayList<String>();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT country_name  FROM country;");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				result.add(rs.getString("country_name"));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("проблема с выдачей имен стран");
+		}
+		return result;
+	}
+
+	public ArrayList<String> getCompetitionNames(){
+		PreparedStatement stmt = null;
+		ArrayList<String> result = new ArrayList<String>();
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(
+					"SELECT competition_name  FROM competition;");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				result.add(rs.getString("competition_name"));
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("проблема с выдачей имен соревнований");
+		}
+		return result;
+	}
+
+	public ArrayList<Filter> getFilters(){
+		ArrayList<Filter> res = new ArrayList<Filter>();
+		res.add( new Filter("countryFilter",getCountryNames()));
+		res.add( new Filter("sportsFilter", getCompetitionNames()));
+		return res;
 	}
 
 	public void insertCountryApplication(CountryApplication countryApplication) {
@@ -496,12 +547,10 @@ public class Database {
 		}
 			System.out.println(filters.size());
 		for (Filter filt : filters) {
-			System.out.println("ololo");
-
 			int[] temp = new int[Utils.maxCountDays + 1];
 			int[] temp2 = new int[Utils.maxCountDays + 1];
 			//in this "if" we iterate all filters/
-			if (filt.getFilterName().equals("sport_array")) {
+			if (filt.getFilterName().equals("sportsFilter")) {
 				temp = getFilterSportArray(filt.getFilter());
 				for (int i = 0; i < Utils.maxCountDays; ++i) {
 					if (temp[i] == 0) {
@@ -509,7 +558,7 @@ public class Database {
 					}
 				}
 			}
-			if (filt.getFilterName().equals("country_filter")) {
+			if (filt.getFilterName().equals("countryFilter")) {
 				temp2 = getFilterCountryArray(filt.getFilter());
 				for (int i = 0; i < Utils.maxCountDays; ++i) {
 					if (temp2[i] == 0) {
