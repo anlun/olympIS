@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Utils {
 	public static final  int maxCountDays = 21;
+//	public static String serverAddress    = "http://178.130.32.141:8888";
+	public static String serverAddress    = "http://10.0.2.2:8888";
 
 	public static String beanToString(Object objectToSerialize) {
 		ByteArrayOutputStream byteArr = new ByteArrayOutputStream();

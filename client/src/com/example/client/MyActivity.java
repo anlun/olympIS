@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import beans.CompetitionList;
 import beans.CountryApplication;
+import utils.Utils;
+
 import java.net.URL;
 
 /**
@@ -42,7 +44,7 @@ public class MyActivity extends Activity {
 		protected String doInBackground(String... cmds) {
 			String result = "Fail";
 			try {
-				Client cl = new Client(new URL("http://178.130.32.141:8888"));
+				Client cl = new Client(new URL(Utils.serverAddress));
 				result = cl.execute(cmds[0]);
 			} catch (Exception e) {
 			}

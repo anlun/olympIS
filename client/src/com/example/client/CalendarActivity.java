@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import beans.DayTimetable;
 import beans.Filter;
+import utils.Utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -89,7 +90,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				try {
 					(new FilterDayTimetableSendTask(filterList,
 							Integer.parseInt(((TextView) view).getHint().toString()),
-							new URL("http://178.130.32.141:8888"), this)).execute();
+							new URL(Utils.serverAddress), this)).execute();
 				} catch (MalformedURLException e) {
 				}
 				break;
@@ -120,7 +121,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					addFilter(filterName, result);
 
 					// передаю собственно filterList
-					(new FilterDayListSendTask(filterList, new URL("http://178.130.32.141:8888"), this)).execute();
+					(new FilterDayListSendTask(filterList, new URL(Utils.serverAddress), this)).execute();
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {

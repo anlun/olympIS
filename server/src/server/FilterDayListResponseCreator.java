@@ -25,6 +25,10 @@ public class FilterDayListResponseCreator extends ResponseCreator {
 					new ByteArrayInputStream(filterListXML.getBytes("UTF-8"))
 			);
 			FilterListForDayList filterList = (FilterListForDayList) decoder.readObject();
+
+			System.out.println(filterListXML);
+			System.out.println(filterList.getFilters().get(0).getFilter());
+
 			if (filterList == null) {
 				return Utils.beanToString(new DayList());
 			}
