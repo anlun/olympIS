@@ -454,6 +454,10 @@ public class Database {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("sport day:");
+		for( int i = 0; i < res.length; ++i){
+			System.out.print(res[i] + " ");
+		}
 		return res;
 	}
 
@@ -472,6 +476,10 @@ public class Database {
 					res[a] = 1;
 				}
 			}
+			System.out.println("country day:");
+			for( int i = 0; i < res.length; ++i){
+				System.out.print(res[i] + " ");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -484,7 +492,10 @@ public class Database {
 		for (int i = 0; i < Utils.maxCountDays + 1; ++i) {
 			dayList[i] = 1;
 		}
+			System.out.println(filters.size());
 		for (Filter filt : filters) {
+			System.out.println("ololo");
+
 			int[] temp = new int[Utils.maxCountDays + 1];
 			int[] temp2 = new int[Utils.maxCountDays + 1];
 			//in this "if" we iterate all filters/
@@ -515,7 +526,7 @@ public class Database {
 				res.add(i);
 			}
 		}
-		System.out.print("DayList :");
+		System.out.println("DayList :");
 		for( int i = 0; i < res.size(); ++i){
 			System.out.print(dayList[i] + " ");
 		}
