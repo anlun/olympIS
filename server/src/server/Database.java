@@ -7,11 +7,14 @@ import com.mysql.jdbc.PreparedStatement;
 import com.sun.imageio.plugins.bmp.BMPConstants;
 import utils.Utils;
 
+import java.nio.channels.AsynchronousFileChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Vector;
@@ -358,19 +361,40 @@ public class Database {
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SET SQL_SAFE_UPDATES=0;\n" +
-							"delete from schedule_olymp;");
+					"delete from schedule_olymp;");
 			stmt.executeUpdate();
-			for (Competition competition : competitions) {
+
+            stmt = (PreparedStatement) connection.prepareStatement(
+                    "INSERT INTO schedule_olymp Values (?,?,?,?);");
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.util.Date openOlimp = null;
+            java.util.Date finishOpenOliDate = null;
+            java.util.Date temp = null;
+            try {
+                temp = inputFormat.parse(Utils.openOlimp);
+                openOlimp = new Date(temp.getTime());
+                finishOpenOliDate = new Date(temp.getTime() +7200000);
+            } catch (ParseException e) {
+
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            stmt.setInt(1,1);
+            stmt.setInt(2,1);
+            stmt.setString(3,inputFormat.format(openOlimp));
+            stmt.setString(4,inputFormat.format(finishOpenOliDate));
+            stmt.executeUpdate();
+
+            for (Competition competition : competitions) {
 				stmt = (PreparedStatement) connection.prepareStatement(
-						"INSERT INTO sсhedule_olymp Values (?,?,?,?)");
+						"INSERT INTO schedule_olymp Values (?,?,?,?);");
+
 				stmt.setInt(1, competition.getId());
 				stmt.setInt(2, competition.getSportObjectId());
-				Date dayOlimp = getCompetitionDate(1);
-				Date startTime = new Date(dayOlimp.getTime() + competition.getBeginHour() * 1000L * 60L * 60L * 24L);
-				Date finishTime = new Date(dayOlimp.getTime() + competition.getEndHour() * 1000L * 60L * 60L * 24L);
-				stmt.setString(3, startTime.toString());
-				stmt.setString(4, finishTime.toString());
+                java.util.Date dayOlimp = getCompetitionDate(1);
+				java.util.Date startTime = new Date(dayOlimp.getTime() + ((competition.getBeginHour() - 1)/PlanGenerator.DAY_LENGTH)*24L * 1000L * 60L * 60L + ((competition.getBeginHour()-1)%PlanGenerator.DAY_LENGTH)*1000L * 60L * 60L);
+                java.util.Date finishTime = new Date(startTime.getTime() + competition.getDuration() * 60L * 60L * 1000L);//((competition.getEndHour() - 1)/PlanGenerator.DAY_LENGTH)*24L * 1000L * 60L * 60L + ((competition.getEndHour()-1)%PlanGenerator.DAY_LENGTH)*1000L * 60L * 60L);
+				stmt.setString(3, inputFormat.format(startTime));
+				stmt.setString(4, inputFormat.format(finishTime));
 				stmt.executeUpdate();
 			}
 			stmt.close();
@@ -458,6 +482,7 @@ public class Database {
 
 	public DayList getDayList(ArrayList<Filter> filters) {
 		int[] dayList = new int[Utils.maxCountDays + 1];
+		try{
 		for (int i = 0; i < Utils.maxCountDays + 1; ++i) {
 			dayList[i] = 1;
 		}
@@ -483,11 +508,18 @@ public class Database {
 			}
 
 		}
+		} catch (Exception e){
+			System.out.println("Проблема с выдачей DayList");
+		}
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < Utils.maxCountDays; ++i) {
 			if (dayList[i] == 1) {
 				res.add(i);
 			}
+		}
+		System.out.print("DayList :");
+		for( int i = 0; i < res.size(); ++i){
+			System.out.print(dayList[i] + " ");
 		}
 		return new DayList(res);
 	}

@@ -46,7 +46,7 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		//TODO: вложить во вьюшку filterList
+		// TODO вложить во вьюшку filterList
 	}
 
 	protected String generateXML() throws XMLgenerationException {
