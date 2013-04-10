@@ -121,6 +121,8 @@ public class ServerConsoleWrapper {
 				Element root = dom.getDocumentElement();
 				String tagName = root.getTagName();
 
+				System.out.println(xmlString);
+
 				//TODO: add handlers for another cases of protocol
 				if (tagName.equalsIgnoreCase("login-request")) {
 					return (new LoginResponseCreator(dom)).createResponse();
@@ -139,11 +141,14 @@ public class ServerConsoleWrapper {
 				) {
 					Element object = (Element) root.getFirstChild();
 					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
+						System.out.println("AAAA");
+
 						if (object.getAttribute("class").equals("beans.CountryApplication")) {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
 						} else if (object.getAttribute("class").equals("beans.FilterListForDayList")) {
+							System.out.println("AAAA");
 							return (new FilterDayListResponseCreator(xmlString)).createResponse();
-						} else if (object.getAttribute("class").equals("FilterListForTimetable")) {
+						} else if (object.getAttribute("class").equals("beans.FilterListForTimetable")) {
 							return (new FilterDayTimetableResponseCreator(xmlString)).createResponse();
 						}
 					}

@@ -15,21 +15,31 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterDayListSendTask(ArrayList<Filter> filters, URL serverURL) {
+	public FilterDayListSendTask(ArrayList<Filter> filters, URL serverURL, CalendarActivity calendarActivity) {
 		this.filters    = filters;
 		this.serverURL = serverURL;
+		this.calendarActivity = calendarActivity;
 	}
 
 	@Override
 	public Boolean doInBackground(String... data) {
 		try {
+			Log.d("ANL", "Client cl = new Client(serverURL);");
 			Client cl = new Client(serverURL);
-			String requestXML = Utils.beanToString(new FilterListForDayList(filters));
+
+			Log.d("ANL", "String requestXML = Utils.beanToString(new FilterListForDayList(filters));");
+			FilterListForDayList fl = new FilterListForDayList(filters);
+			String requestXML = Utils.encoderWrap(fl.serialize());
+			Log.d("ANL", "String answerXML  = cl.execute(requestXML);");
+			Log.d("ANL", requestXML);
 			String answerXML  = cl.execute(requestXML);
 
+			Log.d("ANL", "XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes(\"UTF-8\")));");
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
+			Log.d("ANL", "dayList = (DayList) decoder.readObject();");
 			dayList = (DayList) decoder.readObject();
 
+			Log.d("ANL", "return dayList != null;");
 			return dayList != null;
 
 		} catch (UnsupportedEncodingException e) {
@@ -43,10 +53,11 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		//TODO: сделать то, что нужно от вьюшки с dayList
+		calendarActivity.onFilterDayListSendTask(dayList.getListOfDays());
 	}
 
 	private ArrayList<Filter> filters;
 	private DayList           dayList;
 	private URL               serverURL;
+	private CalendarActivity calendarActivity;
 }

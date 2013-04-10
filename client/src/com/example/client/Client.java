@@ -1,5 +1,7 @@
 package com.example.client;
 
+import android.util.Log;
+
 import java.net.*;
 import java.io.*;
 
@@ -22,15 +24,23 @@ public class Client {
 	 * @return Server answer.
 	 */
 	public String execute(String requestStr) throws IOException {
+		Log.d("ANL", "0");
+
 		URLConnection connection = serverURL.openConnection();
+		Log.d("ANL", "0");
 		connection.setDoOutput(true);
 		BufferedWriter out = new BufferedWriter(
 				new OutputStreamWriter(connection.getOutputStream()));
 		out.write(requestStr);
 		out.close();
 
+		Log.d("ANL", "1");
+		InputStream stream = connection.getInputStream();
+		Log.d("ANL", "11");
 		BufferedReader in = new BufferedReader(
-				new InputStreamReader(connection.getInputStream()));
+				new InputStreamReader(stream));
+
+		Log.d("ANL", "15");
 
 		String inputLine;
 		StringBuilder result = new StringBuilder();
@@ -38,6 +48,8 @@ public class Client {
 			result.append("\n" + inputLine);
 		}
 		in.close();
+
+		Log.d("ANL", "2");
 
 		String resultString = result.toString();
 		if (resultString.length() > 0) {

@@ -1,14 +1,12 @@
 package server;
 
-import beans.DayList;
-import beans.DayTimetable;
-import beans.FilterListForDayList;
-import beans.FilterListForTimetable;
+import beans.*;
 import utils.Utils;
 
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 public class FilterDayTimetableResponseCreator extends ResponseCreator {
 	public FilterDayTimetableResponseCreator(String filterListXML) {
@@ -21,6 +19,11 @@ public class FilterDayTimetableResponseCreator extends ResponseCreator {
 					new ByteArrayInputStream(filterListXML.getBytes("UTF-8"))
 			);
 			FilterListForTimetable filterList = (FilterListForTimetable) decoder.readObject();
+
+			//TODO: For Vova
+			ArrayList<Filter> filters = filterList.getFilters();
+			int dayNumber = filterList.getDayNumber();
+
 			if (filterList == null) {
 				return Utils.beanToString(new DayTimetable());
 			}

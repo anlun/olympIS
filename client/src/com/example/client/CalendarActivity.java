@@ -2,15 +2,18 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import beans.DayTimetable;
 import beans.Filter;
-import beans.DayList;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +25,10 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
+		// TODO получить фильтры от базы!
+
 		filterList = new ArrayList<Filter>();
+		authorizationData = AuthorizationData.getInstance();
 
 		//устанавливаем onClickListener для фильтров
 		(findViewById(R.id.countryFilter)).setOnClickListener(this);
@@ -37,16 +43,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tv.setOnClickListener(this);
 			}
 		}
-
-		// TODO убрать эти 8 строчек. Они сейчас для наглядности работы метода setColor.
-		ArrayList<Integer> ar = new ArrayList<Integer>();
-		ArrayList<Integer> ar1 = new ArrayList<Integer>();
-		for (int i = 0; i <= 30; i++) {
-			ar.add(i);
-			if (i % 2 == 0) ar1.add(i);
-		}
-		setColor(ar, Color.GREEN);
-		setColor(ar1, Color.WHITE);
 	}
 
 	/**
@@ -84,12 +80,18 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tableSportsFilterIntent.putExtra("filterNumber", "sportsFilter");
 				startActivityForResult(tableSportsFilterIntent, 1);
 				break;
-			default:
-				Intent dayActivityIntent = new Intent(this, DayActivity.class);
-				dayActivityIntent.putExtra("dayNumber", ((TextView) view).getHint());
+			default: // т.е. клик по дню.
 				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
-				dayActivityIntent.putExtra("dayTimetable", "9-00 football \n11-00 swimming\n13-00 hockey");
-				startActivity(dayActivityIntent);
+				// вешаем гуи.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
+				// передаю собственно filterList
+				try {
+					(new FilterDayTimetableSendTask(filterList,
+							Integer.parseInt(((TextView) view).getHint().toString()),
+							new URL("http://178.130.32.141:8888"), this)).execute();
+				} catch (MalformedURLException e) {
+				}
 				break;
 		}
 	}
@@ -100,6 +102,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		if (requestCode == 1) {   //т.е. фильтер
 			if (resultCode == RESULT_OK) {
 				try {
+					// вешаю гуи
+					startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
 					//сей result есть результат выбора в ListView пользователем.
 					//первый элемент массива - название фильтра
 					ArrayList<String> result = data.getStringArrayListExtra("resultOfChoice");
@@ -114,8 +119,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					}
 					addFilter(filterName, result);
 
-					// TODO передать собственно filterList и получить ответ в виде DayList
-					// setSelectedDaysGreen(dayList);
+					// передаю собственно filterList
+					(new FilterDayListSendTask(filterList, new URL("http://178.130.32.141:8888"), this)).execute();
 
 					Toast.makeText(this, filterName + result.toString(), Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
@@ -124,6 +129,60 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			}
 			else if (resultCode == RESULT_CANCELED) {
 			}
+		}
+	}
+
+	// получить ответ в виде DayList
+	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
+		Log.d("DAN","onFilterDayListSendTask enter");
+		try {
+			Log.d("DAN","пытаемся получить dayList");
+			ArrayList<Integer> ar = new ArrayList<Integer>();
+			for (int i = 0; i <= 21; i++) {
+				ar.add(i);
+			}
+			setColor(ar, Color.WHITE);
+			Log.d("DAN","onFilterDayListSendTask exit");
+			setColor(dayList, Color.GREEN);
+
+			finishActivity(10);
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity и это активити тоже.
+			finishActivity(10);
+			finish();
+		}
+	}
+
+	// получить ответ в виде DayTimetable
+	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
+		// TODO отобразить dayTimetable
+		try {
+			Log.d("DAN","получили dayTimetable от сервера.");
+			Intent dayActivityIntent = new Intent(this, DayActivity.class);
+			dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+			Log.d("DAN","1");
+			String str = "";
+			for (int i = 0; i < dayTimetable.getDayTimetable().size(); i++) {
+				Log.d("DAN","index " + i);
+				str += dayTimetable.getDayTimetable().get(i).getSportElement() + "\n";
+			}
+			Log.d("DAN","2");
+			dayActivityIntent.putExtra("dayTimetable", str);
+			Log.d("DAN","3");
+			startActivity(dayActivityIntent);
+
+			Log.d("DAN","убили активити временное");
+			finishActivity(10);
+			Log.d("DAN","вышли из onFilterDayListSendTask.");
+		} catch (Exception e) {
+			Log.d("DAN", "поймали exception в onFilterDayTimetableSendTask.(CalendarActivity). Ответ от сервера некорректен.");
+			// говорим юзеру, что мол якобы нет соединения с сервером.
+			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			// закрываем AskForWaitActivity.
+			finishActivity(10);
 		}
 	}
 
@@ -185,6 +244,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	private final static int firstDay = 1; // First day of competitions.
 	private final static int lastDay = 21; // Last day of competitions.
-	private final static int numberOfWeeks = 4; // Nu,ber of weeks.
+	private final static int numberOfWeeks = 4; // Weeks count.
 	private ArrayList<Filter> filterList;
+	private AuthorizationData authorizationData;
 }

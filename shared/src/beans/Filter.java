@@ -11,6 +11,9 @@ import java.util.ArrayList;
  *  @author danya
  */
 public class Filter implements Serializable, CustomSerializable {
+	public Filter() {
+		this.filter = new ArrayList<String>();
+	}
 
 	public Filter(String filterName, ArrayList<String> filter) {
 		this.filter = filter;
