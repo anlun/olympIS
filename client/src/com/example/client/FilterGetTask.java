@@ -16,9 +16,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterGetTask(URL serverURL) {
+	public FilterGetTask(URL serverURL, CalendarActivity calendarActivity) {
 		this.serverURL  = serverURL;
 		this.filterList = null;
+		this.calendarActivity = calendarActivity;
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		// TODO вложить во вьюшку filterList
+		calendarActivity.onFilterGetTask(filterList);
 	}
 
 	protected String generateXML() throws XMLgenerationException {
@@ -70,5 +71,6 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	private ArrayList<Filter> filterList;
 	private URL               serverURL;
+	private CalendarActivity  calendarActivity;
 }
 

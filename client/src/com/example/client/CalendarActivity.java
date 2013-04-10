@@ -26,10 +26,15 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
-		// TODO получить фильтры от базы!
-
 		filterList = new ArrayList<Filter>();
 		authorizationData = AuthorizationData.getInstance();
+
+		// TODO получить фильтры от базы!
+		try {
+			(new FilterGetTask(new URL(Utils.serverAddress), this)).execute();
+			startActivityForResult(new Intent(this, AskForWaitActivity.class), 11);
+		} catch (MalformedURLException e) {
+		}
 
 		//устанавливаем onClickListener для фильтров
 		(findViewById(R.id.countryFilter)).setOnClickListener(this);
@@ -44,6 +49,26 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				tv.setOnClickListener(this);
 			}
 		}
+	}
+
+	public void onFilterGetTask(ArrayList<Filter> serverFilterList) {
+		Log.d("DAN", "enter onFilterGetTask");
+		ListView lv;
+		// Устанавливаем массив ресурсов для спиннера.
+		for(Filter filter : serverFilterList) {
+			if (filter.getFilterName().equals("countryFilter")) {
+				lv = (ListView)findViewById(R.id.countryFilter);
+				lv.setAdapter(new ArrayAdapter(this,
+						android.R.layout.simple_spinner_item, filter.getFilter()));
+				Log.d("DAN", "filter: " + filter.getFilter().toString());
+			} else if (filter.getFilterName().equals("sportsFilter")) {
+				lv = (ListView)findViewById(R.id.sportsFilter);
+				lv.setAdapter(new ArrayAdapter(this,
+						android.R.layout.simple_spinner_item, filter.getFilter()));
+				Log.d("DAN", "filter: " + filter.getFilter().toString());
+			}
+		}
+		finishActivity(11);
 	}
 
 	/**
@@ -99,7 +124,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data == null) return;
+		Log.d("DAN", "onActivityResult starts");
+		if (data == null || requestCode == 11) return;
 		if (requestCode == 1) {   //т.е. фильтер
 			if (resultCode == RESULT_OK) {
 				try {
