@@ -8,6 +8,7 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.TimeoutException;
 
 public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 	public ApplicationSendTask(CountryApplication countryApplication, URL serverURL) {
@@ -21,7 +22,7 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 
 		try {
 			String requestXML = Utils.encoderWrap(countryApplication.serialize());
-			Client cl = new Client(serverURL);
+			TimeoutClient cl = new TimeoutClient(serverURL);
 			String answerXML = cl.execute(requestXML);
 
 			Log.d("ANL", answerXML);
@@ -30,6 +31,8 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 		} catch (IOException e) {
 			Log.d("ANL", "XML generation error!");
 			return false;
+		} catch (TimeoutException e) {
+			Log.d("ANL", "ApplicationSendTask timeout!");
 		}
 
 		return result;

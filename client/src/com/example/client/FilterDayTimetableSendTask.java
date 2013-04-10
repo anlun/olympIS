@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boolean> {
 	public FilterDayTimetableSendTask(ArrayList<Filter> filters, int dayNumber, URL serverURL) {
@@ -23,7 +24,7 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 	@Override
 	public Boolean doInBackground(String... data) {
 		try {
-			Client cl = new Client(serverURL);
+			TimeoutClient cl = new TimeoutClient(serverURL);
 			FilterListForTimetable fl = new FilterListForTimetable(filters, dayNumber);
 			String requestXML = fl.serialize();
 			String answerXML  = cl.execute(requestXML);
@@ -36,7 +37,9 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 		} catch (UnsupportedEncodingException e) {
 			Log.d("ANL", "Unsupported encoding error!");
 		} catch (IOException e) {
-			Log.d("ANL", "FilterSendTask IOException error!");
+			Log.d("ANL", "FilterDayTimetableSendTask IOException error!");
+		} catch (TimeoutException e) {
+			Log.d("ANL", "FilterDayTimetableSendTask timeout!");
 		}
 
 		return false;

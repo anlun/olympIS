@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.concurrent.TimeoutException;
 
 import com.googlecode.openbeans.XMLDecoder;
 
@@ -30,7 +31,7 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 	@Override
 	public Boolean doInBackground(String... data) {
 		try {
-			Client cl = new Client(serverURL);
+			TimeoutClient cl = new TimeoutClient(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 
@@ -44,6 +45,8 @@ public class ApplicationConstrainTask extends AsyncTask<String, Integer, Boolean
 			Log.d("ANL", "Unsupported encoding error!");
 		} catch (IOException e) {
 			Log.d("ANL", "Server ApplicationConstrainTask IOException error!");
+		} catch (TimeoutException e) {
+			Log.d("ANL", "ApplicationConstrainTask timeout!");
 		}
 
 		return false;
