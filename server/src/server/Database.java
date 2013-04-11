@@ -343,14 +343,11 @@ public class Database {
 	   Date dayOlimp = getCompetitionDate(1);
 		numberDay--;
 	   Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
-
-		ArrayList<String> filtSport = new ArrayList<String>();
+       ArrayList<String> filtSport = new ArrayList<String>();
 		ArrayList<String> filtCountry = new ArrayList<String>();
 		ArrayList<String> competitionInDay = competitionsInDay(day);
 		competitionInDay.remove(0);
 		ArrayList<DaySportElement> res = new ArrayList<DaySportElement>();
-		System.out.println(filters.get(0).getFilterName());
-		System.out.println(numberDay);
 		for (Filter filter : filters) {
 			if (filter.getFilterName().equals("sportFilter")) {
 				for (String sport : filter.getFilter()) {
@@ -370,15 +367,16 @@ public class Database {
 			    System.out.println(filtCountry);
 				System.out.println(competitionInDay);
 			    System.out.println(filtSport);
-			    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-			for (String competition : competitionInDay) {
-					if (filtCountry.contains(competition) || filtSport.contains(competition)) {
-						res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, true));
-					} else {
-						res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, false));
-					}
-				}
+
 			}
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		for (String competition : competitionInDay) {
+			if (filtCountry.contains(competition) || filtSport.contains(competition)) {
+				res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, true));
+			} else {
+				res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, false));
+			}
+		}
 
 		return new DayTimetable(res);
 
@@ -600,10 +598,8 @@ public class Database {
 				res.add(i+1);
 			}
 		}
-		System.out.println("DayList :");
-		for( int i = 0; i < res.size(); ++i){
-			System.out.print(dayList[i] + " ");
-		}
+		System.out.println("DayList :" + res );
+
 		return new DayList(res);
 	}
 
