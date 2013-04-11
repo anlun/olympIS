@@ -50,7 +50,6 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 
 	@Override
 	protected void onPostExecute(CountryApplication result) {
-		//TODO: обработка со стороны вьюшки
 		countryGUIObject.getCountryApplicationFromServer(result);
 	}
 

@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterDayListSendTask(ArrayList<Filter> filters, URL serverURL) {
+	public FilterDayListSendTask(ArrayList<Filter> filters, URL serverURL, CalendarActivity calendarActivity) {
 		this.filters    = filters;
 		this.serverURL = serverURL;
+		this.calendarActivity = calendarActivity;
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 		try {
 			TimeoutClient cl = new TimeoutClient(serverURL);
 			FilterListForDayList fl = new FilterListForDayList(filters);
-			String requestXML = fl.serialize();
+			String requestXML = Utils.encoderWrap(fl.serialize());
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
@@ -47,10 +48,12 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		//TODO: сделать то, что нужно от вьюшки с dayList
+		//TODO: Danya - dayList may be null!!!
+		calendarActivity.onFilterDayListSendTask(dayList.getListOfDays());
 	}
 
 	private ArrayList<Filter> filters;
 	private DayList           dayList;
 	private URL               serverURL;
+	private CalendarActivity calendarActivity;
 }

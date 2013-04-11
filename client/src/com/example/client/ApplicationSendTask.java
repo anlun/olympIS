@@ -2,6 +2,7 @@ package com.example.client;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import beans.CountryApplication;
 import utils.RequestResponseConst;
 import utils.Utils;
@@ -11,9 +12,10 @@ import java.net.URL;
 import java.util.concurrent.TimeoutException;
 
 public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
-	public ApplicationSendTask(CountryApplication countryApplication, URL serverURL) {
+	public ApplicationSendTask(CountryApplication countryApplication, URL serverURL, CountryGUI countryGUIObject) {
 		this.countryApplication = countryApplication;
 		this.serverURL          = serverURL;
+		this.countryGUIObject = countryGUIObject;
 	}
 
 	@Override
@@ -46,7 +48,8 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 			Log.d("ANL", "Application sending task failed!");
 		}
 
-		//TODO: добавить обработку со стороны вьюшки
+		Toast.makeText(countryGUIObject, "application has sent to server",Toast.LENGTH_LONG).show();
+		countryGUIObject.doFinish();
 	}
 
 	private static boolean getResultFromXML(String answerXML) {
@@ -57,4 +60,5 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 
 	private final CountryApplication countryApplication;
 	private final URL serverURL;
+	private CountryGUI countryGUIObject;
 }

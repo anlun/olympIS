@@ -3,10 +3,9 @@ package server;
 import beans.Sex;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-//TODO: сейчас все работает только локально (без БД). Сделать с БД!
 
 /**
  * Class server.PlanGenerator for generating competition plan.
@@ -16,34 +15,15 @@ public class PlanGenerator {
 
     public PlanGenerator() {
         try{
-            ArrayList<Competition> result = new ArrayList<Competition>();
-            result.add(new Competition(1,3,new Sex(Sex.undefined),1));
-            result.add(new Competition(2,4,new Sex(Sex.undefined),1));
-            result.add(new Competition(3,3,new Sex(Sex.undefined),1));
-            result.add(new Competition(4,2,new Sex(Sex.undefined),1));
-            result.add(new Competition(5,2,new Sex(Sex.undefined),2));
-            result.add(new Competition(6,5,new Sex(Sex.undefined),2));
-            result.add(new Competition(7,2,new Sex(Sex.undefined),2));
-            result.add(new Competition(8,2,new Sex(Sex.undefined),2));
-            result.add(new Competition(9,6,new Sex(Sex.undefined),3));
-            result.add(new Competition(10,1,new Sex(Sex.undefined),3));
-            result.add(new Competition(11,8,new Sex(Sex.undefined),3));
-            result.add(new Competition(12,3,new Sex(Sex.undefined),1));
-            result.add(new Competition(13,5,new Sex(Sex.undefined),1));
+            this.db = Database.createDatabase();
+
+            this.nonPlannedCompetitions = db.competitions();
+            this.nonPlannedCompetitions.remove(0);//remove the first competition - it's the Opening Ceremony (by default)
+            this.allCompetitionCount = this.nonPlannedCompetitions.size();
+            this.sportObjectCount = db.sportObjectNumber();
 
             //spObjs by type:
-            spObjByType = new ArrayList[4];
-            spObjByType[0] = null;
-            spObjByType[1] = new ArrayList<Integer>(Arrays.asList(1,2));
-            spObjByType[2] = new ArrayList<Integer>(Arrays.asList(3));
-            spObjByType[3] = new ArrayList<Integer>(Arrays.asList(4));
-
-            this.nonPlannedCompetitions = result;
-            //server.Database db = server.Database.createDatabase();
-            //this.nonPlannedCompetitions = db.competitions();
-            this.allCompetitionCount = this.nonPlannedCompetitions.size();
-            //this.sportObjectCount = db.sportObjectNumber();
-            this.sportObjectCount = 4;
+            this.spObjByType = db.allSportObjectsByType();
 
             this.plan = new int[this.sportObjectCount + 1][this.allCompetitionCount*DAY_LENGTH + 1];
             this.plannedCompetitions = new ArrayList<Competition>();
@@ -56,17 +36,35 @@ public class PlanGenerator {
                 this.currDay[i] = 1;
                 this.currHour[i] = 1;
             }
-            /*try {
-                db.closeConnection();
-            } catch (SQLException e) {
-                System.err.println("Can't close database connection!");
-                e.printStackTrace();
-            } */
+            /*get all collisions between competitions into array:
+            //Opening included for simplicity (it's under index '1') => ammount of competitions is '0.empty'+'1.Opening'+(all nonPlanned)
+            */
+            this.athleteCollisions = new boolean[allCompetitionCount + 2][allCompetitionCount + 2];//this.athleteCollisions = new boolean[allCompetitionCount + 1][allCompetitionCount + 1];
+
+            /*zero-row and zero-column are empty: there's no competition with ID = 0;
+            first-row and first-column are empty - it's the Opening
+            */
+            for (int i = 2; i <= allCompetitionCount; i++) {
+                this.athleteCollisions[i][i] = false;//no collision with itself
+                for (int j = i + 1; j <= allCompetitionCount; j++) {
+                    this.athleteCollisions[i][j] = db.athleteCollision(i,j);
+                    this.athleteCollisions[j][i] = this.athleteCollisions[i][j];//Array is symmetrical about the main diagonal.
+                }
+            }
         }
         catch (Exception e){
-            System.err.print("Can't create DB connection!");
+            System.err.print("\nCan't create DB connection!\n");
+        }
+
+        //close db connection:
+        try {
+            this.db.closeConnection();
+        } catch (SQLException e) {
+            System.err.print("\nCan't close database connection!\n");
+            e.printStackTrace();
         }
     }
+
 //======================================
     /**
      * Function to generate the plan. Implemented with recursion.
@@ -80,7 +78,6 @@ public class PlanGenerator {
         if (getMaxCurrHour() > MAX_DAYS * DAY_LENGTH + 1) {
             return false;
         }
-
         //if there's no competitions - ok. Everything's been planned
         if (nonPlannedCompetitions.size() == 0)
             return true;
@@ -99,6 +96,7 @@ public class PlanGenerator {
                     pushIntoPlan(cmptn,spObj);
                     flagGen = generatePlan();
                     if (flagGen) {
+                        cmptn.setSportObjectId(spObj);
                         return true;
                     } else {
                         popFromPlan(cmptn,spObj);
@@ -110,21 +108,23 @@ public class PlanGenerator {
             Pop first element from the respective spObjByTest list and push it at the end.
             It's necessary for more uniform a priory competition distribution.
             //TODO: запилить, чтоб работала оптимизация! Сейчас выдает ConcurrentModificationException
+            */
+            /*
             if (spObjByType[cmptnType].size() > 1) {
                 int temp = spObjByType[cmptnType].get(0);
                 spObjByType[cmptnType].add(temp);
                 spObjByType[cmptnType].remove(0);
             }
-            * */
+            */
 
             nonPlannedCompetitions.add(i,cmptn);
         }
 
-        /* делаем сдвиг времени(currDay & hoursLeft & currHour) на 1 час для объектов c минимальным currHour.
+        /*Вставляем пустое соревнование в качестве одночасовой паузы на объектах с минимальным текущим временем.
          И попробуем еще разок сгенерить расписание. Если не прокатит - откатим эти изменения и попробуем по-другому.
         * */
         int SpObjWithMinCurrHour = getSpObjWithMinCurrHour();
-        pushIntoPlan(null,SpObjWithMinCurrHour); // изменить как описано в комменте выше.
+        pushIntoPlan(null,SpObjWithMinCurrHour);
         flagGen = generatePlan();
         if (flagGen) {
             return true;
@@ -135,6 +135,7 @@ public class PlanGenerator {
         //if nothing was planned - return FALSE: generation with current parameters isn't possible
         return false;
     }
+
 
     /**
      * Push competition into the plan.
@@ -152,7 +153,7 @@ public class PlanGenerator {
             competition.setEndHour(currHour[sportObject]+competition.getDuration());
             currHour[sportObject] += competition.getDuration();
         } else {
-            plan[sportObject][currHour[sportObject]] = -1;
+            plan[sportObject][currHour[sportObject]] = 0;//plan[sportObject][currHour[sportObject]] = -1; Just to avoid ArrayIndexOutOfRange exception
             currHour[sportObject] += 1;
         }
         currDay[sportObject] = (currHour[sportObject] - 1) / DAY_LENGTH + 1;
@@ -181,6 +182,7 @@ public class PlanGenerator {
         hoursLeft[sportObject] = DAY_LENGTH - (currHour[sportObject] - 1) % DAY_LENGTH;
     }
 
+
     /**
      * Check if the competition could be held at the sportObject.
      * @param competition competition to be checked
@@ -196,7 +198,7 @@ public class PlanGenerator {
         for (int d = 0; d < competition.getDuration(); d++) {
             for (int sO = 1; sO <= sportObjectCount; sO++) {
                 //if it's not itself and if there's a collision return false;
-                if ((sO != sportObject) && (athleteCollision(competition.getId(),plan[sO][currHour[sportObject] + d]))) {
+                if ((sO != sportObject) && (athleteCollisions[competition.getId()][plan[sO][currHour[sportObject] + d]])) {
                     return false;
                 }
             }
@@ -205,6 +207,7 @@ public class PlanGenerator {
         //if there's no collision return true
         return true;
     }
+
 
     /**
      * Get Sport Object with minimal currHour
@@ -221,7 +224,6 @@ public class PlanGenerator {
         }
         return result;
     }
-
     /**
      * Get maximum element from currHour[]
      * @return max element of currHour
@@ -236,43 +238,33 @@ public class PlanGenerator {
         return max;
     }
 
-    /**
-     * Function checking if there're athlete collisions between two competitions
-     * i.e. same athlete participates in two concurrent competitions.
-     * @param cmptnID1 first competition's ID
-     * @param cmptnID2 second competition's ID
-     * @return TRUE if there's a collision. FALSE - on the contrary
-     */
-    private boolean athleteCollision(int cmptnID1, int cmptnID2) {
-        //TODO: ask Vova to implement it
-        if (
-            (cmptnID1 == 1 && cmptnID2 == 6)||(cmptnID1 == 1 && cmptnID2 == 6)||
-            (cmptnID1 == 2 && cmptnID2 == 5)||(cmptnID1 == 5 && cmptnID2 == 2)||
-            (cmptnID1 == 2 && cmptnID2 == 12)||(cmptnID1 == 12 && cmptnID2 == 2)||
-            (cmptnID1 == 11 && cmptnID2 == 12)||(cmptnID1 == 12 && cmptnID2 == 11)||
-            (cmptnID1 == 13 && cmptnID2 == 8)||(cmptnID1 == 8 && cmptnID2 == 13)||
-            (cmptnID1 == 3 && cmptnID2 == 4)||(cmptnID1 == 4 && cmptnID2 == 3)||
-            (cmptnID1 == 3 && cmptnID2 == 8)||(cmptnID1 == 8 && cmptnID2 == 3)
-                ) {
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Export renewed competition info back to the server.Database
      * Now it writes plan in the console
      */
     private void exportPlanToDatabase() {
-        //TODO: export competitions back to the server.Database. Ask Vova to implement it.
+        //export competitions back to the Database
+        this.db = Database.createDatabase();
+        this.db.insertInSheduleOlymp(this.plannedCompetitions);
+        try {
+            this.db.closeConnection();
+        } catch (SQLException e) {
+            System.err.print("\nCan't close DB-connection after exporting plan to DB!\n");
+            e.printStackTrace();
+        }
+
+        //printing plan to the local console
         System.out.print("\t\t");
         for (int i = 1; i <= DAY_LENGTH * MAX_DAYS; i++) {
             System.out.print(" "+i+"\t");
         }
         System.out.print("\n\n");
+
+        int temp = Math.min(MAX_DAYS * DAY_LENGTH,this.allCompetitionCount*DAY_LENGTH);
         for (int obj = 1; obj <= sportObjectCount; obj++) {
             System.out.print(obj+"\t\t");
-            for (int i = 1; i <= MAX_DAYS * DAY_LENGTH; i++) {
+            for (int i = 1; i <= temp; i++) {
                 System.out.print(" "+plan[obj][i]+"\t");
             }
             System.out.print("\n");
@@ -280,41 +272,115 @@ public class PlanGenerator {
 
     }
 
+
     /**
      * Main function to start generating from:
      */
     public static void main(String[] args) {
         PlanGenerator planGen = new PlanGenerator();
+
         boolean success = planGen.generatePlan();
+
+        //export calculated data and
         if (success) {
             planGen.exportPlanToDatabase();
         } else {
             System.out.print("ERROR! Plan generation failed. There's no suitable plan.");
         }
+
+        //exit:
         try {
-            System.out.print("\n\n=========\nPRESS ENTER!");
+            System.out.print("\n\n=========\nPRESS ENTER!\n");
             System.in.read();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
 
 //=======================================================
+    private Database db; //database entity
+
     private ArrayList<Competition> nonPlannedCompetitions; // competitions not planned yet
     private int allCompetitionCount;   //count of existing competitions
     private int sportObjectCount;   //count of existing sportObjects
-    private ArrayList<Integer>[] spObjByType;   //type <-> spObjects
 
-    private Competition[] competitionIDs;    //used to set bijection between Competitions and their IDs.
+    private ArrayList<Integer>[] spObjByType;   //type <-> spObjects
 
     private int[][] plan;           //main structure for the plan
     private ArrayList<Competition> plannedCompetitions;    // competitions added to plan
 
-    private int[] currHour; //NOT NECESSARY!// current hour at each sportObject (when the last competition finishes)
+    private int[] currHour;  // current hour at each sportObject (when the last competition finishes)
     private int[] hoursLeft; // Hours left from current time to next day // maybe set this field for easier way to write code
     private int[] currDay;   // current day of the Championship/Games at each sportObject
 
-    private final static int DAY_LENGTH = 8;
-    private final static int MAX_DAYS = 2;//21;
+    private boolean[][] athleteCollisions;   //array [allCompetitionCount][allCompetitionCount] to store collisions from db
+    public final static int DAY_LENGTH = 8;
+    public final static int MAX_DAYS = 2;//21
 }
+
+
+
+
+/** -- FOR TEST -- -- FOR TEST -- -- FOR TEST -- -- FOR TEST -- -- FOR TEST --
+ *============================================================================
+
+/**
+ * Class Constructor with manually created data
+ */
+/*
+public PlanGenerator() {
+    ArrayList<Competition> result = new ArrayList<Competition>();
+    result.add(new Competition(1,3,new Sex(Sex.undefined),1));
+    result.add(new Competition(2,4,new Sex(Sex.undefined),1));
+    result.add(new Competition(3,3,new Sex(Sex.undefined),1));
+    result.add(new Competition(4,2,new Sex(Sex.undefined),1));
+    result.add(new Competition(5,2,new Sex(Sex.undefined),2));
+    result.add(new Competition(6,5,new Sex(Sex.undefined),2));
+    result.add(new Competition(7,2,new Sex(Sex.undefined),2));
+    result.add(new Competition(8,2,new Sex(Sex.undefined),2));
+    result.add(new Competition(9,6,new Sex(Sex.undefined),3));
+    result.add(new Competition(10,1,new Sex(Sex.undefined),3));
+    result.add(new Competition(11,8,new Sex(Sex.undefined),3));
+    result.add(new Competition(12,3,new Sex(Sex.undefined),1));
+    result.add(new Competition(13,5,new Sex(Sex.undefined),1));
+
+    this.nonPlannedCompetitions = result;
+    this.allCompetitionCount = this.nonPlannedCompetitions.size();
+    this.sportObjectCount = 4;
+
+    //spObjs by type:
+    spObjByType = new ArrayList[4];
+    spObjByType[0] = null;
+    spObjByType[1] = new ArrayList<Integer>(Arrays.asList(1,2));
+    spObjByType[2] = new ArrayList<Integer>(Arrays.asList(3));
+    spObjByType[3] = new ArrayList<Integer>(Arrays.asList(4));
+
+    this.plan = new int[this.sportObjectCount + 1][this.allCompetitionCount*DAY_LENGTH + 1];
+    this.plannedCompetitions = new ArrayList<Competition>();
+
+    this.currHour = new int[this.sportObjectCount+1];
+    this.hoursLeft = new int[this.sportObjectCount+1];
+    this.currDay = new int[this.sportObjectCount+1];
+    for (int i = 1; i <= sportObjectCount; i++) {
+        this.hoursLeft[i] = DAY_LENGTH;
+        this.currDay[i] = 1;
+        this.currHour[i] = 1;
+    }
+
+    this.athleteCollisions = new boolean[allCompetitionCount + 1][allCompetitionCount + 1];
+    for (int i = 1; i <= allCompetitionCount; i++) {//zero-row and zero-column are empty: there's no competition with ID = 0
+        for (int j = 1; j <= allCompetitionCount; j++) {
+            this.athleteCollisions[i][j] = false;
+        }
+    }
+    this.athleteCollisions[1][6] = true;    this.athleteCollisions[6][1] = true;
+    this.athleteCollisions[2][5] = true;    this.athleteCollisions[5][2] = true;
+    this.athleteCollisions[2][12] = true;   this.athleteCollisions[12][2] = true;
+    this.athleteCollisions[11][12] = true;  this.athleteCollisions[12][11] = true;
+    this.athleteCollisions[8][13] = true;   this.athleteCollisions[13][8] = true;
+    this.athleteCollisions[3][4] = true;    this.athleteCollisions[4][3] = true;
+    this.athleteCollisions[3][8] = true;    this.athleteCollisions[8][3] = true;
+}
+
+*/

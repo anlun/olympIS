@@ -6,6 +6,7 @@ import utils.Utils;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FilterDayTimetableResponseCreator extends ResponseCreator {
@@ -24,11 +25,22 @@ public class FilterDayTimetableResponseCreator extends ResponseCreator {
 			ArrayList<Filter> filters = filterList.getFilters();
 			int dayNumber = filterList.getDayNumber();
 
-			if (filterList == null) {
+			try {
+				Database db = Database.createDatabase();
+				DayTimetable result = db.getTimeTable(filters, dayNumber);
+				db.closeConnection();
+			    return Utils.beanToString(result);
+			} catch (SQLException e) {
+				//TODO: норм комментарий
+				System.err.println("Проблема с базой при DayList!");
+			}
+
+
+		    if (filterList == null) {
 				return Utils.beanToString(new DayTimetable());
 			}
 
-			//TODO: чтение из базы DayTimetable по filterList
+
 			return Utils.beanToString(new DayTimetable());
 
 		} catch (UnsupportedEncodingException e) {

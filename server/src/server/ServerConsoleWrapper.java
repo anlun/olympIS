@@ -36,6 +36,7 @@ public class ServerConsoleWrapper {
 		startServer(new InetSocketAddress(8888));
 	}
 
+
 	/**
 	 * Starts server that will be listened socketAddress socket.
 	 *
@@ -120,6 +121,8 @@ public class ServerConsoleWrapper {
 				Element root = dom.getDocumentElement();
 				String tagName = root.getTagName();
 
+				System.out.println(xmlString);
+
 				//TODO: add handlers for another cases of protocol
 				if (tagName.equalsIgnoreCase("login-request")) {
 					return (new LoginResponseCreator(dom)).createResponse();
@@ -130,6 +133,9 @@ public class ServerConsoleWrapper {
 				} else if (tagName.equalsIgnoreCase("application-request")) {
 					return (new ApplicationPostResponseCreator(dom)).createResponse();
 
+				} else if (tagName.equalsIgnoreCase("filters-request")) {
+					return (new FilterPostResponseCreator()).createResponse();
+
 				} else if (
 						tagName.equalsIgnoreCase("java")
 						&& root.hasAttribute("class")
@@ -138,11 +144,14 @@ public class ServerConsoleWrapper {
 				) {
 					Element object = (Element) root.getFirstChild();
 					if (object.getTagName().equalsIgnoreCase("object") && object.hasAttribute("class")) {
+						System.out.println("AAAA");
+
 						if (object.getAttribute("class").equals("beans.CountryApplication")) {
 							return (new ApplicationResponseCreator(xmlString)).createResponse();
 						} else if (object.getAttribute("class").equals("beans.FilterListForDayList")) {
+							System.out.println("AAAA");
 							return (new FilterDayListResponseCreator(xmlString)).createResponse();
-						} else if (object.getAttribute("class").equals("FilterListForTimetable")) {
+						} else if (object.getAttribute("class").equals("beans.FilterListForTimetable")) {
 							return (new FilterDayTimetableResponseCreator(xmlString)).createResponse();
 						}
 					}
