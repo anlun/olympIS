@@ -42,5 +42,5 @@ public class TimeoutClient {
 	private Client client;
 	private int    timeout; //in seconds
 
-	private static final int standardTimeout = 3;
+	private static final int standardTimeout = 10;
 }
