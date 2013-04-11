@@ -23,6 +23,6 @@ public class FilterPostResponseCreator extends ResponseCreator {
 		//TODO: сделать чтение из БД набора фильтров
 		//Сложить в filters
 
-		return Utils.arrayListToBeanXML(filters);
+		return Utils.encoderWrap(Utils.arrayListToBeanXML(filters));
 	}
 }

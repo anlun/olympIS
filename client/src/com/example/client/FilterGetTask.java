@@ -31,6 +31,7 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
+			Log.d("ANL", answerXML);
 			filterList = (ArrayList<Filter>) decoder.readObject();
 			return filterList != null;
 
@@ -40,6 +41,8 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 			Log.d("ANL", "Unsupported encoding error!");
 		} catch (IOException e) {
 			Log.d("ANL", "FilterGetTask IOException error!");
+		} catch (Exception e) {
+			Log.d("ANL", e.toString());
 		}
 
 		return false;
@@ -47,7 +50,10 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		calendarActivity.onFilterGetTask(filterList);
+		Log.d("ANL", "FilterGetTask.onPostExecute");
+		if (result) {
+			calendarActivity.onFilterGetTask(filterList);
+		}
 	}
 
 	protected String generateXML() throws XMLgenerationException {
