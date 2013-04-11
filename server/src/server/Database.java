@@ -597,7 +597,7 @@ public class Database {
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < Utils.maxCountDays; ++i) {
 			if (dayList[i] == 1) {
-				res.add(i);
+				res.add(i+1);
 			}
 		}
 		System.out.println("DayList :");
