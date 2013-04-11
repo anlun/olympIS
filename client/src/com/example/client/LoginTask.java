@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Class for country login through Internet.
@@ -29,7 +30,7 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 	@Override
 	protected Boolean doInBackground(String... data) {
 		try {
-			Client cl = new Client(serverURL);
+			TimeoutClient cl = new TimeoutClient(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 
@@ -41,6 +42,9 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 			country = null;
 		} catch (XMLgenerationException e) {
 			Log.d("ANL", "XML generation error!");
+			country = null;
+		} catch (TimeoutException e) {
+			Log.d("ANL", "LoginTask timeout!");
 			country = null;
 		}
 
