@@ -18,7 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Vector;
 
 public class Database {
@@ -125,7 +125,8 @@ public class Database {
 
 	public Date getCompetitionDate(int competitionId) {
 		PreparedStatement stmt = null;
-		Date dateCompetition = null;
+		java.util.Date dateCompetition = null;
+		DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		java.text.SimpleDateFormat sdf =
 				new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
@@ -134,9 +135,14 @@ public class Database {
 			stmt.setInt(1, competitionId);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-					dateCompetition = rs.getDate("start_time");
-
+				try {
+					dateCompetition =inputFormat.parse(rs.getString("start_time"));
+				} catch (ParseException e) {
+					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+				}
 			}
+
+			System.out.println(inputFormat.format(dateCompetition).toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -249,11 +255,13 @@ public class Database {
 	public boolean isSportInDay(String sport, Date day) {
 		int competitionId = competitionId(sport);
 		PreparedStatement stmt = null;
+		java.text.SimpleDateFormat sdf =
+				new java.text.SimpleDateFormat("yyyy-MM-dd");
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"SELECT *  FROM schedule_olymp WHERE competition_id=? and start_time = ?;");
+					"SELECT *  FROM schedule_olymp WHERE competition_id=? and start_time like ?;");
 			stmt.setInt(1, competitionId);
-			stmt.setDate(2, day);
+			stmt.setString(2, sdf.format(day) + "%");
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				return true;
@@ -268,11 +276,14 @@ public class Database {
 	public ArrayList<String> competitionsInDay(Date day) {
 		ArrayList<String> res = new ArrayList<String>();
 		PreparedStatement stmt = null;
+		java.text.SimpleDateFormat sdf =
+				new java.text.SimpleDateFormat("yyyy-MM-dd");
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"SELECT competition_name  FROM schedule_olymp join competition" +
-							" on competition.id = competition_id WHERE start_time = ?;");
-			stmt.setDate(1, day);
+							" on competition.id = competition_id WHERE start_time like ?;");
+			System.out.println(sdf.format(day));
+			stmt.setString(1, sdf.format(day)+"%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				res.add(rs.getString("competition_name"));
@@ -287,15 +298,18 @@ public class Database {
 		int countryId = countryId(country);
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		PreparedStatement stmt = null;
+		java.text.SimpleDateFormat sdf =
+				new java.text.SimpleDateFormat("yyyy-MM-dd");
+		System.out.println("id= "+ countryId);
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
 					"select schedule_olymp.competition_id from participation_athletes join schedule_olymp" +
 							" on participation_athletes.competition_id = schedule_olymp.competition_id" +
 							" join athlete on participation_athletes.athlete_id = athlete.id " +
 							" where athlete.country_id in (select id from country where country.id = ?)" +
-							" and start_time = ?;");
+							" and start_time like ?;");
 			stmt.setInt(1, countryId);
-			stmt.setDate(2, day);
+			stmt.setString(2, sdf.format(day) + "%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				res.add(rs.getInt("competition_id"));
@@ -327,12 +341,16 @@ public class Database {
 
 	public DayTimetable getTimeTable(ArrayList<Filter> filters, int numberDay) {
 	   Date dayOlimp = getCompetitionDate(1);
-		Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
+		numberDay--;
+	   Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
 
 		ArrayList<String> filtSport = new ArrayList<String>();
 		ArrayList<String> filtCountry = new ArrayList<String>();
 		ArrayList<String> competitionInDay = competitionsInDay(day);
+		competitionInDay.remove(0);
 		ArrayList<DaySportElement> res = new ArrayList<DaySportElement>();
+		System.out.println(filters.get(0).getFilterName());
+		System.out.println(numberDay);
 		for (Filter filter : filters) {
 			if (filter.getFilterName().equals("sportFilter")) {
 				for (String sport : filter.getFilter()) {
@@ -340,6 +358,7 @@ public class Database {
 						filtSport.add(sport);
 					}
 				}
+			}
 				if (filter.getFilterName().equals("countryFilter")) {
 					for (String country : filter.getFilter()) {
 						ArrayList<Integer> temp = isCountryInDay(country, day);
@@ -348,15 +367,19 @@ public class Database {
 						}
 					}
 				}
-				for (String competition : competitionInDay) {
+			    System.out.println(filtCountry);
+				System.out.println(competitionInDay);
+			    System.out.println(filtSport);
+			    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			for (String competition : competitionInDay) {
 					if (filtCountry.contains(competition) || filtSport.contains(competition)) {
-						res.add(new DaySportElement(getCompetitionDate(competitionId(competition)).toString() + competition, true));
+						res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, true));
 					} else {
-						res.add(new DaySportElement(getCompetitionDate(competitionId(competition)).toString() + competition, false));
+						res.add(new DaySportElement(sdf.format(getCompetitionDate(competitionId(competition)))+ " " + competition, false));
 					}
 				}
 			}
-		}
+
 		return new DayTimetable(res);
 
 	}
