@@ -58,7 +58,6 @@ public class LoginTask extends AsyncTask<String, Integer, Boolean> {
 		} else {
 			Log.d("ANL", "Login fail!");
 		}
-
 		authorizationActivityObject.onLogin(result);
 	}
 

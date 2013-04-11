@@ -2,6 +2,7 @@ package com.example.client;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import beans.DayList;
 import beans.Filter;
 import beans.FilterListForDayList;
@@ -48,8 +49,14 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		//TODO: Danya - dayList may be null!!!
-		calendarActivity.onFilterDayListSendTask(dayList.getListOfDays());
+		if (!result) {
+			Toast.makeText(calendarActivity, "fail connection with server", Toast.LENGTH_SHORT).show();
+			calendarActivity.finishActivity(11);
+			calendarActivity.finishActivity(10);
+			calendarActivity.finish();
+		} else {
+			calendarActivity.onFilterDayListSendTask(dayList.getListOfDays());
+		}
 	}
 
 	private ArrayList<Filter> filters;
