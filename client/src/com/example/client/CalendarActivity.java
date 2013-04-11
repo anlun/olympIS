@@ -26,10 +26,16 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
-		// TODO получить фильтры от базы!
-
 		filterList = new ArrayList<Filter>();
-		authorizationData = AuthorizationData.getInstance();
+		serverFilterList = new ArrayList<Filter>();
+
+		// получаем фильтры от базы!
+		try {
+			(new FilterGetTask(new URL(Utils.serverAddress), this)).execute();
+			startActivityForResult(new Intent(this, AskForWaitActivity.class), 11);
+		} catch (Exception e) {
+			Log.d("DAN", e.toString());
+		}
 
 		//устанавливаем onClickListener для фильтров
 		(findViewById(R.id.countryFilter)).setOnClickListener(this);
@@ -46,6 +52,16 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	public void onFilterGetTask(ArrayList<Filter> serverFilterList) {
+		if (serverFilterList == null) {
+			Toast.makeText(this, "fail connection", Toast.LENGTH_SHORT).show();
+			this.finish();
+			return;
+		}
+		this.serverFilterList = serverFilterList;
+		finishActivity(11);
+	}
+
 	/**
 	 * To do on click. If it is a click on a day open an a day timetable in a day activity.(look at default)
 	 * @param view Is a view licked on.s
@@ -54,11 +70,30 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()){
 			case R.id.countryFilter:
+			case R.id.sportsFilter:
+				Log.d("DAN","enter in case");
+				String filterName = "";
+				if (view.getId() == R.id.sportsFilter) {
+					filterName =  "sportsFilter";
+				} else {
+					filterName =  "countryFilter";
+				}
+
 				Intent tableCountryFilterIntent = new Intent(this, TableFilter.class);
-				tableCountryFilterIntent.putExtra("filterNumber", "countryFilter");
+				tableCountryFilterIntent.putExtra("filterNumber", filterName);
+
+				// передаём список
+				int filterIndex = getFilterIndexFromFilterList(filterName, serverFilterList);
+				if (filterIndex == -1) {
+					Log.d("DAN","break.");
+					break;
+				} else {
+					tableCountryFilterIntent.putStringArrayListExtra("resourceArray",
+							serverFilterList.get(filterIndex).getFilter());
+				}
 
 				// Передаём уже выбранные эл-ты.
-				int index = getFilterIndexFromFilterList("countryFilter");
+				int index = getFilterIndexFromFilterList(filterName, filterList);
 				if (index != -1) {
 					tableCountryFilterIntent.putExtra("filterIsAlreadySelectedItems", filterList.get(index).getFilter());
 				} else {
@@ -67,22 +102,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 				startActivityForResult(tableCountryFilterIntent, 1);
 				break;
-			case R.id.sportsFilter:
-				Intent tableSportsFilterIntent = new Intent(this, TableFilter.class);
-
-				// Передаём уже выбранные эл-ты.
-				int index1 = getFilterIndexFromFilterList("sportsFilter");
-				if (index1 != -1) {
-					tableSportsFilterIntent.putExtra("filterIsAlreadySelectedItems", filterList.get(index1).getFilter());
-				} else {
-					tableSportsFilterIntent.putExtra("filterIsAlreadySelectedItems", new ArrayList<String>());
-				}
-
-				tableSportsFilterIntent.putExtra("filterNumber", "sportsFilter");
-				startActivityForResult(tableSportsFilterIntent, 1);
-				break;
 			default: // т.е. клик по дню.
-				// TODO в след строчке нужно пихать реальное расписание, полученное от сервера в виде строки
 				// вешаем гуи.
 				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 
@@ -99,7 +119,8 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data == null) return;
+		Log.d("DAN", "onActivityResult starts");
+		if (data == null || requestCode == 11) return;
 		if (requestCode == 1) {   //т.е. фильтер
 			if (resultCode == RESULT_OK) {
 				try {
@@ -112,7 +133,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 					String filterName = result.get(0);
 					result.remove(0);
 					if (result.isEmpty()) { // Т.е. в фильтре ничего не выбрано.
-						int index = getFilterIndexFromFilterList(filterName);
+						int index = getFilterIndexFromFilterList(filterName, filterList);
 						if (index != -1) {
 							filterList.remove(index);
 						}
@@ -135,30 +156,32 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	// получить ответ в виде DayList
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
-		Log.d("DAN","onFilterDayListSendTask enter");
+		Log.d("DAN","" + dayList.size() + " " + dayList.toString());
 		try {
-			Log.d("DAN","пытаемся получить dayList");
 			ArrayList<Integer> ar = new ArrayList<Integer>();
-			for (int i = 0; i <= 21; i++) {
+			for (int i = 1; i <= 21; i++) {
 				ar.add(i);
 			}
 			setColor(ar, Color.WHITE);
-			Log.d("DAN","onFilterDayListSendTask exit");
-			setColor(dayList, Color.GREEN);
-
-			finishActivity(10);
+			if (dayList != null) {
+				setColor(dayList, Color.GREEN);
+			}
 		} catch (Exception e) {
 			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
 			// говорим юзеру, что мол якобы нет соединения с сервером.
 			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
 			// закрываем AskForWaitActivity и это активити тоже.
-			finishActivity(10);
 			finish();
 		}
+		finishActivity(10);
 	}
 
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
+		if (dayTimetable == null) {
+			Log.d("DAN","dayTimetable == null.");
+			return;
+		}
 		// TODO отобразить dayTimetable
 		try {
 			Log.d("DAN","получили dayTimetable от сервера.");
@@ -220,9 +243,9 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	 * If filterList doesn't contains Filter with Filter.filterName == filterName,
 	 * returns -1.
 	 */
-	private int getFilterIndexFromFilterList(String filterName) {
-		for (int i = 0; i < filterList.size(); i++) {
-			if (filterList.get(i).getFilterName().equals(filterName)) {
+	private int getFilterIndexFromFilterList(String filterName, ArrayList<Filter> list) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getFilterName().equals(filterName)) {
 				return i;
 			}
 		}
@@ -236,7 +259,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	 * new Filter will be added.
 	 */
 	private void addFilter(String filterName, ArrayList<String> resultOfChoice) {
-		int index = getFilterIndexFromFilterList(filterName);
+		int index = getFilterIndexFromFilterList(filterName, filterList);
 		if (index != -1) {
 			filterList.remove(index);
 		}
@@ -247,5 +270,5 @@ public class CalendarActivity extends Activity implements OnClickListener {
 	private final static int lastDay = 21; // Last day of competitions.
 	private final static int numberOfWeeks = 4; // Weeks count.
 	private ArrayList<Filter> filterList;
-	private AuthorizationData authorizationData;
+	private ArrayList<Filter> serverFilterList;
 }

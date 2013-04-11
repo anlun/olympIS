@@ -20,6 +20,7 @@ public class TableFilter extends Activity implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
+		Log.d("DAN","TableFilter enter");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.table_filter);
 
@@ -33,19 +34,15 @@ public class TableFilter extends Activity implements OnClickListener {
 		//заодно инициализируем 0-ой элемент resultOfChoice
 		resultOfChoice.add(filterCase);
 		ArrayAdapter<CharSequence> adapter;
-		if (filterCase.equals("countryFilter"))
+		if (filterCase.equals("countryFilter") || filterCase.equals("sportsFilter"))
 		{
-			adapter = ArrayAdapter.createFromResource(
-					this, R.array.country_array, android.R.layout.simple_list_item_multiple_choice);
-			resourceArray = getResources().getStringArray(R.array.country_array);
-		} else if (filterCase.equals("sportsFilter")) {
-			adapter = ArrayAdapter.createFromResource(
-					this, R.array.sport_array, android.R.layout.simple_list_item_multiple_choice);
-			resourceArray = getResources().getStringArray(R.array.sport_array);
+			resourceArray = this.getIntent().getStringArrayListExtra("resourceArray");
+			adapter = new ArrayAdapter(this,
+					android.R.layout.simple_list_item_multiple_choice, resourceArray);
 		} else { // быдлохрень. Просто надо, чтобы адаптор  любом случае был инициализирован
-			adapter = ArrayAdapter.createFromResource(
-					this, R.array.sport_array, android.R.layout.simple_list_item_multiple_choice);
-			resourceArray = getResources().getStringArray(R.array.country_array);
+			resourceArray = new ArrayList<String>();
+			adapter = new ArrayAdapter(this,
+					android.R.layout.simple_list_item_multiple_choice, resourceArray);
 		}
 		lvMain.setAdapter(adapter);
 
@@ -56,11 +53,11 @@ public class TableFilter extends Activity implements OnClickListener {
 		if (!filter.isEmpty()) {
 			int j = 0;
 			Log.d("DAN", "зашли в if!");
-			for (int i = 0; i < resourceArray.length; i++) {
+			for (int i = 0; i < resourceArray.size(); i++) {
 				if (j >= filter.size()) {
 					break;
 				}
-				if (filter.get(j).equals(resourceArray[i])) {
+				if (filter.get(j).equals(resourceArray.get(i))) {
 					lvMain.setItemChecked(i, true);
 					j++;
 				}
@@ -80,7 +77,7 @@ public class TableFilter extends Activity implements OnClickListener {
 				for (int i = 0; i < sbArray.size(); i++) {
 					int key = sbArray.keyAt(i);
 					if (sbArray.get(key)) {
-						resultOfChoice.add(resourceArray[key]);
+						resultOfChoice.add(resourceArray.get(key));
 					}
 				}
 				//передаём массив результата
@@ -97,6 +94,6 @@ public class TableFilter extends Activity implements OnClickListener {
 	}
 
 	private ListView lvMain; // сам listView
-	private String[] resourceArray; // массив,эл-ты которого будут эл-тами lvMain. Этот массив получается из ресурсов.
+	private ArrayList<String> resourceArray; // массив,эл-ты которого будут эл-тами lvMain. Этот массив получается из ресурсов.
 	private ArrayList<String> resultOfChoice;// в 0-ом лежит имя фильтра
 }

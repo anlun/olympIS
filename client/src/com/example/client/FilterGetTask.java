@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
-	public FilterGetTask(URL serverURL) {
+	public FilterGetTask(URL serverURL, CalendarActivity calendarActivity) {
 		this.serverURL  = serverURL;
 		this.filterList = null;
+		this.calendarActivity = calendarActivity;
 	}
 
 	@Override
@@ -31,6 +32,7 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 			String answerXML  = cl.execute(requestXML);
 
 			XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(answerXML.getBytes("UTF-8")));
+			Log.d("ANL", answerXML);
 			filterList = (ArrayList<Filter>) decoder.readObject();
 			return filterList != null;
 
@@ -49,7 +51,10 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		// TODO вложить во вьюшку filterList
+		Log.d("ANL", "FilterGetTask.onPostExecute");
+		if (result) {
+			calendarActivity.onFilterGetTask(filterList);
+		}
 	}
 
 	protected String generateXML() throws XMLgenerationException {
@@ -73,5 +78,6 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	private ArrayList<Filter> filterList;
 	private URL               serverURL;
+	private CalendarActivity  calendarActivity;
 }
 
