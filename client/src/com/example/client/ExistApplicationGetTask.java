@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.concurrent.TimeoutException;
 
 public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryApplication> {
 	public ExistApplicationGetTask(String login, String password, URL serverURL, CountryGUI countryGUIObject) {
@@ -25,7 +26,7 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 	@Override
 	protected CountryApplication doInBackground(String... data) {
 		try {
-			Client cl = new Client(serverURL);
+			TimeoutClient cl  = new TimeoutClient(serverURL);
 			String requestXML = generateXML();
 			String answerXML  = cl.execute(requestXML);
 			Log.d("DAN", "requestXML" + requestXML);
@@ -39,7 +40,9 @@ public class ExistApplicationGetTask extends AsyncTask<String, Integer, CountryA
 		} catch (UnsupportedEncodingException e) {
 			Log.d("ANL", "Unsupported encoding error!");
 		} catch (IOException e) {
-			Log.d("ANL", "Server ApplicationConstrainTask IOException error!");
+			Log.d("ANL", "Server ExistApplicationGetTask IOException error!");
+		} catch (TimeoutException e) {
+			Log.d("ANL", "ExistApplicationGetTask timeout!");
 		}
 
 		return new CountryApplication();
