@@ -3,6 +3,7 @@ package com.example.client;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import beans.*;
 import com.googlecode.openbeans.XMLDecoder;
 import utils.Utils;
@@ -48,7 +49,14 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		calendarActivity.onFilterDayTimetableSendTask(dayTimetable, dayNumber);
+		if (!result) {
+			Toast.makeText(calendarActivity, "fail connection with server", Toast.LENGTH_SHORT).show();
+			calendarActivity.finishActivity(11);
+			calendarActivity.finishActivity(10);
+			calendarActivity.finish();
+		} else {
+			calendarActivity.onFilterDayTimetableSendTask(dayTimetable, dayNumber);
+		}
 	}
 
 	private ArrayList<Filter> filters;

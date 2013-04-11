@@ -3,6 +3,7 @@ package com.example.client;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.Toast;
 import beans.Filter;
 import com.example.client.exceptions.XMLgenerationException;
 import com.googlecode.openbeans.XMLDecoder;
@@ -54,6 +55,11 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 		Log.d("ANL", "FilterGetTask.onPostExecute");
 		if (result) {
 			calendarActivity.onFilterGetTask(filterList);
+		} else {
+			Toast.makeText(calendarActivity, "fail connection with server", Toast.LENGTH_SHORT).show();
+			calendarActivity.finishActivity(11);
+			calendarActivity.finishActivity(10);
+			calendarActivity.finish();
 		}
 	}
 
