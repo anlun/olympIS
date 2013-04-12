@@ -370,7 +370,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				break;
 			case R.id.deleteAthleteButton:
 				if (forceEdit) {
-					// TODO
 					// Удаляем старые данные из таблицы пользователя.
 					linearLayout.removeViewAt(getAthleteIndexInLinearLayout(oldAthleteName));
 					// Удаляем старые данные о спортсмене
