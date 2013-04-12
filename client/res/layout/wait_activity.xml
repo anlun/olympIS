@@ -2,8 +2,12 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:orientation="vertical"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_width="fill_parent"
+			  android:layout_height="fill_parent">
+	<ProgressBar android:layout_width="wrap_content"
+				 android:layout_height="wrap_content"
+				 android:id="@+id/progressbar_default"
+			/>
 	<TextView android:id="@+id/waitActivityTextView"
 			  android:text="Please wait, while we are loading data from server"
 			  android:layout_height="fill_parent"
