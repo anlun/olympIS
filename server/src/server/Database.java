@@ -430,10 +430,6 @@ public class Database {
 
 	}
 
-
-
-
-
 	public ArrayList<String> getCountryNames(){
 		PreparedStatement stmt = null;
 		ArrayList<String> result = new ArrayList<String>();
@@ -679,13 +675,20 @@ public class Database {
 		PreparedStatement stmt = null;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(
-					"INSERT INTO athlete Values (NULL,?,?,?,?,?)");
-			stmt.setString(1, athlete.getName());
-			stmt.setInt(2, athlete.getSex().getSex());
-			stmt.setFloat(3, athlete.getWeight());
-			stmt.setFloat(4, athlete.getHeight());
-			stmt.setInt(5, country_id);
-			stmt.executeUpdate();
+					"select * from athlete where athlete_name = ? ");
+			stmt.setString(1,athlete.getName());
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.first()) {
+				stmt = (PreparedStatement) connection.prepareStatement(
+						"INSERT INTO athlete Values (NULL,?,?,?,?,?)");
+				stmt.setString(1, athlete.getName());
+				stmt.setInt(2, athlete.getSex().getSex());
+				stmt.setFloat(3, athlete.getWeight());
+				stmt.setFloat(4, athlete.getHeight());
+				stmt.setInt(5, country_id);
+				stmt.executeUpdate();
+
+			}
 			stmt.close();
 			int athleteId = athleteId(athlete);
 			int competitionId = competitionId(athlete.getCompetition());
