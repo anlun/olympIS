@@ -34,6 +34,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		sexArray = getResources().getStringArray(R.array.sex_array);
 		// competitionList = new CompetitionList(competitionNamesList, athleteNumberList);
 		(findViewById(R.id.competitionListViewButton)).setOnClickListener(this);
+		(findViewById(R.id.deleteAthleteButton)).setOnClickListener(this);
 		forceEdit = false;
 		oldAthleteName = "";
 		currentCompetition = "all competitions";
@@ -365,6 +366,19 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 						forceEdit = false;
 						oldAthleteName = "";
 					}
+				}
+				break;
+			case R.id.deleteAthleteButton:
+				if (forceEdit) {
+					// TODO
+					// Удаляем старые данные из таблицы пользователя.
+					linearLayout.removeViewAt(getAthleteIndexInLinearLayout(oldAthleteName));
+					// Удаляем старые данные о спортсмене
+					removeAthleteFromAthleteListView(oldAthleteName);
+					forceEdit = false; oldAthleteName = "";
+				} else {
+					Toast.makeText(this, "удалить спортсмена можно только при изменении информации о нём(долгое нажатие по имени)",
+							Toast.LENGTH_LONG).show();
 				}
 				break;
 			default: // Это значит, что это был клик по спортсмену.

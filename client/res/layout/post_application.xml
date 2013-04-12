@@ -25,7 +25,10 @@
 			<TextView android:layout_width="50sp" android:layout_height="wrap_content" android:hint="Height:"></TextView>
 			<EditText android:id="@+id/heightTextEdit"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="number" android:textColor="#000000" android:background="#FFFFFFFF" android:layout_margin="2dip"/>
 		</LinearLayout>
-		<Button android:id="@+id/add_button" android:text="+" android:layout_margin="2dip"/>
+		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
+			<Button android:id="@+id/add_button" android:text="+" android:layout_margin="2dip" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+			<Button android:text="delete athlete" android:id="@+id/deleteAthleteButton" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		</LinearLayout>
 		<LinearLayout android:id="@+id/linLayMain" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 		</LinearLayout>
 	</TableLayout>
