@@ -156,7 +156,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	// получить ответ в виде DayList
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
-		Log.d("DAN","" + dayList.size() + " " + dayList.toString());
+		Log.d("DAN","onFilterDayListSendTask " + dayList.size() + " " + dayList.toString());
 		try {
 			ArrayList<Integer> ar = new ArrayList<Integer>();
 			for (int i = 1; i <= 21; i++) {
@@ -178,6 +178,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
+		Log.d("DAN","onFilterDayTimetableSendTask");
 		if (dayTimetable == null) {
 			Log.d("DAN","dayTimetable == null.");
 			return;
