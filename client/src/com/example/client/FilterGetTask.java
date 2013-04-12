@@ -52,7 +52,7 @@ public class FilterGetTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		Log.d("ANL", "FilterGetTask.onPostExecute");
+		Log.d("DAN", "FilterGetTask.onPostExecute");
 		if (result) {
 			calendarActivity.onFilterGetTask(filterList);
 		} else {
