@@ -45,11 +45,10 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		findViewById(R.id.add_button).setOnClickListener(this);
 		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 		sportSpinner = (Spinner) findViewById(R.id.competitionSpinner);
-		authorizationData = AuthorizationData.getInstance();
 
-		ExistApplicationGetTask task = new ExistApplicationGetTask(
-				authorizationData.getLogin(), authorizationData.getPassword(), authorizationData.getServerURL(), this);
-		task.execute();
+		AuthorizationData authorizationData = AuthorizationData.getInstance();
+		(new ExistApplicationGetTask(authorizationData.getLogin(), authorizationData.getPassword(),
+				authorizationData.getServerURL(), this)).execute();
 	}
 
 	// Returns true, if athlete with this name is in the list.
@@ -153,7 +152,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			}
 
 			currentCompetition = "all competitions";
-			sportSpinner.setAdapter(new ArrayAdapter(this,
+			sportSpinner.setAdapter(new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item, sportSpinnerCompetitionsNameList));
 			sportSpinner.setSelection(0);
 			sportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -482,7 +481,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			athleteCurrentNumberList = newAthleteCurrentNumberList;
 
 			// Добавляем информацию в таблицу пользователя.
-			if (selectedSports.contains(currentCompetition) || currentCompetition == "all competitions") {
+			if (selectedSports.contains(currentCompetition) || currentCompetition.equals("all competitions")) {
 				addRow(name);
 			}
 
@@ -563,7 +562,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private TextView athleteCompetitionNumber;
 
 	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
-	private AuthorizationData authorizationData;
+	//private AuthorizationData authorizationData;
 
 	private int[] athleteCurrentNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое уже в заявке.
 	private int[] athleteMaxNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
