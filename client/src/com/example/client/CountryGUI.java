@@ -25,6 +25,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_application);
+		previousColor = 200;
 
 		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
 		startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
@@ -420,9 +421,14 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		tv.setOnLongClickListener(this);
 		tv.setOnClickListener(this);
 		tv.setGravity(Gravity.CENTER);
-		int randomColor = Color.rgb(random.nextInt() % 255, random.nextInt() % 255, random.nextInt() % 255);
-		tv.setBackgroundColor(randomColor);
-		tv.setTextColor(Color.rgb(Color.red(randomColor) / 2, 255 - Color.green(randomColor), 255 - Color.blue(randomColor)));
+
+		previousColor -= 50;
+		if (previousColor < 0) {
+			previousColor = previousColor % 255;
+		}
+		previousColor = Color.rgb(Color.red(previousColor), Color.green(previousColor), 255 - Color.blue(previousColor));
+		tv.setBackgroundColor(previousColor);
+		tv.setTextColor(Color.rgb(Color.red(previousColor), 255 - Color.green(previousColor), Color.blue(previousColor)));
 
 		Log.d("DAN","linearLayout.addView(tv,index);");
 		linearLayout.addView(tv,0);
@@ -564,5 +570,5 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private int[] athleteCurrentNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое уже в заявке.
 	private int[] athleteMaxNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 	private String[] competitionNamesList; // Список названий соревнований.
-	private Random random = new Random(); // Для генерации случайных цветов.
+	private int previousColor;
 }
