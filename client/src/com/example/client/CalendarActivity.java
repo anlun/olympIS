@@ -2,7 +2,6 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,7 +71,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			case R.id.countryFilter:
 			case R.id.sportsFilter:
 				Log.d("DAN","enter in case");
-				String filterName = "";
+				String filterName;
 				if (view.getId() == R.id.sportsFilter) {
 					filterName =  "sportsFilter";
 				} else {
@@ -112,6 +111,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 							Integer.parseInt(((TextView) view).getHint().toString()),
 							new URL(Utils.serverAddress), this)).execute();
 				} catch (MalformedURLException e) {
+					Log.d("DAN", "calendar activity.onClick. catch MalformedURLException e.");
 				}
 				break;
 		}
@@ -162,9 +162,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 				ar.add(i);
 			}
 			setColor(ar, Color.WHITE);
-			if (dayList != null) {
-				setColor(dayList, Color.GREEN);
-			}
+			setColor(dayList, Color.GREEN);
 		} catch (Exception e) {
 			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
 			// говорим юзеру, что мол якобы нет соединения с сервером.
