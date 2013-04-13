@@ -545,7 +545,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
-
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
 			// становится истиной. Если она true, то диалога изменения не будет.
 	private String oldAthleteName; // При изменении имени, надо запомнить старое. Считаю, что имя - ключ.
