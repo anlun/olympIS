@@ -47,9 +47,7 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 		} else {
 			Log.d("ANL", "Application sending task failed!");
 		}
-
-		Toast.makeText(countryGUIObject, "application has sent to server",Toast.LENGTH_LONG).show();
-		countryGUIObject.doFinish();
+		countryGUIObject.onApplicationSendTask(result);
 	}
 
 	private static boolean getResultFromXML(String answerXML) {
