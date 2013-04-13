@@ -137,7 +137,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 						if (index != -1) {
 							filterList.remove(index);
 						}
-						return;
 					}
 					addFilter(filterName, result);
 
