@@ -2,7 +2,6 @@ package com.example.client;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,7 +71,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			case R.id.countryFilter:
 			case R.id.sportsFilter:
 				Log.d("DAN","enter in case");
-				String filterName = "";
+				String filterName;
 				if (view.getId() == R.id.sportsFilter) {
 					filterName =  "sportsFilter";
 				} else {
@@ -112,6 +111,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 							Integer.parseInt(((TextView) view).getHint().toString()),
 							new URL(Utils.serverAddress), this)).execute();
 				} catch (MalformedURLException e) {
+					Log.d("DAN", "calendar activity.onClick. catch MalformedURLException e.");
 				}
 				break;
 		}
@@ -137,7 +137,6 @@ public class CalendarActivity extends Activity implements OnClickListener {
 						if (index != -1) {
 							filterList.remove(index);
 						}
-						return;
 					}
 					addFilter(filterName, result);
 
@@ -156,16 +155,14 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	// получить ответ в виде DayList
 	public void onFilterDayListSendTask(ArrayList<Integer> dayList) {
-		Log.d("DAN","" + dayList.size() + " " + dayList.toString());
+		Log.d("DAN","onFilterDayListSendTask " + dayList.size() + " " + dayList.toString());
 		try {
 			ArrayList<Integer> ar = new ArrayList<Integer>();
 			for (int i = 1; i <= 21; i++) {
 				ar.add(i);
 			}
 			setColor(ar, Color.WHITE);
-			if (dayList != null) {
-				setColor(dayList, Color.GREEN);
-			}
+			setColor(dayList, Color.GREEN);
 		} catch (Exception e) {
 			Log.d("DAN", "поймали exception в onFilterDayListSendTask.(CalendarActivity). Ответ от сервера некорректен.");
 			// говорим юзеру, что мол якобы нет соединения с сервером.
@@ -178,6 +175,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 
 	// получить ответ в виде DayTimetable
 	public void onFilterDayTimetableSendTask(DayTimetable dayTimetable, int dayNumber) {
+		Log.d("DAN","onFilterDayTimetableSendTask");
 		if (dayTimetable == null) {
 			Log.d("DAN","dayTimetable == null.");
 			return;

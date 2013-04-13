@@ -49,7 +49,8 @@ public class FilterDayTimetableSendTask extends AsyncTask<String, Integer, Boole
 
 	@Override
 	public void onPostExecute(Boolean result) {
-		if (!result) {
+		Log.d("DAN", "FilterDayTimetableSendTask.onPostExecute");
+		if (!result || dayTimetable == null) {
 			Toast.makeText(calendarActivity, "fail connection with server", Toast.LENGTH_SHORT).show();
 			calendarActivity.finishActivity(11);
 			calendarActivity.finishActivity(10);

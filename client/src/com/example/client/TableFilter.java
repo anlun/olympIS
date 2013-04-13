@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class realizes a filter listView for timetable with multiple choice.
@@ -32,15 +33,21 @@ public class TableFilter extends Activity implements OnClickListener {
 		// + запоняем resourceArray всё тем же массивом
 		String filterCase = this.getIntent().getStringExtra("filterNumber");
 		//заодно инициализируем 0-ой элемент resultOfChoice
-		resultOfChoice.add(filterCase);
+		if (!filterCase.equals("selectSport")){
+			resultOfChoice.add(filterCase);
+		}
 		ArrayAdapter<CharSequence> adapter;
 		if (filterCase.equals("countryFilter") || filterCase.equals("sportsFilter"))
 		{
 			resourceArray = this.getIntent().getStringArrayListExtra("resourceArray");
 			adapter = new ArrayAdapter(this,
 					android.R.layout.simple_list_item_multiple_choice, resourceArray);
+		} else if (filterCase.equals("selectSport")) {
+			resourceArray = new ArrayList<String>(Arrays.asList(this.getIntent().getStringArrayExtra("resourceArray")));
+			adapter = new ArrayAdapter(this,
+					android.R.layout.simple_list_item_multiple_choice, resourceArray);
 		} else { // быдлохрень. Просто надо, чтобы адаптор  любом случае был инициализирован
-			resourceArray = new ArrayList<String>();
+			resourceArray = this.getIntent().getStringArrayListExtra("resourceArray");
 			adapter = new ArrayAdapter(this,
 					android.R.layout.simple_list_item_multiple_choice, resourceArray);
 		}

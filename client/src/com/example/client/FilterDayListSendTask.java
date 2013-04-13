@@ -49,6 +49,7 @@ public class FilterDayListSendTask extends AsyncTask<String, Integer, Boolean> {
 
 	@Override
 	public void onPostExecute(Boolean result) {
+		Log.d("DAN", "FilterDayListSendTask.onPostExecute");
 		if (!result) {
 			Toast.makeText(calendarActivity, "fail connection with server", Toast.LENGTH_SHORT).show();
 			calendarActivity.finishActivity(11);
