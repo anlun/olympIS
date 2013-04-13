@@ -42,12 +42,24 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		selectedSports = new ArrayList<String>();
 		athleteListView = new ArrayList<ClientAthlete>();
 		findViewById(R.id.add_button).setOnClickListener(this);
+		findViewById(R.id.postApplicationButton).setOnClickListener(this);
+		findViewById(R.id.exitFromPostApplicationButton).setOnClickListener(this);
 		athleteCompetitionNumber = (TextView) findViewById(R.id.athleteCompetitionNumber);
 		sportSpinner = (Spinner) findViewById(R.id.competitionSpinner);
 
 		AuthorizationData authorizationData = AuthorizationData.getInstance();
 		(new ExistApplicationGetTask(authorizationData.getLogin(), authorizationData.getPassword(),
 				authorizationData.getServerURL(), this)).execute();
+	}
+
+	public void onApplicationSendTask(boolean result) {
+		if (result) {
+			Toast.makeText(this, "application has send to server", Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, "fail connection", Toast.LENGTH_SHORT).show();
+		}
+		finishActivity(10);
+		finishActivity(11);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,6 +255,35 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 
 	public void onClick(View v) {
 		switch (v.getId()){
+			case R.id.postApplicationButton:// post application
+				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
+
+				ArrayList<ClientCompetition> arcl = new ArrayList<ClientCompetition>();
+				for (int i = 0; i < competitionNamesList.length; i++) {
+					String competition = competitionNamesList[i];
+					ClientCompetition clientCompetition = new ClientCompetition(competition, athleteMaxNumberList[i]);
+					for (ClientAthlete clientAthlete : athleteListView) {
+						if (clientAthlete.getCompetitions().contains(competition)) {
+							clientCompetition.addAthlete(0, new Athlete(
+									clientAthlete.getName(), clientAthlete.getSex(),
+									clientAthlete.getWeight(), clientAthlete.getHeight(),
+									competition
+							));
+						}
+					}
+					arcl.add(clientCompetition);
+				}
+				CompetitionList competitionList = new CompetitionList();
+				competitionList.setCompetitionList(arcl);
+				AuthorizationData data = AuthorizationData.getInstance();
+				CountryApplication countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
+
+				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
+				break;
+			case R.id.exitFromPostApplicationButton:
+				this.finish();
+				break;
 			case R.id.competitionListViewButton:
 				Log.d("DAN","case R.id.competitionListViewButton:");
 
