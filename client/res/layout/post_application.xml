@@ -2,6 +2,14 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="wrap_content">
 	<TableLayout android:id="@+id/table" android:layout_width="fill_parent" android:layout_height="wrap_content">
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+			<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:id="@+id/postApplicationButton"
+					android:src="@drawable/send"/>
+			<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+						 android:id="@+id/exitFromPostApplicationButton"
+						 android:src="@drawable/exit"/>
+		</LinearLayout>
 		<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dip">
 			<Spinner android:id="@+id/competitionSpinner" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:entries="@array/sport_array" android:prompt="@string/sport_event"></Spinner>
 			<TextView android:id="@+id/athleteCompetitionNumber" android:layout_weight="1" android:textSize="10sp" android:lines="2" android:text="Осталось: 20/20" android:textColor="#FFD700" android:background="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="1dip" android:layout_marginRight="1dip"/>
