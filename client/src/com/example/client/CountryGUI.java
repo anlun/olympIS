@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import beans.*;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Class realize completing an application GUI for authorized country.
@@ -25,7 +24,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_application);
-		previousColor = 200;
 
 		// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
 		startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
@@ -422,13 +420,16 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		tv.setOnClickListener(this);
 		tv.setGravity(Gravity.CENTER);
 
-		previousColor -= 50;
-		if (previousColor < 0) {
-			previousColor = previousColor % 255;
+		if (linearLayout.getChildCount() > 0) {
+			TextView tv1 = (TextView) linearLayout.getChildAt(0);
+			if (tv1.getCurrentTextColor() == Color.GREEN) {
+				tv.setBackgroundColor(Color.GREEN);
+				tv.setTextColor(Color.BLACK);
+			} else {
+				tv.setBackgroundColor(Color.BLACK);
+				tv.setTextColor(Color.GREEN);
+			}
 		}
-		previousColor = Color.rgb(Color.red(previousColor), Color.green(previousColor), 255 - Color.blue(previousColor));
-		tv.setBackgroundColor(previousColor);
-		tv.setTextColor(Color.rgb(Color.red(previousColor), 255 - Color.green(previousColor), Color.blue(previousColor)));
 
 		Log.d("DAN","linearLayout.addView(tv,index);");
 		linearLayout.addView(tv,0);
@@ -570,5 +571,4 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 	private int[] athleteCurrentNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое уже в заявке.
 	private int[] athleteMaxNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 	private String[] competitionNamesList; // Список названий соревнований.
-	private int previousColor;
 }
