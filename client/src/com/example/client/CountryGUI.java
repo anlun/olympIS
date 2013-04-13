@@ -51,52 +51,50 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				authorizationData.getServerURL(), this)).execute();
 	}
 
-	// Returns true, if athlete with this name is in the list.
-	private boolean addAthleteToAthleteListView(Athlete newAthlete) {
-		for (ClientAthlete athlete : athleteListView) {
-			if (athlete.getName().equals(newAthlete.getName())) {
-				athlete.addCompetition(newAthlete.getCompetition());
-				return true;
-			}
-		}
-		athleteListView.add(new ClientAthlete(newAthlete));
-		return false;
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Пункт для отправки заявки на сервер.
+		menu.add(0, 1, 0, "post application");
+		return super.onCreateOptionsMenu(menu);
 	}
 
-	private void removeAthleteFromAthleteListView(String name) {
-		for (ClientAthlete athlete : athleteListView) {
-			if (athlete.getName().equals(name)) {
-				athleteListView.remove(athlete);
-				return;
-			}
-		}
+	// обновление меню
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
 	}
 
-	private int getAthleteIndexFromAthleteListView(String name) {
-		for (int i = 0; i < athleteListView.size(); i++) {
-			if (athleteListView.get(i).getName().equals(name)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+	// обработка нажатий меню
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case 1:// post application
+				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
+				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
 
-	private ClientAthlete getClientAthleteFromAthleteListView(String name) {
-		for (ClientAthlete athlete : athleteListView) {
-			if (athlete.getName().equals(name)) {
-				return athlete;
-			}
-		}
-		return null;
-	}
+				ArrayList<ClientCompetition> arcl = new ArrayList<ClientCompetition>();
+				for (int i = 0; i < competitionNamesList.length; i++) {
+					String competition = competitionNamesList[i];
+					ClientCompetition clientCompetition = new ClientCompetition(competition, athleteMaxNumberList[i]);
+					for (ClientAthlete clientAthlete : athleteListView) {
+						if (clientAthlete.getCompetitions().contains(competition)) {
+							clientCompetition.addAthlete(0, new Athlete(
+									clientAthlete.getName(), clientAthlete.getSex(),
+									clientAthlete.getWeight(), clientAthlete.getHeight(),
+									competition
+							));
+						}
+					}
+					arcl.add(clientCompetition);
+				}
+				CompetitionList competitionList = new CompetitionList();
+				competitionList.setCompetitionList(arcl);
+				AuthorizationData data = AuthorizationData.getInstance();
+				CountryApplication countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
 
-	private int getAthleteIndexInLinearLayout(String name) {
-		for ( int i = 0; i < linearLayout.getChildCount(); i++) {
-			if (((TextView)linearLayout.getChildAt(i)).getText().equals(name)) {
-				return i;
-			}
+				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
+				break;
 		}
-		return -1;
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void getCountryApplicationFromServer(CountryApplication result) {
@@ -128,9 +126,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			}
 
 			//показываем построенный список спортсменов пользователю
-			for (int j = 0; j < athleteListView.size(); j++) {
-				Log.d("DAN", "addRow " + athleteListView.get(j).getName() );
-				addRow(athleteListView.get(j).getName());
+			for (ClientAthlete athlete : athleteListView) {
+				Log.d("DAN", "addRow " + athlete.getName());
+				addRow(athlete.getName());
 			}
 
 			// меняем число человек в заявке
@@ -218,77 +216,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Пункт для отправки заявки на сервер.
-		menu.add(0, 1, 0, "post application");
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	// обновление меню
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	// обработка нажатий меню
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case 1:// post application
-				// Вешаем гуи пока не дождемся ответа от сервера, запуская AskForWaitActivity.
-				startActivityForResult(new Intent(this, AskForWaitActivity.class), 10);
-
-				ArrayList<ClientCompetition> arcl = new ArrayList<ClientCompetition>();
-				for (int i = 0; i < competitionNamesList.length; i++) {
-					String competition = competitionNamesList[i];
-					ClientCompetition clientCompetition = new ClientCompetition(competition, athleteMaxNumberList[i]);
-					for (ClientAthlete clientAthlete : athleteListView) {
-						if (clientAthlete.getCompetitions().contains(competition)) {
-							clientCompetition.addAthlete(0, new Athlete(
-									clientAthlete.getName(), clientAthlete.getSex(),
-									clientAthlete.getWeight(), clientAthlete.getHeight(),
-									competition
-							));
-						}
-					}
-					arcl.add(clientCompetition);
-				}
-				CompetitionList competitionList = new CompetitionList();
-				competitionList.setCompetitionList(arcl);
-				AuthorizationData data = AuthorizationData.getInstance();
-				CountryApplication countryApplication = new CountryApplication(data.getLogin(), data.getPassword(), competitionList);
-
-				(new ApplicationSendTask(countryApplication, data.getServerURL(), this)).execute();
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	* Adds dynamically a athlete in list and visible layout.
-	*/
-	public void addRow(String name) {
-		Log.d("DAN","in addRow");
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		Log.d("DAN","getting TextView");
-		TextView tv = (TextView) inflater.inflate(R.layout.text_view_pattern, null);
-		Log.d("DAN","getted TextView. set name");
-		tv.setText(name);
-		Log.d("DAN","name setted");
-
-		// Листенер долгого нажатия, для правки иформации о спортсмене.
-		tv.setOnLongClickListener(this);
-		tv.setOnClickListener(this);
-		tv.setGravity(Gravity.CENTER);
-		int randomColor = Color.rgb(random.nextInt() % 255, random.nextInt() % 255, random.nextInt() % 255);
-		tv.setBackgroundColor(randomColor);
-		tv.setTextColor(Color.rgb(Color.red(randomColor) / 2, 255 - Color.green(randomColor), 255 - Color.blue(randomColor)));
-
-		Log.d("DAN","linearLayout.addView(tv,index);");
-		linearLayout.addView(tv,0);
-		Log.d("DAN","exit addRow");
-	}
-
 	// Считаю, что long click есть только у TextView каждого атлета.
 	public boolean onLongClick(View v) {
 		TextView tv = (TextView) v;
@@ -332,7 +259,7 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			case R.id.add_button:
 				if (!forceEdit) {
 					if (getAthleteIndexFromAthleteListView(nameTextEdit.getText() + "") != -1) {
-					// Т.е. спортсмен уже есть в таблице
+						// Т.е. спортсмен уже есть в таблице
 						Intent dialogActivity = new Intent(this, DialogActivity.class);
 						// Далее вторым параметром стоит 2. Это requestCode, он может быть любым числом.
 						// Выбрана 2, т.к. 1 уже использовалось в другом классе. requestCode может совпадать
@@ -390,6 +317,11 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
+	public void doFinish() {
+		finishActivity(10);
+		this.finish();
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data == null) return;
@@ -422,6 +354,79 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 				}
 			}
 		}
+	}
+
+	// Returns true, if athlete with this name is in the list.
+	private boolean addAthleteToAthleteListView(Athlete newAthlete) {
+		for (ClientAthlete athlete : athleteListView) {
+			if (athlete.getName().equals(newAthlete.getName())) {
+				athlete.addCompetition(newAthlete.getCompetition());
+				return true;
+			}
+		}
+		athleteListView.add(new ClientAthlete(newAthlete));
+		return false;
+	}
+
+	private void removeAthleteFromAthleteListView(String name) {
+		for (ClientAthlete athlete : athleteListView) {
+			if (athlete.getName().equals(name)) {
+				athleteListView.remove(athlete);
+				return;
+			}
+		}
+	}
+
+	private int getAthleteIndexFromAthleteListView(String name) {
+		for (int i = 0; i < athleteListView.size(); i++) {
+			if (athleteListView.get(i).getName().equals(name)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private ClientAthlete getClientAthleteFromAthleteListView(String name) {
+		for (ClientAthlete athlete : athleteListView) {
+			if (athlete.getName().equals(name)) {
+				return athlete;
+			}
+		}
+		return null;
+	}
+
+	private int getAthleteIndexInLinearLayout(String name) {
+		for ( int i = 0; i < linearLayout.getChildCount(); i++) {
+			if (((TextView)linearLayout.getChildAt(i)).getText().equals(name)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	* Adds dynamically a athlete in list and visible layout.
+	*/
+	private void addRow(String name) {
+		Log.d("DAN","in addRow");
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Log.d("DAN","getting TextView");
+		TextView tv = (TextView) inflater.inflate(R.layout.text_view_pattern, null);
+		Log.d("DAN","getted TextView. set name");
+		tv.setText(name);
+		Log.d("DAN","name setted");
+
+		// Листенер долгого нажатия, для правки иформации о спортсмене.
+		tv.setOnLongClickListener(this);
+		tv.setOnClickListener(this);
+		tv.setGravity(Gravity.CENTER);
+		int randomColor = Color.rgb(random.nextInt() % 255, random.nextInt() % 255, random.nextInt() % 255);
+		tv.setBackgroundColor(randomColor);
+		tv.setTextColor(Color.rgb(Color.red(randomColor) / 2, 255 - Color.green(randomColor), 255 - Color.blue(randomColor)));
+
+		Log.d("DAN","linearLayout.addView(tv,index);");
+		linearLayout.addView(tv,0);
+		Log.d("DAN","exit addRow");
 	}
 
 	private Sex toSex(String str) {
@@ -540,10 +545,6 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 		}
 	}
 
-	public void doFinish() {
-		finishActivity(10);
-		this.finish();
-	}
 
 	private boolean forceEdit; // при изменении информации об спортсмене, путём долгого нажатия,
 			// становится истиной. Если она true, то диалога изменения не будет.
@@ -560,13 +561,9 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 			// содержащий "all competitions". Для сортировки по соревнованиям.
 	private String currentCompetition; // текущее соревнование, выбранное в фильтре.
 	private TextView athleteCompetitionNumber;
-
 	private LinearLayout linearLayout; // Элемент, который хранит список спортсменов, отображаемый в данный момент.
-	//private AuthorizationData authorizationData;
-
 	private int[] athleteCurrentNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое уже в заявке.
 	private int[] athleteMaxNumberList; // Список, содржащий количество спортсменов на каждое соревнование, которое страна может подать.
 	private String[] competitionNamesList; // Список названий соревнований.
-
 	private Random random = new Random(); // Для генерации случайных цветов.
 }
