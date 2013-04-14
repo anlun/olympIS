@@ -22,14 +22,57 @@ import java.net.URL;
  * Just test activity.
  * @author Podkopaev Anton vs danya
  */
-public class MyActivity extends Activity {
+public class MyActivity extends Activity implements View.OnClickListener{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		findViewById(R.id.exitButton).setOnClickListener(this);
+		findViewById(R.id.logOutButton).setOnClickListener(this);
+		findViewById(R.id.logOutButton).setEnabled(false);
+		findViewById(R.id.signInButton).setOnClickListener(this);
+		findViewById(R.id.calendarButton).setOnClickListener(this);
+		findViewById(R.id.countryGUIButton).setOnClickListener(this);
+		findViewById(R.id.countryGUIButton).setEnabled(false);
 
 		isAuthorized = false;
+	}
+
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.signInButton://"log in" item
+				//проверка на авторизованность, если уже авторизован - не авторизуем заново.
+				if (isAuthorized) {
+					Toast.makeText(this, "you are already authorized", Toast.LENGTH_LONG).show();
+					break;
+				} else {
+					startActivityForResult(new Intent(this, AuthorizationActivity.class), 11);
+				}
+				break;
+			case R.id.logOutButton:
+				isAuthorized = false;
+				AuthorizationData data = AuthorizationData.getInstance();
+				data.setPassword("");
+				data.setLogin("");
+				Toast.makeText(this, "you are log out", Toast.LENGTH_SHORT).show();
+				findViewById(R.id.logOutButton).setEnabled(false);
+				findViewById(R.id.signInButton).setEnabled(true);
+				findViewById(R.id.countryGUIButton).setEnabled(false);
+				break;
+			case R.id.countryGUIButton://CountryGUI item.
+				//проверка на авторизованность
+				if (isAuthorized) {
+					startActivity(new Intent(this, CountryGUI.class));
+				}
+				break;
+			case R.id.calendarButton://запускаем календарь
+				startActivity(new Intent(this, CalendarActivity.class));
+				break;
+			case R.id.exitButton://exit
+				System.exit(0);
+				break;
+		}
 	}
 
 	/**
@@ -59,66 +102,6 @@ public class MyActivity extends Activity {
 		private TextView textView;
 	}
 
-	/* создание меню*/
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//1-ый пункт - ID группы
-		menu.add(2, 1, 0, "log in");
-		menu.add(1, 2, 0, "log out");
-		menu.add(1, 3, 0, "Country Application");
-		menu.add(0, 4, 0, "calendar");
-		menu.add(0, 5, 0, "exit");
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	// обновление меню
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// Если авторизованы(), то виден пукт меню "Country Application", иначе нет.
-		// -||- log out.
-		menu.setGroupVisible(1, isAuthorized);
-		// с loginIn наоборот.
-		menu.setGroupVisible(2, !isAuthorized);
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	// обработка нажатий
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case 1://"log in" item
-				//проверка на авторизованность, если уже авторизован - не авторизуем заново.
-				if (isAuthorized) {
-					Toast.makeText(this, "you are already authorized", Toast.LENGTH_LONG).show();
-					break;
-				} else {
-					startActivityForResult(new Intent(this, AuthorizationActivity.class), 11);
-				}
-				break;
-			case 2:// log out.
-				isAuthorized = false;
-				AuthorizationData data = AuthorizationData.getInstance();
-				data.setPassword("");
-				data.setLogin("");
-				Toast.makeText(this, "you are log out", Toast.LENGTH_SHORT).show();
-				break;
-			case 3://CountryGUI item.
-				//проверка на авторизованность
-				if (isAuthorized) {
-					startActivity(new Intent(this, CountryGUI.class));
-				}
-				break;
-			case 4://запускаем календарь
-				startActivity(new Intent(this, CalendarActivity.class));
-				break;
-			case 5://exit
-				System.exit(0);
-				break;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intentData) {
 		if (intentData == null) {return;}
@@ -126,6 +109,10 @@ public class MyActivity extends Activity {
 			isAuthorized = intentData.getBooleanExtra("isAuthorized", false);
 			if (isAuthorized){
 				Toast.makeText(this, "you are singed in", Toast.LENGTH_LONG).show();
+
+				findViewById(R.id.logOutButton).setEnabled(true);
+				findViewById(R.id.signInButton).setEnabled(false);
+				findViewById(R.id.countryGUIButton).setEnabled(true);
 			} else {
 				Toast.makeText(this, "authorization failed", Toast.LENGTH_LONG).show();
 			}

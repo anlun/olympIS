@@ -4,9 +4,33 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-<ImageView android:orientation="vertical"
-           android:layout_width="fill_parent"
-           android:layout_height="fill_parent"
-           android:background="@drawable/welcome">
-           </ImageView>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				  android:orientation="horizontal"
+				  android:layout_width="fill_parent"
+				  android:layout_height="wrap_content"
+				  android:layout_weight="1">
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+					 android:layout_weight="1"
+					 android:id="@+id/signInButton"
+					 android:src="@drawable/enter"/>
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+					 android:layout_weight="1"
+					 android:id="@+id/logOutButton"
+					 android:src="@drawable/log_out"/>
+	</LinearLayout>
+	<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+				 android:layout_weight="1"
+				 android:layout_gravity="center"
+				 android:id="@+id/countryGUIButton"
+				 android:src="@drawable/message"/>
+	<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+				 android:layout_weight="1"
+				 android:layout_gravity="center"
+				 android:id="@+id/calendarButton"
+				 android:src="@drawable/calendar"/>
+	<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+				 android:layout_weight="1"
+				 android:layout_gravity="center"
+				 android:id="@+id/exitButton"
+				 android:src="@drawable/exit"/>
 </LinearLayout>
