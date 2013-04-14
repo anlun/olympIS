@@ -24,7 +24,8 @@ public class ApplicationSendTask extends AsyncTask<String, Integer, Boolean> {
 
 		try {
 			String requestXML = Utils.encoderWrap(countryApplication.serialize());
-			TimeoutClient cl = new TimeoutClient(serverURL);
+			//15 - seconds to timeout. Extended from default according to github.com/anlun/olympIS/issues/73
+			TimeoutClient cl = new TimeoutClient(15, serverURL);
 			String answerXML = cl.execute(requestXML);
 
 			Log.d("ANL", answerXML);
