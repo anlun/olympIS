@@ -327,7 +327,12 @@ public class CountryGUI extends Activity implements OnClickListener, View.OnLong
 					linearLayout.removeViewAt(getAthleteIndexInLinearLayout(oldAthleteName));
 					// Удаляем старые данные о спортсмене
 					removeAthleteFromAthleteListView(oldAthleteName);
+					// очищаем вью
 					forceEdit = false; oldAthleteName = "";
+					nameTextEdit.setText("");
+					sexSpinner.setSelection(0);
+					weightTextEdit.setText(""); heightTextEdit.setText("");
+					selectedSports = new ArrayList<String>();
 				} else {
 					Toast.makeText(this, "удалить спортсмена можно только при изменении информации о нём(долгое нажатие по имени)",
 							Toast.LENGTH_LONG).show();
