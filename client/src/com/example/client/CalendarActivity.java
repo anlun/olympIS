@@ -179,6 +179,15 @@ public class CalendarActivity extends Activity implements OnClickListener {
 		Log.d("DAN","onFilterDayTimetableSendTask");
 		if (dayTimetable == null) {
 			Log.d("DAN","dayTimetable == null.");
+			Intent dayActivityIntent = new Intent(this, DayActivity.class);
+			dayActivityIntent.putExtra("dayNumber", dayNumber + "");
+			dayActivityIntent.putExtra("dayTimetable", "No competitions");
+			Log.d("DAN","3");
+			startActivity(dayActivityIntent);
+
+			Log.d("DAN","убили активити временное");
+			finishActivity(10);
+			Log.d("DAN","вышли из onFilterDayListSendTask.");
 			return;
 		}
 		// TODO отобразить dayTimetable
@@ -202,8 +211,7 @@ public class CalendarActivity extends Activity implements OnClickListener {
 			Log.d("DAN","вышли из onFilterDayListSendTask.");
 		} catch (Exception e) {
 			Log.d("DAN", "поймали exception в onFilterDayTimetableSendTask.(CalendarActivity). Ответ от сервера некорректен.");
-			// говорим юзеру, что мол якобы нет соединения с сервером.
-			Toast.makeText(this, "fail! No connection with server.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "fail!", Toast.LENGTH_SHORT).show();
 			// закрываем AskForWaitActivity.
 			finishActivity(10);
 		}
