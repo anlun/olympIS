@@ -340,7 +340,10 @@ public class Database {
 	}
 
 	public DayTimetable getTimeTable(ArrayList<Filter> filters, int numberDay) {
-	   Date dayOlimp = getCompetitionDate(1);
+		if (filters.size() == 0){
+			return new DayTimetable();
+		}
+	    Date dayOlimp = getCompetitionDate(1);
 		numberDay--;
 	   Date day = new Date(dayOlimp.getTime() + numberDay * 1000L * 60L * 60L * 24L);
        ArrayList<String> filtSport = new ArrayList<String>();
